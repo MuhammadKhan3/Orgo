@@ -1,0 +1,20 @@
+.face-button{
+background-color: #4267B2;
+color: white;
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 5px;
+padding-bottom: 5px;
+width: 100px;
+border-radius: 25px;
+float: left;
+}
+.face-button:hover{
+    background-color: #337AFF;
+}
+.google-btn{
+    width: 100px;
+    width: 40px;
+    float: left;
+    margin-left: 10px;
+}
