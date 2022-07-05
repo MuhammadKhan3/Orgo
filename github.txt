@@ -1,0 +1,3 @@
+git remote add origin https://github.com/MuhammadKhan3/Orgo.git
+git branch -M main
+git push -u origin main

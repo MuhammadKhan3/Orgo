@@ -1,6 +1,8 @@
 import axios from 'axios'
 import {Cookies} from 'react-cookie'
 const cookies=new Cookies();
+
+// in this thunk we send the google authenticate token
 const Googlethunk = (token,clientId,navigate) => {
   return async(dispatch)=>{
       const obj={

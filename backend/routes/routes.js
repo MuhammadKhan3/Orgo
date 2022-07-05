@@ -4,6 +4,8 @@ const router=express.Router();
 const regController=require('../controllers/registration');
 const email=require('../controllers/email');
 const Users = require('../model/users');
+// router page
+
 
 router.post('/google',regController.googlelogin);
 router.post('/facebook',regController.facebooklogin);

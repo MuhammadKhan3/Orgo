@@ -50,7 +50,7 @@ exports.sendemail=async (req,res,next)=>{
 
 }
 
-
+// In this handler we find the email
 exports.findEmail=(req,res,next)=>{
     const {email}=req.body;
     crypto.randomInt(0, 1000000, (err, generate) => {
@@ -102,7 +102,9 @@ exports.findEmail=(req,res,next)=>{
     //     throw new Error(err);
     // });
 }
+// close find email handler
 
+// Verified the code handler
 exports.verified=(req,res,next)=>{
     const {code,email}=req.body;
     Users.findOne(
@@ -120,8 +122,9 @@ exports.verified=(req,res,next)=>{
         throw new Error(err);
     })
 }
+// close the verified handler
 
-
+// verify the code signup time
 exports.verifyAccount=(req,res,next)=>{
     const {code,email}=req.body;
     console.log(code,email);
@@ -147,7 +150,10 @@ exports.verifyAccount=(req,res,next)=>{
         throw new Error(err);
     })
 }
+// close verify the code signup time
 
+
+// start the change password handler
 exports.passwordhandler=(req,res,next)=>{
     const {email,password}=req.body;
     Users.findOne({where:{email:email}})
@@ -166,3 +172,4 @@ exports.passwordhandler=(req,res,next)=>{
         throw new Error(err);
     })
 }
+// close the change password handler

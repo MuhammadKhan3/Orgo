@@ -2,6 +2,7 @@ import axios from 'axios'
 import React from 'react'
 import { user_action } from '../slice/userSlice'
 
+// Password and confirmPassword value send the server
 const PasswordThunk = (obj,navigate) => {
   return async (dispatch)=>{
     const password=async ()=>{

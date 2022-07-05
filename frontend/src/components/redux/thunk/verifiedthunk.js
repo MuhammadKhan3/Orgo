@@ -2,6 +2,7 @@ import axios from 'axios'
 import React from 'react'
 import { user_action } from '../slice/userSlice';
 
+// this thunk we verified the value
 const VerifiedThunk = (obj,navigate) => {
   return async (dispatch)=>{
     const verify= async ()=>{

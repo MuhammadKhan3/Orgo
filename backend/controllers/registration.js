@@ -7,6 +7,8 @@ const jwt=require('jsonwebtoken')
 
 const client=new OAuth2Client("821241871483-2v894njbu58fd7llvbmpg0e812n94tss.apps.googleusercontent.com");
 
+// Google login  authentication
+// !remaining
 exports.googlelogin=async (req,res,next)=>{
     const {token,clientId}=req.body;
     client.verifyIdToken({idToken:token,audience:"821241871483-ah0oc16fcbhtedm026m7h7qpk292f8f1.apps.googleusercontent.com"})
@@ -57,7 +59,10 @@ exports.googlelogin=async (req,res,next)=>{
     })
 }
 
+// close Google login  authentication
 
+// !remaining
+// facebook  login  authentication
 
 exports.facebooklogincheck=(req,res,next)=>{
     const {clientId}=req.body;
@@ -73,6 +78,10 @@ exports.facebooklogincheck=(req,res,next)=>{
         throw new Error(err);
     })
 }
+
+// close facebook login  authentication
+// !remaining
+// facebook login
 exports.facebooklogin=(req,res,next)=>{
     const {token,clientId}=req.body;
     var email='';
@@ -132,6 +141,7 @@ exports.facebooklogin=(req,res,next)=>{
         throw new Error(err);
     })
 }
+// close facebook login
 
 
 

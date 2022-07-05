@@ -12,10 +12,14 @@ import VerificationThunk from "../redux/thunk/verificationthunk";
 import PasswordThunk from "../redux/thunk/passwordthunk";
 
 const Forgot= ()=> {
+    // Variable and hook assign
   const emailstatus=useSelector(state=>state.userSlice.emailstatus);  
   const email=useSelector(state=>state.userSlice.email);  
   const dispatch=useDispatch();
   const navigate=useNavigate();
+//   close
+
+// Formik Validation 
   const validationSchema=Yup.object().shape({
     email:Yup.string().email('Invalid Email').required('Required email'),
     password:Yup.string().min(8,'Too Short').max(20,'Too Long').required('Required password'),
@@ -33,14 +37,18 @@ const Forgot= ()=> {
     },
     validationSchema:validationSchema
   })
+  // Formik Validation 
+
+//   We send the email thunk
   const submithandler=(e)=>{
     e.preventDefault();
     if(formik.values.email){
       dispatch(user_action.setemail(formik.values.email));
       dispatch(ForgotThunk({email:formik.values.email},navigate));      
+  }  
   }
-    
-  }
+//   close the email thunk
+
 
 //   In this handler we send the verification code and email
   const verificationhandler=(e)=>{
@@ -60,6 +68,10 @@ const Forgot= ()=> {
   }
 //   close password handler
 
+// emailstatus is the status of page 1 or page 2 or page 3
+// In forgot page include three page page 1 enter email 
+// page 2 enter the verification code
+// page 3 enter the password or confirm password
   if(emailstatus==='one' || emailstatus==='null' ){
     
     return ( <>
@@ -118,7 +130,9 @@ const Forgot= ()=> {
             </div>
         </section>
       </>)
+    //   close verification email page
   }else if(emailstatus==='two'){
+    // second the verification the code
     return ( <>
         <section className="bg-slate-700 h-screen w-screen    absolute top-0 left-0 ">
             <div className=" flex flex-row  bg-white rounded-lg h-[40rem] w-[60rem] relative top-20 left-[400px] z-10 ">
@@ -178,7 +192,9 @@ const Forgot= ()=> {
             </div>
         </section>
       </>)
+    //   close second the verification the code
   }else if(emailstatus==='three'){
+    // third the password change page 
     return ( <>
         <section className="bg-slate-700 h-screen w-screen    absolute top-0 left-0 ">
             <div className=" flex flex-row  bg-white rounded-lg h-[40rem] w-[60rem] relative top-20 left-[400px] z-10 ">
@@ -215,6 +231,7 @@ const Forgot= ()=> {
                     </button>
                 </form>
                 </div>
+                {/* /close password change */}
                 <div className="bg-gradient-to-r from-pink-500 to-yellow-500 rounded-r-lg  w-[30rem]">
                 <div className="mt-[220px]">
                     <Fade right>

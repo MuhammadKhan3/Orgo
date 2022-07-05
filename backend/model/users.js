@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 
+// User Schema
 const Users = new mongoose.Schema({
     firstname: {
         type:String,

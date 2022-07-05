@@ -16,6 +16,7 @@ import LoginThunk from "../redux/thunk/loginthunk";
 const Login = () => {
   const flag=useSelector(state=>state.userSlice.flag);
   const data=useSelector(state=>state.userSlice.data);
+
   const dispatch=useDispatch();
   const [popup,setpopup]=useState(false);
   const [email,setemail]=useState('');
@@ -26,11 +27,13 @@ const Login = () => {
 
 
     const navigate=useNavigate();
+  //Google handler we send the message to database 
   const clickhandler=(response)=>{
-    console.log(response);
     dispatch(Googlethunk(response.credential,response.clientId,navigate));
   }
-
+  // close the google handler
+  
+  //password handler
   const showpasswordhandler=()=>{
     if(showpassword==='password'){
       setpassword('text')
@@ -38,7 +41,9 @@ const Login = () => {
       setpassword('password')
     }
   }
+  //close show password handler
 
+  //Formik Library
   const validationSchema=Yup.object().shape({
     email:Yup.string().email('Invalid Email').required('Required email'),
     password:Yup.string().min(8,'Too Short').max(20,'Too Long').required('Required password'), 
@@ -51,7 +56,10 @@ const Login = () => {
     },
     validationSchema:validationSchema
   })
+  //close Formik Library
 
+
+  // In this hook we render the google button
   useEffect(()=>{
     /* global google*/
    const google=window.google;
@@ -68,7 +76,9 @@ const Login = () => {
     google.accounts.id.prompt();
     }   
    },[])
+  //  close google button
 
+  // Facebook authetication handler
    const responseFacebook =async (response) => {
         setuserID(response.userID);
         setaccessToken(response.accessToken);
@@ -98,10 +108,13 @@ const Login = () => {
         }
 
    }
- 
+  //  close Facebook authetication handler
+
+
+  // This function handler use in faceebok authentication if the email not take facebook we show popup and take email throught input
    const emailhandler=(e)=>{
       setemail(e.target.value);
-   }
+   }   
    const continuebtnhandler=()=>{
     setcontinuebtn(true);
       if(email!==''){
@@ -109,19 +122,19 @@ const Login = () => {
       dispatch(FacebookThunk(accessToken,userID,navigate,email));
       }
    }
+  //  close the facebook authentication
 
-
+// Login handler in this we use thunk we pass the data thunk and thunk data send to backend
    const submithandler=(e)=>{
     e.preventDefault();
     if(formik.values.email && formik.values.password){
       dispatch(LoginThunk({email:formik.values.email,password:formik.values.password},navigate));      
     }
-    
    }
+  //  close the login handler
   return ( <>
-
-    
     <section className="bg-slate-700 lg:w-screen     lg:h-screen   absolute top-0 left-0 sm:w-auto ">
+      {/* popup take email */}
     {popup &&
     <div className="modal bg-blue-500 text-white p-5 ml-[700px] rounded-xl w-[20rem] z-50  absolute">
       <Slide top>  
@@ -136,14 +149,15 @@ const Login = () => {
         </div>
       </Slide>
     </div>}
-  
+    {/* close email */}
     <div className=" flex flex-row  bg-white rounded-lg relative top-20  z-10  h-auto w-auto sm:w-[50rem]   md:w-auto lg:w-[60rem] lg:ml-[400px]  ">
         <div className="bg-white rounded-t-lg rounded-b-lg w-[30rem]">
           <form className="" onSubmit={submithandler}>
-            <legend className="mt-[70px] ml-[100px] text-pink-500 text-3xl font-bold">
+            <legend className="mt-[70px] ml-[200px] text-pink-600 text-3xl font-bold">
              Login
             </legend>
             <div className="ml-[135px] mt-[70px] block">
+            {/* facebook library or button */}
                 <FacebookLogin
                  appId="7669411649797222"
                   autoLoad={false}
@@ -192,7 +206,7 @@ const Login = () => {
             to='/forgot-password'
             >
               <span
-              className="ml-[150px] mt-4 text-pink-500 hover:text-pink-700 focus:underline focus:underline-offset-8 "
+              className="ml-[150px] mt-4 text-blue-400 hover:text-pink-700 focus:underline focus:underline-offset-8 "
               >
 
               Forgot you password?

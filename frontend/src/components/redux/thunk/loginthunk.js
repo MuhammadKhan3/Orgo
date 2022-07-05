@@ -4,8 +4,8 @@ import { Cookies } from 'react-cookie'
 import { user_action } from '../slice/userSlice';
 //Login Thunk to send the data to server
 const cookies=new Cookies();
-const LoginThunk = (obj,navigate) => {
 
+const LoginThunk = (obj,navigate) => {
   return async (dispatch)=>{
     const login= async ()=>{
         axios.post('http://localhost:8000/login',obj)

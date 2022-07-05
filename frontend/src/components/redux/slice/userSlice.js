@@ -3,6 +3,7 @@ const initialState = {
   flag:true,data:'',emailstatus:'one',msg:'',email:'',changestatus:'one',errors:[],
   firstname:'',lastname:''
 }
+// slices
 //User slice we manage the registration process varaible
 export const userSlice = createSlice({
   name: 'userslice',

@@ -152,7 +152,7 @@ if(changestatus==='one'){
         <div className=" flex flex-row  bg-white rounded-lg relative top-10  z-10  h-auto  w-auto sm:w-[50rem]   md:w-auto lg:w-[80rem] ml-[200px]">        
           <div className="bg-white rounded-t-lg rounded-b-lg w-[80rem] pb-5">
             <form className="" onSubmit={submithandler}>
-              <legend className="mt-[70px] ml-[335px] text-blue-400 text-3xl font-bold">
+              <legend className="mt-[70px] ml-[335px] text-pink-6w00 text-3xl font-bold">
                 Signup
               </legend>
               <div className="ml-[335px] mt-[70px]">
@@ -279,6 +279,7 @@ if(changestatus==='one'){
             </form>
           </div>
           {/* close the signup section */}
+          {/* animation Content  */}
           <div className="bg-gradient-to-r from-pink-500 to-yellow-500 rounded-r-lg  md:w-[30rem] sm:w-[400px]   hidden lg:block medium:block p-5">
             <div className="mt-[220px]">
               <Fade right>
@@ -366,6 +367,8 @@ return ( <>
               </Fade>
           </div>
           </div>
+          {/* close animation Content  */}
+
       </div>
   </section>
 </>)

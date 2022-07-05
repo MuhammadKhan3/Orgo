@@ -4,6 +4,7 @@ import { Cookies } from 'react-cookie'
 import { user_action } from '../slice/userSlice';
 
 const cookies=new Cookies();
+// Send the signup data to server
 const signupThunk = (obj,navigate) => {
   return async (dispatch)=>{
 
