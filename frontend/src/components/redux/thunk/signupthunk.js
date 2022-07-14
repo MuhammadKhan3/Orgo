@@ -11,7 +11,8 @@ const signupThunk = (obj,navigate) => {
     const signup=async ()=>{
       console.log(obj);
         const response=await axios.post('http://localhost:8000/signup',obj);
-        
+        console.log(response.data);
+
         if(response.data.msg){
           dispatch(user_action.seterrors(response.data.msg));
         }else{

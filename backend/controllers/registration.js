@@ -10,44 +10,47 @@ const client=new OAuth2Client("821241871483-2v894njbu58fd7llvbmpg0e812n94tss.app
 // Google login  authentication
 // !remaining
 exports.googlelogin=async (req,res,next)=>{
-    const {token,clientId}=req.body;
+    console.log('login')
+    const {token,clientId,usergroup}=req.body;
     client.verifyIdToken({idToken:token,audience:"821241871483-ah0oc16fcbhtedm026m7h7qpk292f8f1.apps.googleusercontent.com"})
     .then(response=>{
-
-        const {name,picture,email}=response.payload;
-        console.log('repeat');
-        
-        
+        console.log(response.payload);
+        const {name,picture,email,email_verified}=response.payload;
+        // console.log('repeat');
         if(email){
-            Users.findOne({where:{email:email}})
+            console.log('enter')
+            Users.findOne({email:email})
             .then((user)=>{
-                console.log(user);
                 if(!user){
-                    console.log(token)
+                    console.log('not user')
+                    console.log(usergroup)
                     Users.create({
                         email:email,
-                        name:name,
-                        image:picture,
+                        firstname:name,
+                        profile:picture,
+                        verified:email_verified,
+                        userType:usergroup,
                         // save the clients id in google database
-                        google:clientId
+                        google:clientId,
                     }).then((user)=>{
-                        const token=jwt.sign({name:user.name,email:user.email,id:user.id},'thisissecretkeyyouwantthechange',{
+                        const token=jwt.sign({name:user.firstname,email:user.email,id:user._id},'thisissecretkeyyouwantthechange',{
                             expiresIn:'1h'
                         })
-                        res.json({userId:user.id,token:token,flag:true})
+                        res.json({userId:user._id,token:token,flag:true})
                         // const decode=jwt.verify(token,'thisissecretkeyyouwantthechange');
                     });        
                 }else{
+                    console.log('compare')
                     if(user.google===clientId){
-                        const token=jwt.sign({name:user.name,email:user.email,id:user.id},'thisissecretkeyyouwantthechange',{
+                        const token=jwt.sign({name:user.firstname,email:user.email,id:user._id},'thisissecretkeyyouwantthechange',{
                             expiresIn:'1h'
                         })
-                        res.json({userId:user.id,token:token,flag:true})
-                    }else{
+                        res.json({userId:user._id,token:token,flag:true})
+                    }else if(user.google==='')
+                    {
                         user.google=clientId;
                         user.save();
                     }
-
                 }
             })
         }else{
@@ -61,14 +64,15 @@ exports.googlelogin=async (req,res,next)=>{
 
 // close Google login  authentication
 
-// !remaining
 // facebook  login  authentication
 
 exports.facebooklogincheck=(req,res,next)=>{
     const {clientId}=req.body;
-    Users.findOne({where:{facebook:clientId}})
+    console.log('client')
+    Users.findOne({facebook:clientId})
     .then(user=>{
         if(user){
+            console.log(user)
             res.json({flag:true});
         }else{
             res.json({flag:false});
@@ -83,13 +87,13 @@ exports.facebooklogincheck=(req,res,next)=>{
 // !remaining
 // facebook login
 exports.facebooklogin=(req,res,next)=>{
-    const {token,clientId}=req.body;
+    const {token,clientId,usergroup}=req.body;
+    console.log(req.body);
+
     var email='';
     if(req.body.email!==""){
         email=req.body.email
     }
-    console.log(email)
-    console.log('facebook...')
     console.log(token,clientId);
     let url=`https://graph.facebook.com/${clientId}?fields=id,name,email,picture&access_token=${token}`
     fetch(url,{
@@ -102,36 +106,37 @@ exports.facebooklogin=(req,res,next)=>{
         let {name,picture:{data:{
             url:image
         }}}=data;
-
+        console.log('email',data.email)
         if(data.email){
             email=data.email;
         }
-        Users.findOne({where:{facebook:clientId}})
+        Users.findOne({facebook:clientId})
         .then(user=>{
             if(user){
                 if(user.facebook===clientId){
-                    console.log('compare')
                     const token=jwt.sign({name:name,email:email,id:clientId},'thisissecretkeyyouwantthechange',{
                         expiresIn:'1h'
                     })
-                    res.json({userId:user.id,token:token,flag:true})
-                }else{
+                    res.json({userId:user._id,token:token,flag:true})
+                 }else if(user.facebook===''){
                     console.log('not exist')
                     user.facebook=clientId;
                     user.save();
                 }
             }else{
                 Users.create({
-                    name:name,
-                    image:image,
+                    firstname:name,
+                    profile:image,
                     email:email,
                     facebook:clientId,
+                    userType:usergroup,
+                    verified:email ? true: false,
                 }).then(user=>{
                     if(user){
                         const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'thisissecretkeyyouwantthechange',{
                             expiresIn:'1h'
                         })
-                        res.json({userId:user.id,token:token,flag:true})
+                        res.json({userId:user._id,token:token,flag:true})
                     }
                 });
             }
@@ -182,7 +187,7 @@ exports.signup=(req,res,next)=>{
                         expiresIn:'1h'
                     })
                     //Send the response in json format in frontend side;
-                    res.json({token:token,flag:true,status:'two'})
+                    res.json({token:token,flag:true,status:'two',userId:user._id})
                 }
             })
             .catch((error)=>{

@@ -3,12 +3,14 @@ import {Cookies} from 'react-cookie'
 const cookies=new Cookies();
 
 // in this thunk we send the google authenticate token
-const Googlethunk = (token,clientId,navigate) => {
+const Googlethunk = (token,clientId,usergroup,navigate) => {
   return async(dispatch)=>{
       const obj={
           token:token,
-          clientId:clientId
+          clientId:clientId,
+          usergroup:usergroup
       }
+      console.log(obj);
       const Googlepost=async ()=>{
         let hour = new Date();
         hour.setTime(hour.getTime() + (60*60*1000));

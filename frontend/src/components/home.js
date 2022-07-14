@@ -1,12 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Header from './header/header'
+import Loading from './loading/loading'
 
 const Home = () => {
   return (
     <>
-    <Link to='/login'>
-    <div>Home</div>
-    </Link>
+
+      <Loading/>
     </>
   )
 }

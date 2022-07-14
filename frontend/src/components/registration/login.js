@@ -24,12 +24,19 @@ const Login = () => {
   const [showpassword,setpassword]=useState('password');
   const [userID,setuserID]=useState('');
   const [accessToken,setaccessToken]=useState('');
-
+  const [openModal,setModal]=useState(false);
+  const [authtype,setauth]=useState('');
+  const [usergroup,setuserGroup]=useState('')
 
     const navigate=useNavigate();
   //Google handler we send the message to database 
+
   const clickhandler=(response)=>{
-    dispatch(Googlethunk(response.credential,response.clientId,navigate));
+    setuserID(response.clientId);
+    setaccessToken(response.credential);
+    setModal(true);
+    setauth('google')
+    console.log('hie')
   }
   // close the google handler
   
@@ -79,36 +86,31 @@ const Login = () => {
   //  close google button
 
   // Facebook authetication handler
-   const responseFacebook =async (response) => {
-        setuserID(response.userID);
-        setaccessToken(response.accessToken);
-        console.log(userID,accessToken);
-        if(response.email){
-          console.log(userID)
-          console.log('hi')
-          dispatch(FacebookThunk(response.accessToken,response.userID,navigate,''));
+  const responseFacebook = (response) => {
+    setuserID(response.userID);
+    setaccessToken(response.accessToken);
+    if(response.email){
+      setauth('facebook')
+      setModal(true);
+    }else{
+      const obj={
+        clientId:response.userID,
+      }
+      axios.post('http://localhost:8000/facebookcheck',obj)
+      .then(responses=>{
+        console.log(responses)
+        const flag=responses.data.flag;
+        if(flag===true){
+          dispatch(FacebookThunk(response.accessToken,response.userID,'',navigate));
         }else{
-          console.log('else')
-          // let person = prompt("Please enter your name:", "Harry Potter");
-          // alert('email not exist')
-          const obj={
-            clientId:response.userID,
-          }
-          axios.post('http://localhost:8000/facebookcheck',obj)
-          .then(responses=>{
-            const flag=responses.data.flag;
-            if(flag===true){
-              dispatch(FacebookThunk(response.accessToken,response.userID,navigate,''));
-            }else{
-              setpopup(true);
-            }
-          });
-
-          // setpopup(true);          
+          setModal(true);
+          setpopup(true);
         }
-
+      });
+      // setpopup(true);          
+    }
    }
-  //  close Facebook authetication handler
+     //  close Facebook authetication handler
 
 
   // This function handler use in faceebok authentication if the email not take facebook we show popup and take email throught input
@@ -116,11 +118,24 @@ const Login = () => {
       setemail(e.target.value);
    }   
    const continuebtnhandler=()=>{
-    setcontinuebtn(true);
-      if(email!==''){
+    
+    console.log('continuehandler')
+    console.log(formik.values.email)
+    if(accessToken && formik.values.email==='' && authtype==='facebook'){
+      dispatch(FacebookThunk(accessToken,userID,usergroup,'',navigate));
+      setModal(false);
+    }else if(formik.values.email.length>0){
+      setcontinuebtn(true);
       setpopup(false);
-      dispatch(FacebookThunk(accessToken,userID,navigate,email));
-      }
+      setModal(false)
+      dispatch(FacebookThunk(accessToken,userID,usergroup,formik.values.email,navigate));
+    }else  if(authtype==='google'){
+      setpopup(false);
+      setModal(false)
+      console.log('usergroup',usergroup);
+      dispatch(Googlethunk(accessToken,userID,usergroup,navigate));
+    }
+
    }
   //  close the facebook authentication
 
@@ -133,8 +148,51 @@ const Login = () => {
    }
   //  close the login handler
   return ( <>
+      {/* Modal */}
+      <div className={`modal  z-20 ${openModal ===true ? 'modal-open':''}`}>
+      <div className="modal-box h-[400px]">
+          <div className="ml-[20px] block mt-5 ">
+              {/* Email */}
+            {popup &&<>
+              <label> Email Enter</label>
+              <br/>
+              <input type="email" placeholder="Type here" className="input input-bordered input-secondary w-full max-w-xs" onChange={formik.handleChange} onBlur={formik.handleBlur} name='email' />
+              </> }  
+             {/* Close Email */}
+              {/* User type */}
+                  <label style={{float:'left'}}>Select the user type</label>
+                  <br/>
+                  <br/>
+                  <input type='radio' name='employee' id='employee' hidden/>
+                  <div style={{border:usergroup==='employee' ?'1px solid black':'1px solid lightgray',height:'80px',width:'80px',padding:'5px',paddingTop:'30px',color: 'black',float:'left',boxShadow:usergroup==='employee' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('employee')}}>
+                  <label htmlFor='employee'>
+                      employee
+                  </label>
+                  </div>
+                  <input type='radio' name='freelancer' id='freelancer' value='' hidden/>
+                  <div style={{border:usergroup==='freelancer' ?'1px solid black':'1px solid lightgray',width:'180px',padding:'5px',paddingTop:'30px',color:'black',float:'left',height:'80px',marginLeft:'5px',  boxShadow:usergroup==='freelancer' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('freelancer')}}>
+                  <label htmlFor='employee'>
+                      organization/Freelancer
+                  </label>
+                  </div>
+                  </div>
+                  <br/>
+              {/*Close User type  */}
+              {/* Button */}
+                  <br/>
+                  <br/>
+                  <br/>
+              <div className="mt-2 block ml-[20px] space-x-3">
+                  <button className="btn btn-outline btn-secondary"  onClick={continuebtnhandler} >Continue</button>
+                  <button className="btn btn-outline btn-accent"     onClick={()=>{setpopup(false)}}>Cancel</button>
+
+              </div>
+              {/* close Button */}
+      </div>
+    </div>
     <section className="bg-slate-700 lg:w-screen     lg:h-screen   absolute top-0 left-0 sm:w-auto ">
-      {/* popup take email */}
+    {/* popup take email */}
+
     {popup &&
     <div className="modal bg-blue-500 text-white p-5 ml-[700px] rounded-xl w-[20rem] z-50  absolute">
       <Slide top>  
@@ -150,7 +208,7 @@ const Login = () => {
       </Slide>
     </div>}
     {/* close email */}
-    <div className=" flex flex-row  bg-white rounded-lg relative top-20  z-10  h-auto w-auto sm:w-[50rem]   md:w-auto lg:w-[60rem] lg:ml-[400px]  ">
+    <div className=" flex flex-row   bg-white rounded-lg relative top-20    h-auto w-auto sm:w-[50rem]   md:w-auto lg:w-[60rem] lg:ml-[400px]  ">
         <div className="bg-white rounded-t-lg rounded-b-lg w-[30rem]">
           <form className="" onSubmit={submithandler}>
             <legend className="mt-[70px] ml-[200px] text-pink-600 text-3xl font-bold">
@@ -159,7 +217,7 @@ const Login = () => {
             <div className="ml-[135px] mt-[70px] block">
             {/* facebook library or button */}
                 <FacebookLogin
-                 appId="7669411649797222"
+                 appId="562863815542621"
                   autoLoad={false}
                   fields="name,email,picture"
                   size='small'

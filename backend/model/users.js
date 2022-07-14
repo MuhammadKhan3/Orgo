@@ -8,14 +8,13 @@ const Users = new mongoose.Schema({
     },
     lastname:{
         type:String,
-        required:true,
     },
     password:{
         type:String,
-        required:true,
     },
     email:{
         type:String,
+        required:true,
         unique:true
     },
     Date:{
@@ -31,6 +30,10 @@ const Users = new mongoose.Schema({
     },
     verificationCode:{
         type:String,
+    },
+    profile:{
+        type:String,
+        default:'',
     },
     google:{
         type:String,

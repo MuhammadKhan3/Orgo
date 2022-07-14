@@ -6,7 +6,6 @@ const User=require('./model/users')
 const  routes  = require('./routes/routes');
 const port = 8000;
 var corsOptions = {
-  origin: 'http://localhost:3000',
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
