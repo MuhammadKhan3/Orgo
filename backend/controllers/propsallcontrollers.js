@@ -45,3 +45,11 @@ exports.getProposal=(req,res,next)=>{
         throw err;
     })
 }
+
+exports.numberProposal=(req,res,next)=>{
+    const {jobId}=req.params
+    Proposals.countDocuments({jobId:mongoose.Types.ObjectId(jobId)})
+    .then((proposal)=>{
+        res.json({prop_length:proposal,msg:'Succefully Fetched',flag:true});
+    })
+}

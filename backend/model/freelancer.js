@@ -3,7 +3,7 @@ const Schema=mongoose.Schema;
 
 
 // Employee Profile Schema
-const flProfile= new mongoose.Schema({
+const freelancer= new mongoose.Schema({
     title:{
         type:String,
     },
@@ -40,5 +40,5 @@ const flProfile= new mongoose.Schema({
     },
     id:{type:Schema.Types.ObjectId,ref:'user'}
 })
-  const FlProfile=mongoose.model('flprofile',flProfile);
-  module.exports=FlProfile;
+  const Freelancer=mongoose.model('freelancer',freelancer);
+  module.exports=Freelancer;

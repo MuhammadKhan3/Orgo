@@ -4,14 +4,14 @@ const {OAuth2Client}=require('google-auth-library');
 const Users = require('../model/users');
 var bcrypt = require('bcryptjs');
 const jwt=require('jsonwebtoken')
-const client=new OAuth2Client("821241871483-2v894njbu58fd7llvbmpg0e812n94tss.apps.googleusercontent.com");
+const client=new OAuth2Client("821241871483-gt5pbv666jadqq2piairjgoec6nva9mp.apps.googleusercontent.com");
 
 // Google login  authentication
 // !remaining
 exports.googlelogin=async (req,res,next)=>{
     console.log('login')
     const {token,clientId,usergroup}=req.body;
-    client.verifyIdToken({idToken:token,audience:"821241871483-ah0oc16fcbhtedm026m7h7qpk292f8f1.apps.googleusercontent.com"})
+    client.verifyIdToken({idToken:token,audience:"821241871483-gt5pbv666jadqq2piairjgoec6nva9mp.apps.googleusercontent.com"})
     .then(response=>{
         console.log(response.payload);
         const {name,picture,email,email_verified}=response.payload;
@@ -208,8 +208,14 @@ exports.login=(req,res,next)=>{
     }
     //we check the email and password
     const {email,password}=req.body;
+    console.log(email,password);
     Users.findOne({email:email})
     .then((user)=>{
+        if(!user){
+            res.json({flag:false,data:"User does not exist"})
+
+        }
+        
         if(user.verified){
             //bcrypt compare the database password and user enter passowrd if compare it shows true value
         bcrypt.compare(password,user.password,(err,result)=>{

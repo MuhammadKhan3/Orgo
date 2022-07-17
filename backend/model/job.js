@@ -33,6 +33,7 @@ const Job=new mongoose.Schema({
             min:Number,
     },
     userId:{type:Schema.Types.ObjectId,ref:'user'},
+    employeeId:{type:Schema.Types.ObjectId,ref:'employee'},
     createdAt:{
         type:Date,
         default:new Date().toUTCString(),

@@ -2,6 +2,7 @@ const Jobs = require("../model/job");
 const mongoose=require('mongoose')
 const fs = require('fs');
 const favJob = require("../model/favJobs");
+const {validationResult}=require('express-validator');
 const NodeGeocoder = require('node-geocoder');
 
 // Start GeoCoding
@@ -18,13 +19,19 @@ const options = {
 //   console.log(response)
 // Close GeoCoding
 exports.createJob=(req,res,next)=>{
-    const {userId}=req.params;
+    const errors=validationResult(req);
+    if(!errors.isEmpty()){
+        const err=new Error('Information Profile')
+        err.statusCode=500;
+        err.data=errors.array();
+        throw err;
+    }
 
+    const {employeeId}=req.params;
     const file=req.files.map(value=>{
         return value.filename
     });
     const {headline,description,category,skills,scope,budget}=req.body;
-
     Jobs.create({
         headline:headline,
         description:description,
@@ -33,7 +40,7 @@ exports.createJob=(req,res,next)=>{
         skills:skills,
         scope:scope,
         budget:budget,
-        userId:userId,
+        employeeId:employeeId,
         status:'pending',
     }).then(job=>{
         
@@ -115,9 +122,18 @@ exports.getJob=(req,res,next)=>{
         {status:'active'}
     ]})
     .select("-status")
+    .populate({
+        path:'employeeId',
+        populate:{
+            path:'userId',
+            model:'user'
+        }
+    })
     .then((job)=>{
         if(job){
             res.json({job:job,flag:true,msg:'Succefully Fetch Jobs'});
+        }else{
+            res.json({flag:false,msg:'Not Fetch Jobs'});
         }
     }).catch((error)=>{
         const err=new Error('Create job Issue')
@@ -142,17 +158,28 @@ exports.getJobs=async (req,res,next)=>{
 
 
 exports.FavJob=(req,res,next)=>{
-    
     const {userId,jobId}=req.body;
-    favJob.create({
-        userId:userId,
-        jobId:jobId
-    }).then((favjob)=>{
-        if(favjob){
-            res.json({flag:true,msg:'Succefully added '});
-
+    Jobs.findOne({jobId:mongoose.Types.ObjectId(jobId)})
+    .then((job)=>{
+        if(job){
+            res.json({msg:"Already Add",flag:true})
+        }else{
+            favJob.create({
+                userId:userId,
+                jobId:jobId
+            }).then((favjob)=>{
+                if(favjob){
+                    res.json({flag:true,msg:'Succefully added '});
+        
+                }
+            })
         }
+    }).catch((error)=>{
+        const err=new Error('Favourite job add issue')
+        err.data=error;
+        throw err;
     })
+
 }
 
 exports.getfavJob=(req,res,next)=>{
@@ -163,8 +190,6 @@ exports.getfavJob=(req,res,next)=>{
         res.json({FavouriteJob:favjob,flag:true,msg:'Succefull Fetched'});
     })
 }
-
-
 
 exports.searchJob=(req,res,next)=>{
     const {search}=req.body;

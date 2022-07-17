@@ -6,51 +6,67 @@ const uploadProfile=require('../middleware/uploadprofile');
 const { body } = require('express-validator');
 const { param } = require('express-validator');
 const User = require('../model/users');
-
 const router=express.Router();
-// Employee Profile
-router.post('/emp-profile/:userId',Profile.empinformation);
-router.post('/skills/:userId',Profile.empskills);
-router.post('/languages/:userId',Profile.emplanguages);
-router.post('/education/:userId',Profile.education);
-router.post('/reviews/:userId',Profile.empReviews);
-router.post('/portfolio/:userId',upload.array('files'),Profile.empPortfolio);
-router.post('/rate/:userId',Profile.emprate);
-router.post('/getprofile/:userId',Profile.empgetprofile);
-router.post('/uploadprofile/:userId',uploadProfile.single('file'),Profile.empuploadProfile);
-// Close Employee Profile
+// Freelancing Profile
 
-// Client Profile................
+const FreelancerValidation=[
+    param('userId').custom((value)=>{
+        console.log('client',value)
+        
+        return User
+        .findOne({_id:mongoose.Types.ObjectId(value)})
+        .then((user)=>{
+            console.log(user.userType==='freelancer')
+            if(user.userType==='freelancer'){
+                return true;
+            }else{
+                console.log('reject');
+                return Promise.reject('This is not a freelancer account');
+            }
+        
+        })
+    })
+]
+const EmployeeValidation=[
+    param('userId').custom((value)=>{
+        console.log('client',value)
+        
+        return User
+        .findOne({_id:mongoose.Types.ObjectId(value)})
+        .then((user)=>{
+            console.log(user)
+            if(user.userType==='employee'){
+                return true;
+            }else{
+                return Promise.reject('This is not a Employee account');
+            }
+        
+        })
+    })
+]
+router.post('/free-profile/:userId',FreelancerValidation,Profile.freeinformation);
+router.post('/skills/:userId',FreelancerValidation,Profile.freeskills);
+router.post('/languages/:userId',FreelancerValidation,Profile.freelanguages);
+router.post('/education/:userId',FreelancerValidation,Profile.freeeducation);
+router.post('/reviews/:userId',FreelancerValidation,Profile.freeReviews);
+router.post('/portfolio/:userId',FreelancerValidation,upload.array('files'),Profile.freePortfolio);
+router.post('/rate/:userId',FreelancerValidation,Profile.freerate);
+router.post('/getprofile/:userId',FreelancerValidation,Profile.freegetprofile);
+router.post('/uploadprofile/:userId',FreelancerValidation,uploadProfile.single('file'),Profile.freeuploadProfile);
+// Close Freelancing Profile
+
+
+// Employee................
 router.post('/cli-profile/:userId',uploadProfile.single('file'),
-// [
-//     param('userId').custom(value=>{
-//         console.log('client',value)
-        
-//         return User
-//         .findOne({_id:mongoose.Types.ObjectId(value)})
-//         .then((user)=>{
-//             console.log(user.userType)
-//             if(user.userType==='employee'){
-//                 return true;
-//             }else{
-//                 console.log('reject')
-//                 return Promise.reject('This is not a Employee account');
-//             }
-        
-//         })
-//     })
-// ]
-
 Profile.ClientuploadProfile);
 
-
 // Company Details
-router.post('/company-details/:userId',Profile.companyDetail);
+router.post('/company-details/:userId',EmployeeValidation,Profile.companyDetail);
 
 // Close Company Details
 
 // Client Contacts
-router.post('/company-contacts/:userId',Profile.clicontacts);
+router.post('/company-contacts/:userId',EmployeeValidation,Profile.clicontacts);
 
 // Close Client Contacts
 // Close Client Profile..........

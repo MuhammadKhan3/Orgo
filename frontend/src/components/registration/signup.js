@@ -78,7 +78,7 @@ const Signup = () => {
       if(google){
           /* global google*/
      google.accounts.id.initialize({
-      client_id:'821241871483-ah0oc16fcbhtedm026m7h7qpk292f8f1.apps.googleusercontent.com',
+      client_id:'821241871483-gt5pbv666jadqq2piairjgoec6nva9mp.apps.googleusercontent.com',
       callback:clickhandler
     })
          google.accounts.id.renderButton(

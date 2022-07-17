@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
 
-const clientProfile=new mongoose.Schema({
+const employee=new mongoose.Schema({
     name:{
         type:String,
     },
@@ -23,5 +23,5 @@ const clientProfile=new mongoose.Schema({
     }
 })
 
-const ClientProfile=mongoose.model('clientprofile',clientProfile);
-module.exports=ClientProfile;
+const Employee=mongoose.model('employee',employee);
+module.exports=Employee;
