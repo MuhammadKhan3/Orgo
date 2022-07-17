@@ -1,0 +1,80 @@
+.main-box {
+  position: fixed;
+  background: #00000050;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+.popup-box {
+  top: -400px;
+  animation: drop 0.75s ease forwards;
+  color: #222222;
+  position: relative;
+  width: 600px;
+  margin: 0 auto;
+  height: auto;
+  max-height: 70vh;
+  margin-top: calc(100vh - 85vh - 20px);
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #999;
+  overflow: auto;
+}
+.pop-video-heading {
+  margin-left: 25px;
+}
+.pop-video-content {
+  width: 91%;
+  margin-left: 25px;
+  margin-top: 25px;
+}
+.pop-video-input {
+  width: 96%;
+  padding: 11px;
+  margin-top: -15px;
+  border-radius: 2px;
+  border: 1px solid #d1d1d1;
+  outline-color: #3c8224;
+  color: #515152;
+}
+.pop-video-input:hover {
+  border: 1px solid #3c8224;
+}
+.guideLine-link {
+  color: #3c8224;
+  text-decoration: none;
+}
+.guideLine-link :hover {
+  text-decoration: underline;
+}
+
+
+.button-container {
+  display: flex;
+  margin-top: 25px;
+  margin-right: 25px;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+@keyframes drop {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    transform: translateY(420px);
+  }
+  100% {
+    transform: translateY(420px);
+    opacity: 1;
+  }
+}
+
+
+/* hour pop up */
+.radio-lable{
+  font-size: 0.9em;
+}

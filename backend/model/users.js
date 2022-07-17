@@ -31,7 +31,7 @@ const Users = new mongoose.Schema({
     verificationCode:{
         type:String,
     },
-    profile:{
+    picture:{
         type:String,
         default:'',
     },

@@ -4,7 +4,6 @@ const {OAuth2Client}=require('google-auth-library');
 const Users = require('../model/users');
 var bcrypt = require('bcryptjs');
 const jwt=require('jsonwebtoken')
-
 const client=new OAuth2Client("821241871483-2v894njbu58fd7llvbmpg0e812n94tss.apps.googleusercontent.com");
 
 // Google login  authentication
@@ -27,7 +26,7 @@ exports.googlelogin=async (req,res,next)=>{
                     Users.create({
                         email:email,
                         firstname:name,
-                        profile:picture,
+                        picture:picture,
                         verified:email_verified,
                         userType:usergroup,
                         // save the clients id in google database
@@ -126,7 +125,7 @@ exports.facebooklogin=(req,res,next)=>{
             }else{
                 Users.create({
                     firstname:name,
-                    profile:image,
+                    picture:image,
                     email:email,
                     facebook:clientId,
                     userType:usergroup,

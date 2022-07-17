@@ -4,14 +4,14 @@ const Header = () => {
     const [acitve,setactivebtn]=useState('');
   return (<>
   <div className="navbar bg-gradient-to-r from-pink-500 to-yellow-500">
-  <div className="flex-1 inline-block w-[60px] text-white">
-    <h2 className=" text-[45px] text-whitew-[60px] float-left ">Orgo</h2>
-    <ul className='flex flex-row  float-left mt-5 ml-[300px] space-x-4 '>
-        <li className={`btn btn-ghost text-[18px] ${acitve==='dashboard' ? 'btn-active' :''}`} onClick={()=>{setactivebtn('dashboard')}}>Dashboard</li>
-        <li className={`btn  btn-ghost text-[18px] ${acitve==='projects' ? 'btn-active' :''}`} onClick={()=>{setactivebtn('projects')}}>Projects</li>
-        <li className={`btn btn-ghost text-[18px] ${acitve==='message' ? 'btn-active' :''}`} onClick={()=>{setactivebtn('message')}}>Message</li>
+  <div className="flex-1 inline-block w-[80px] text-white">
+    <h2 className=" text-[45px] text-white w-[60px] float-left ">Orgo</h2>
+    <ul className='flex flex-row   mt-5 !ml-[190px] space-x-2  '>
+        <li className={` text-[14px] btn btn-ghost w-[90px]  ${acitve==='dashboard' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('dashboard')}}>Dashboard</li>
+        <li className={`text-[14px]  btn btn-ghost w-[90px] ${acitve==='projects' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('projects')}}>Projects</li>
+        <li className={` text-[14px] btn btn-ghost w-[90px] ${acitve==='message' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('message')}}>Message</li>
         <Link to='login'>
-          <li className='btn btn-ghost text-[18px]' >Login</li>
+          <li className='btn btn-ghost text-[18px] w-[90px]' >Login</li>
         </Link>
     </ul>
   </div>  <div className="flex-none gap-[100px] mt-3">
