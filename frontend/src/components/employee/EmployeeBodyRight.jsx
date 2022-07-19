@@ -2,12 +2,13 @@ import React from "react";
 import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import { fontWeight } from "@mui/system";
 
 function EmployeeBodyRight() {
   return (
     <div className="body-section-right">
       <div className="bsr1">
-        <h2 style={{ width: "415px" }}>
+        <h2 style={{ width: "415px", fontSize:"1.2em", fontWeight:"bold" }}>
           Project Management | Bootstrap, C#, CSS 3, CSS, Database, Firebase{" "}
           <CreateTwoToneIcon style={{ marginLeft: "20px" }} />
         </h2>
@@ -17,7 +18,9 @@ function EmployeeBodyRight() {
       </div>
 
       <div className="bsr2">
+        <br />
         <p>Objective</p>
+        <br />
         <p style={{ marginBottom: "30px" }}>
           Brilliant and creative IT professional with Bachelor’s Degree in
           Information Technology and passionate about creating customized
@@ -30,17 +33,18 @@ function EmployeeBodyRight() {
       </div>
 
       <div className="bsr3">
-        <h3 style={{ fontWeight: "initial" }}>Work History</h3>
+        <h3 style={{ fontWeight: "bold", fontSize:"1.2em" }}>Work History</h3>
         <p>
           No work yet. Once you start getting hired on Upwork, your work with
           clients will show up here.
         </p>
         <p className="bsr-search">Start your search</p>
+        <br />
         <hr />
       </div>
 
       <div className="bsr4">
-        <h3 style={{ fontWeight: "initial" }}>Portfolio</h3>
+        <h3 style={{ fontWeight: "bold",fontSize:"1.2em" }}>Portfolio</h3>
         <AddCircleOutlineIcon style={{ marginLeft: "20px" }} />
       </div>
 

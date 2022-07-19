@@ -23,17 +23,20 @@
   overflow: auto;
 }
 .pop-video-heading {
-  margin-left: 25px;
+  margin:10px 0 10px 25px;
+  font-size: 1.5em;
+  font-weight: bold;
+  
 }
 .pop-video-content {
-  width: 91%;
+  width: 95%;
   margin-left: 25px;
   margin-top: 25px;
 }
 .pop-video-input {
   width: 96%;
   padding: 11px;
-  margin-top: -15px;
+  margin-top: 10px;
   border-radius: 2px;
   border: 1px solid #d1d1d1;
   outline-color: #3c8224;
@@ -60,6 +63,7 @@
   margin-bottom: 20px;
 }
 
+
 @keyframes drop {
   0% {
     opacity: 0;
@@ -77,4 +81,25 @@
 /* hour pop up */
 .radio-lable{
   font-size: 0.9em;
+  margin-left: 5px;
+}
+
+
+
+
+/* Education */
+.popup-box-education{
+  top: -400px;
+  animation: drop 0.75s ease forwards;
+  color: #222222;
+  position: relative;
+  width: 600px;
+  margin: 0 auto;
+  height: auto;
+  max-height: 70vh;
+  margin-top: calc(100vh - 85vh - 20px);
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #999;
+  overflow-y: scroll;
 }

@@ -20,4 +20,8 @@
     width: 80%;
     background-color: #FFFF;
     padding: 0 10px 0 30px;
+    border: 1px solid #E0E0E0;
+}
+.body-emp p{
+    font-size: 0.9em;
 }

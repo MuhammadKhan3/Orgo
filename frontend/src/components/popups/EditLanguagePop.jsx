@@ -26,18 +26,18 @@ const languages = [
 
 const languageType=["Basic","Conversational","Fluent","Native or Bilingual"]
 
-function LanguagePop({ handleClose }) {
+function EditLanguagePop({ handleClose }) {
   
   return (
     <div className="main-box">
       <div style={{ width: "750px" }} className="popup-box">
         <div>
-          <h3 className="pop-video-heading">Add Languages</h3>
+          <h3 className="pop-video-heading">Edit Languages</h3>
           <hr />
         </div>
         <div style={{ display: "flex", justifyContent: "center", marginBottom:"150px"}}>
-          <MuiDropDown text="Language" languages={languages} ability={false}/>
-          <MuiDropDown text="Proficiency Level" languages={languageType} ability={false} />
+          <MuiDropDown text="Language" languages={languages} ability={true}/>
+          <MuiDropDown text="Proficiency Level" languages={languageType} ability={false}/>
         </div>
         <div className="button-container">
           <Button className="cancel" content="Cancel" handle={handleClose} />
@@ -48,4 +48,4 @@ function LanguagePop({ handleClose }) {
   );
 }
 
-export default LanguagePop;
+export default EditLanguagePop;
