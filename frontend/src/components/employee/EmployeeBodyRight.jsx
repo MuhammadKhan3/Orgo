@@ -1,18 +1,33 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
+=======
+import React,{useState,useEffect} from "react";
+>>>>>>> 6888310cad4996692d31c7bdb84e7d699c69226f
 import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import TitlePop from "../popups/TitlePop";
 import HourlyRatePop from "../popups/HourlyRatePop";
 import PortfolioPop from "../popups/PortfolioPop";
+import {useDispatch,useSelector} from 'react-redux'
 
 function EmployeeBodyRight() {
+<<<<<<< HEAD
   const [portfolioData, setPortfolioData] = useState([]);
   const [pop, setPop] = useState({
     titlePop: false,
     ratePop: false,
     portfolioPop: false,
   });
+=======
+  const rate=useSelector(state=>state.companySlice.rate);
+
+  const [pop,setPop]=useState({
+    title:false,
+    rate:false,
+    portfolio:false
+  })
+>>>>>>> 6888310cad4996692d31c7bdb84e7d699c69226f
 
   const handleTitlePop = () => {
     setPop({
@@ -28,9 +43,15 @@ function EmployeeBodyRight() {
 
   const handlePortfolioPop = () => {
     setPop({
+<<<<<<< HEAD
       portfolioPop: !pop.portfolioPop,
     });
   };
+=======
+      portfolio:!pop.portfolio
+    })
+  }
+>>>>>>> 6888310cad4996692d31c7bdb84e7d699c69226f
 
   return (
     <div className="body-section-right">
@@ -43,11 +64,15 @@ function EmployeeBodyRight() {
           />
         </h2>
         <h3>
+<<<<<<< HEAD
           $10.00/hr{" "}
           <CreateTwoToneIcon
             onClick={handleRatePop}
             style={{ marginLeft: "20px", cursor: "pointer" }}
           />
+=======
+          ${rate}.00/hr <CreateTwoToneIcon onClick={handleRatePop} style={{ marginLeft: "20px", cursor:"pointer"}} />
+>>>>>>> 6888310cad4996692d31c7bdb84e7d699c69226f
         </h3>
       </div>
       <div className="bsr2">
@@ -106,11 +131,18 @@ function EmployeeBodyRight() {
         </div>
         <hr />
       </div>
+<<<<<<< HEAD
       {pop.titlePop ? <TitlePop handleClose={handleTitlePop} /> : null}
       {pop.ratePop ? <HourlyRatePop handleClose={handleRatePop} /> : null}
       {pop.portfolioPop ? (
         <PortfolioPop portfolioData setPortfolioData handleClose={handlePortfolioPop} />
       ) : null}
+=======
+      {pop.title ? <TitlePop handleClose={handleTitlePop}/>:null}
+      {pop.rate ? <HourlyRatePop handleClose={handleRatePop}/>:null}
+      {pop.portfolio ? <PortfolioPop handleClose={handlePortfolioPop}/>:null}
+
+>>>>>>> 6888310cad4996692d31c7bdb84e7d699c69226f
     </div>
   );
 }

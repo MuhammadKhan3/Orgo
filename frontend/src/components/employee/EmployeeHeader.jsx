@@ -2,11 +2,23 @@ import React, { useEffect, useState } from "react";
 import avatar from "../employee/avatar.png";
 import "../employee/employeeHeader.css";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import {Cookies} from 'react-cookie'
+import {useSelector} from 'react-redux'
+import axios from 'axios'
+const cookies=new Cookies();
 
 function EmployeeHeader() {
   const [time, setTime] = useState();
   const uploadedImage = React.useRef(null);
   const imageUploader = React.useRef(null);
+
+  const companyName=useSelector(state=>state.companySlice.companyname);
+  const timezone=useSelector(state=>state.companySlice.timezone);
+  const country=useSelector(state=>state.companySlice.country);
+  const picture=useSelector(state=>state.companySlice.picture);
+
+
+  
   const handleImageUpload = (e) => {
     const [file] = e.target.files;
     if (file) {
@@ -18,6 +30,20 @@ function EmployeeHeader() {
       };
       reader.readAsDataURL(file);
     }
+    const formdata=new FormData();
+    formdata.append('file',file);
+    const companyId=cookies.get('companyId');
+    const token=cookies.get('token');
+
+    axios.post(`http://localhost:8000/company-picture/${companyId}`,{
+      formdata,
+      headers:{
+        authorization:"Bearer "+token,
+      }
+    })
+    .then((response)=>{
+      console.log(response)
+    })
   };
 
   useEffect(() => {
@@ -54,15 +80,15 @@ function EmployeeHeader() {
           >
             <img
               className="user-avatar-image"
-              src={avatar}
+              src={picture.length>0 ? `http://localhost:8000/${picture}` :avatar}
               ref={uploadedImage}
             />
           </div>
         </div>
         <div className="head-text1">
-          <h2 className="user-name">Muhammad Osama Nadeem</h2>
+          <h2 className="user-name">{companyName.toUpperCase() }</h2>
           <LocationOnIcon className="location-icon" />
-          <p className="location-time">Karachi, Pakistan - {time} </p>
+          <p className="location-time">{timezone } {country} - {time} </p>
         </div>
       </div>
       <div className="head-container2">

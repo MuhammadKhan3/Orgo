@@ -10,6 +10,9 @@ const companyProfile= new mongoose.Schema({
     description:{
         type:String,
     },
+    picture:{
+        type:String,
+    },
     skills:{
         type:Array,
     },
@@ -25,19 +28,18 @@ const companyProfile= new mongoose.Schema({
         default:[],
     },
     rate:{
-        time:String,
-        price:Number,
+        type:Number,
     },
     education:{
         type:Array,
     },
-    reviews:{
-        type:[{
-            value:Schema.Types.Decimal128,
-            description:String,
-            userId:[{type:Schema.Types.ObjectId,ref:'user'}]
-        }],
-    },
+    // reviews:{
+    //     type:[{
+    //         value:Schema.Types.Decimal128,
+    //         description:String,
+    //         userId:[{type:Schema.Types.ObjectId,ref:'user'}]
+    //     }],
+    // },
     userId:{type:Schema.Types.ObjectId,ref:'user'},
     companyId:{type:Schema.Types.ObjectId,ref:'company'}
 })

@@ -76,7 +76,7 @@ exports.googleSignup=async (req,res,next)=>{
                                             companyId:company._id,
                                             userId:user._id
                                         })
-                                        const token=jwt.sign({name:user.firstname,email:user.email,id:user._id},'thisissecretkeyyouwantthechange',{
+                                        const token=jwt.sign({name:user.firstname,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                                             expiresIn:'1h'
                                         })
                                         res.json({userId:user._id,token:token,flag:true,companyId:company._id,userType:usergroup,authenticate:user.verified})
@@ -88,7 +88,7 @@ exports.googleSignup=async (req,res,next)=>{
                                 })
                                 }else{
                                   if(usergroup===user.userType || usergroup==='freelancer'){
-                                    const token=jwt.sign({name:user.firstname,email:user.email,id:user._id},'thisissecretkeyyouwantthechange',{
+                                    const token=jwt.sign({name:user.firstname,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                                         expiresIn:'1h'
                                     })
                                     if(user.google.length>0){
@@ -130,7 +130,7 @@ exports.googleSignup=async (req,res,next)=>{
                                         google:token,
                                         companyId:req.companyId
                                     }).then((user)=>{
-                                        const token=jwt.sign({name:user.firstname,email:user.email,userid:user._id},'thisissecretkeyyouwantthechange',{
+                                        const token=jwt.sign({name:user.firstname,email:user.email,useruserId:user._id},'orgoisthefreelancingcompany',{
                                             expiresIn:'1h'
                                         })
                                         res.json({userId:user._id,token:token,flag:true,companyId:req.companyId,userType:usergroup,authenticate:user.verified})
@@ -140,7 +140,7 @@ exports.googleSignup=async (req,res,next)=>{
                                     console.log('freelancer')
                                   if(usergroup===user.userType || usergroup==='company'){
 
-                                    const token=jwt.sign({name:user.firstname,email:user.email,id:user._id},'thisissecretkeyyouwantthechange',{
+                                    const token=jwt.sign({name:user.firstname,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                                         expiresIn:'1h'
                                     })
                                     if(user.google.length>0){
@@ -185,7 +185,7 @@ exports.googleSignup=async (req,res,next)=>{
                                             country:req.country,
                                             timezone:req.timezone,
                                         }).then((employee)=>{
-                                            const token=jwt.sign({name:user.firstname,email:user.email,userid:user._id},'thisissecretkeyyouwantthechange',{
+                                            const token=jwt.sign({name:user.firstname,email:user.email,useruserId:user._id},'orgoisthefreelancingcompany',{
                                                 expiresIn:'1h'
                                             })
                                             res.json({userId:user._id,token:token,flag:true,employeeId:employee._id,userType:usergroup,authenticate:user.verified})
@@ -201,7 +201,7 @@ exports.googleSignup=async (req,res,next)=>{
                                             console.log(req.employeeId)
                                         
                                         if(user.google.length>0){
-                                            const token=jwt.sign({name:user.firstname,email:user.email,id:user._id},'thisissecretkeyyouwantthechange',{
+                                            const token=jwt.sign({name:user.firstname,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                                                 expiresIn:'1h'
                                             })
                                             console.log("employee id",req.employeeId)
@@ -239,7 +239,7 @@ exports.Googlelogin=(req,res,next)=>{
       Users.findOne({email:email})
       .then(user=>{
         if(user && user.google.length>0){
-            const token=jwt.sign({name:user.firstname,email:user.email,id:user._id},'thisissecretkeyyouwantthechange',{
+            const token=jwt.sign({name:user.firstname,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                 expiresIn:'1h'
             })
             if(user.userType==='freelancer' || user.userType==='company'){
@@ -310,7 +310,7 @@ exports.facebooklogin=(req,res,next)=>{
     Users.findOne({facebook:clientId})
     .then(user=>{
         if(user){
-            const token=jwt.sign({name:user.firstname,email:user.email,id:user._id},'thisissecretkeyyouwantthechange',{
+            const token=jwt.sign({name:user.firstname,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                 expiresIn:'1h'
             })
             if(user.userType==='freelancer' || user.userType==='company'){
@@ -366,7 +366,7 @@ if(usergroup==='company'){
             if(user){
                 console.log('already exist')
                 if(user.facebook===clientId){
-                    const token=jwt.sign({name:name,email:email,id:clientId},'thisissecretkeyyouwantthechange',{
+                    const token=jwt.sign({name:name,email:email,id:clientId},'orgoisthefreelancingcompany',{
                         expiresIn:'1h'
                     })
                     res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
@@ -396,7 +396,7 @@ if(usergroup==='company'){
                             userId:user._id,
                         })
                         if(user){
-                            const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'thisissecretkeyyouwantthechange',{
+                            const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'orgoisthefreelancingcompany',{
                                 expiresIn:'1h'
                             })
                             res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
@@ -433,7 +433,7 @@ if(usergroup==='company'){
                 console.log('already exist');
 
                 if(user.facebook===clientId || user){
-                    const token=jwt.sign({name:name,email:email,id:clientId},'thisissecretkeyyouwantthechange',{
+                    const token=jwt.sign({name:name,email:email,id:clientId},'orgoisthefreelancingcompany',{
                         expiresIn:'1h'
                     })
                     res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
@@ -457,7 +457,7 @@ if(usergroup==='company'){
                     }).then(user=>{
 
                         if(user){
-                            const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'thisissecretkeyyouwantthechange',{
+                            const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'orgoisthefreelancingcompany',{
                                 expiresIn:'1h'
                             })
                             res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
@@ -497,7 +497,7 @@ else {
                 console.log('already exist');
 
                 if(user.facebook===clientId || user){
-                    const token=jwt.sign({name:name,email:email,id:clientId},'thisissecretkeyyouwantthechange',{
+                    const token=jwt.sign({name:name,email:email,id:clientId},'orgoisthefreelancingcompany',{
                         expiresIn:'1h'
                     })
                     res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId})
@@ -522,7 +522,7 @@ else {
                         ).then((employee)=>{
                             
                             if(user){
-                                const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'thisissecretkeyyouwantthechange',{
+                                const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'orgoisthefreelancingcompany',{
                                     expiresIn:'1h'
                                 })
                                 res.json({userId:user._id,token:token,flag:true,userType:user.userType,employeeId:employee._id,authenticate:true})
@@ -602,7 +602,7 @@ if(type==='company'){
                   });
                 if(user){
                     // jwt token to expire 1 hour
-                    const token=jwt.sign({name:user.name,email:user.email,id:user._id},'orgoisthefreelancingcompany',{
+                    const token=jwt.sign({name:user.name,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                         expiresIn:'1h'
                     })
                     //Send the response in json format in frontend side;
@@ -653,7 +653,7 @@ else if(type==='employee'){
                     }).then(employee=>{
                         if(user){
                             // jwt token to expire 1 hour
-                            const token=jwt.sign({name:user.name,email:user.email,id:user._id},'orgoisthefreelancingcompany',{
+                            const token=jwt.sign({name:user.name,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                                 expiresIn:'1h'
                             })
                             //Send the response in json format in frontend side;
@@ -695,7 +695,7 @@ else if(type==='employee'){
 
                         if(user){
                             // jwt token to expire 1 hour
-                            const token=jwt.sign({name:user.name,email:user.email,id:user._id},'orgoisthefreelancingcompany',{
+                            const token=jwt.sign({name:user.name,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                                 expiresIn:'1h'
                             })
                             //Send the response in json format in frontend side;
@@ -743,7 +743,7 @@ exports.login=(req,res,next)=>{
         bcrypt.compare(password,user.password,(err,result)=>{
 
           if(result){
-            const token=jwt.sign({firstname:user.firstname,email:user.email,id:user._id},'thisissecretkeyyouwantthechange',{
+            const token=jwt.sign({firstname:user.firstname,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                 expiresIn:'1h'
             })
               if(user.userType==='freelancer' || user.userType==='company'){
