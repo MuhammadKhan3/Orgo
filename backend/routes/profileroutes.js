@@ -46,13 +46,13 @@ const EmployeeValidation=[
 ]
 router.post('/free-profile/:userId',FreelancerValidation,Profile.freeinformation);
 router.post('/skills/:userId',FreelancerValidation,Profile.freeskills);
-router.post('/languages/:userId',FreelancerValidation,Profile.freelanguages);
+router.post('/company-language/:companyId',Profile.companylanguages);
 router.post('/education/:userId',FreelancerValidation,Profile.freeeducation);
 router.post('/reviews/:userId',FreelancerValidation,Profile.freeReviews);
 router.post('/portfolio/:userId',FreelancerValidation,upload.array('files'),Profile.freePortfolio);
 router.post('/company-rate/:companyId',authenticate,Profile.companyrate);
 router.post('/company-profile/:companyId',authenticate,Profile.companyprofile);  //check
-router.post('/company-picture/:companyId',authenticate,uploadProfile.single('file'),Profile.companypicture);
+router.post('/company-picture/:companyId',uploadProfile.single('file'),Profile.companypicture);
 // Close Freelancing Profile
 
 

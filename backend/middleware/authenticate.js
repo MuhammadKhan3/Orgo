@@ -27,6 +27,7 @@ module.exports=(req,res,next)=>{
         console.log(user)
         if(user){
             console.log('user')
+            console.log(req.file)
             req.user=user;
             next();
         }else{

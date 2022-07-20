@@ -11,7 +11,7 @@ const Jobs=require('./model/job');
 const Proposals=require('./model/proposal')
 const favJob=require('./model/favJobs');
 const Company=require('./model/company');
-
+const formidable = require('express-formidable');
 const port = 8000;
 
 var corsOptions = {
@@ -20,6 +20,8 @@ var corsOptions = {
 }
 
 app.use(express.json())
+app.use(express.urlencoded({ extended:true }))
+// app.use(formidable());
 app.use(cors(corsOptions))
 app.use(express.static(path.join(__dirname, 'images','profile')));
 

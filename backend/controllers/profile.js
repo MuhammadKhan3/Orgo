@@ -27,6 +27,7 @@ exports.companyprofile=(req,res,next)=>{
 
 // In this function we upload the file in user profile
 exports.companypicture=(req,res,next)=>{
+    console.log('hi')
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -34,9 +35,10 @@ exports.companypicture=(req,res,next)=>{
         err.data=errors.array();
         throw err;
     }
-
+    console.log(req.body)
     let {companyId}=req.params;
     const file=req.file;
+    console.log(file)
     CompanyProfile.updateOne({companyId:mongoose.Types.ObjectId(companyId)},{$set:{picture:file.filename}})
     .then((update)=>{
         if(update){
@@ -120,7 +122,7 @@ exports.freeskills=(req,res,next)=>{
 // close Skills
 
 // Start Languages
-exports.freelanguages=(req,res,next)=>{
+exports.companylanguages=(req,res,next)=>{
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -129,19 +131,26 @@ exports.freelanguages=(req,res,next)=>{
         throw err;
     }
 
-    const userId=req.params.userId;
-    const {languages}=req.body
-    CompanyProfile.findOne({userId:userId}).then((user)=>{
-        if(user){
-            user.languages=languages;
-            user.save();
+    const companyId=req.params.companyId;
+    const {language,level}=req.body
+    console.log('lang')
+    var languages=language.map((lang,i)=>{
+        return {language:lang,level:level[i]}
+    })
+
+    CompanyProfile.findOne({companyId:mongoose.Types.ObjectId(companyId)})
+    .then((companyprofile)=>{
+        languages=companyprofile.languages.concat(languages)
+        if(companyprofile){
+            companyprofile.languages=languages;
+            companyprofile.save();
             res.json({msg:'Languages Succefully Upadte',flag:true})
         }  else{
             CompanyProfile.create({
                 languages:languages,
-                userId:userId,
-            }).then((user)=>{
-                if(user){
+                companyId:companyId,
+            }).then((profile)=>{
+                if(profile){
                     res.json({msg:'Created Succefully ',flag:true})
                 }                
             })
