@@ -1,6 +1,7 @@
 import React from "react";
-import "../popups/popup.css";
 import Button from "../button/Button";
+import { TextareaAutosize } from "@mui/material";
+import "../popups/popup.css";
 
 function TitlePop({ handleClose }) {
   return (
@@ -23,6 +24,18 @@ function TitlePop({ handleClose }) {
             className="pop-video-input"
             type="text"
             placeholder="Ex: Senior Mobile App developer"
+          />
+          <TextareaAutosize
+            aria-label="Enter Description"
+            placeholder="Enter Description"
+            style={{
+              width: 530,
+              border: "1px solid #999",
+              borderRadius: "3px",
+              padding: "10px",
+              fontSize:"0.9em",
+            }}
+            minRows={4}
           />
         </div>
         <br />

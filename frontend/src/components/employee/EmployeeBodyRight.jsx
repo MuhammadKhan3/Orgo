@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddBoxIcon from "@mui/icons-material/AddBox";
@@ -7,38 +7,47 @@ import HourlyRatePop from "../popups/HourlyRatePop";
 import PortfolioPop from "../popups/PortfolioPop";
 
 function EmployeeBodyRight() {
-  const [pop,setPop]=useState({
-    title:false,
-    rate:false,
-    portfolio:false
-  })
+  const [portfolioData, setPortfolioData] = useState([]);
+  const [pop, setPop] = useState({
+    titlePop: false,
+    ratePop: false,
+    portfolioPop: false,
+  });
 
-  const handleTitlePop=()=>{
+  const handleTitlePop = () => {
     setPop({
-      title:!pop.title
-    })
-  }
+      titlePop: !pop.titlePop,
+    });
+  };
 
-  const handleRatePop=()=>{
+  const handleRatePop = () => {
     setPop({
-      rate:!pop.rate
-    })
-  }
+      ratePop: !pop.ratePop,
+    });
+  };
 
-  const handlePortfolioPop=()=>{
+  const handlePortfolioPop = () => {
     setPop({
-      portfolio:!pop.portfolio
-    })
-  }
+      portfolioPop: !pop.portfolioPop,
+    });
+  };
+
   return (
     <div className="body-section-right">
       <div className="bsr1">
-        <h2 style={{ width: "415px", fontSize:"1.2em", fontWeight:"bold" }}>
+        <h2 style={{ width: "415px", fontSize: "1.2em", fontWeight: "bold" }}>
           Project Management | Bootstrap, C#, CSS 3, CSS, Database, Firebase{" "}
-          <CreateTwoToneIcon onClick={handleTitlePop} style={{ marginLeft: "20px", cursor:"pointer" }} />
+          <CreateTwoToneIcon
+            onClick={handleTitlePop}
+            style={{ marginLeft: "20px", cursor: "pointer" }}
+          />
         </h2>
         <h3>
-          $10.00/hr <CreateTwoToneIcon onClick={handleRatePop} style={{ marginLeft: "20px", cursor:"pointer"}} />
+          $10.00/hr{" "}
+          <CreateTwoToneIcon
+            onClick={handleRatePop}
+            style={{ marginLeft: "20px", cursor: "pointer" }}
+          />
         </h3>
       </div>
       <div className="bsr2">
@@ -57,7 +66,7 @@ function EmployeeBodyRight() {
       </div>
 
       <div className="bsr3">
-        <h3 style={{ fontWeight: "bold", fontSize:"1.2em" }}>Work History</h3>
+        <h3 style={{ fontWeight: "bold", fontSize: "1.2em" }}>Work History</h3>
         <p>
           No work yet. Once you start getting hired on Upwork, your work with
           clients will show up here.
@@ -68,28 +77,40 @@ function EmployeeBodyRight() {
       </div>
 
       <div className="bsr4">
-        <h3 style={{ fontWeight: "bold",fontSize:"1.2em" }}>Portfolio</h3>
-        <AddCircleOutlineIcon onClick={handlePortfolioPop} style={{ marginLeft: "20px", cursor:"pointer" }} />
+        <h3 style={{ fontWeight: "bold", fontSize: "1.2em" }}>Portfolio</h3>
+        <AddCircleOutlineIcon
+          onClick={handlePortfolioPop}
+          style={{ marginLeft: "20px", cursor: "pointer" }}
+        />
       </div>
 
       <br />
       <div className="bsr5main">
         <div className="bsr5">
-          <AddBoxIcon className="portfolioIcon" />
+          {/* <AddBoxIcon className="portfolioIcon" />
           <p>
             Talent who add portfolios to their profile are more likely to win
             work. (+20%)
           </p>
-          <p className="bsr-search">Add Search</p>
+          <p className="bsr-search">Add Search</p> */}
+          <ul>
+            {
+              portfolioData && portfolioData.map((item,key)=>(
+                <li key={key}>
+                  {portfolioData.porname}
+                  {portfolioData.porimage}
+                </li>
+              ))
+            }
+          </ul>
         </div>
         <hr />
       </div>
-      {pop.title ? <TitlePop handleClose={handleTitlePop}/>:null}
-      {pop.rate ? <HourlyRatePop handleClose={handleRatePop}/>:null}
-      {pop.portfolio ? <PortfolioPop handleClose={handlePortfolioPop}/>:null}
-
-
-
+      {pop.titlePop ? <TitlePop handleClose={handleTitlePop} /> : null}
+      {pop.ratePop ? <HourlyRatePop handleClose={handleRatePop} /> : null}
+      {pop.portfolioPop ? (
+        <PortfolioPop portfolioData setPortfolioData handleClose={handlePortfolioPop} />
+      ) : null}
     </div>
   );
 }
