@@ -1,0 +1,84 @@
+/* client header */
+.sub-client-head{
+    width: 500px;
+    background-color: #FFFF;
+    border-radius: 3px;
+    box-shadow: 1px 5px 10px -7px #000000;
+}
+.client-top-header{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px;
+    color: #656565;
+}
+.client-personal-info{
+    width: 100%;
+    padding: 15px;
+}
+.client-profile-image{
+    width: 100%;
+    height: 100px;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+}
+.profile-change-input{
+    display: none;
+}
+.image-avatar{
+    width: 110px;
+    height: 100%;
+}
+.user-avatar-image{
+    border-radius: 50px;
+    width: 100%;
+    height: 100%;
+}
+.client-data{
+    width: 100%;
+}
+.client-data p{
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+/* company details*/
+.company-details{
+    margin-top: 5px;
+    width: 500px;
+    background-color: #FFFF;
+    border-radius: 3px;
+    box-shadow: 1px 5px 10px -7px #000000;
+}
+.company-logo{
+    width: 100%;
+    padding: 15px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.comp-icon{
+    font-size: 5em !important;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+.company-info{
+    width: 100%;
+    padding: 15px;
+}
+.company-contact{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #656565;
+    padding-bottom: 15px;
+}
+.company-detail{
+    padding: 15px;
+    color: #656565;
+    font-size: 0.9em;
+}

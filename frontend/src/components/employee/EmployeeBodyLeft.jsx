@@ -5,6 +5,8 @@ import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
 import VideoPopUp from "../popups/VideoPopUp.jsx";
 import HoursPopUp from "../popups/HoursPopUp";
 import LanguagePop from "../popups/LanguagePop";
+import EditLanguagePop from "../popups/EditLanguagePop";
+import EducationPop from "../popups/EducationPop";
 
 
 function EmployeeBodyLeft() {
@@ -34,6 +36,19 @@ function EmployeeBodyLeft() {
       language:!pop.language
     })
   }
+
+  const handleEditLanguagePop=()=>{
+    setPop({
+      languageEdit:!pop.languageEdit
+    })
+  }
+
+  const handleEducationPop=()=>{
+    setPop({
+      education:!pop.education
+    })
+  }
+
   
   return (
     <div className="body-section-left">
@@ -47,17 +62,17 @@ function EmployeeBodyLeft() {
           <CreateTwoToneIcon onClick={handleHourPop}/>
         </li>
         <li>
-          <h4>Lamguages</h4>
+          <h4>Languages</h4>
           <AddCircleOutlineIcon onClick={handleLanguagePop} />
-          <CreateTwoToneIcon />
+          <CreateTwoToneIcon onClick={handleEditLanguagePop} />
         </li>
         <li>
           <h4>Education</h4>
-          <AddCircleOutlineIcon />
+          <AddCircleOutlineIcon onClick={handleEducationPop} />
         </li>
         <li id="verification">
           <h4>Verification</h4>
-          <li>
+          <li className="mli">
             Military Vitiran
             <AddCircleOutlineIcon />
           </li>
@@ -67,6 +82,8 @@ function EmployeeBodyLeft() {
       {pop.video ? <VideoPopUp handleClose={handleClose} /> : null}
       {pop.hours ? <HoursPopUp handleClose={handleHourPop} /> : null}
       {pop.language? <LanguagePop handleClose={handleLanguagePop}/> : null}
+      {pop.languageEdit ? <EditLanguagePop handleClose={handleEditLanguagePop} /> : null}
+      {pop.education? <EducationPop handleClose={handleEducationPop} /> : null }
 
 
     </div>

@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const {Schema}=mongoose
 
 // User Schema
 const Users = new mongoose.Schema({
@@ -43,6 +44,10 @@ const Users = new mongoose.Schema({
         type:String,
         default:''
     },
+    companyId:{
+        type:Schema.Types.ObjectId,
+        ref:'company'
+    }
   })
   const User=mongoose.model('user',Users);
   module.exports=User;

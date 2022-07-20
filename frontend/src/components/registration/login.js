@@ -12,6 +12,8 @@ import FacebookThunk from "../redux/thunk/facebookthunk";
 import './login.css'
 import axios from "axios";
 import LoginThunk from "../redux/thunk/loginthunk";
+import FacebookLoginThunk from "../redux/thunk/facebookLoginthun";
+import GoogleLoginThunk from "../redux/thunk/googleLoginthunk";
 
 const Login = () => {
   const flag=useSelector(state=>state.userSlice.flag);
@@ -32,11 +34,7 @@ const Login = () => {
   //Google handler we send the message to database 
 
   const clickhandler=(response)=>{
-    setuserID(response.clientId);
-    setaccessToken(response.credential);
-    setModal(true);
-    setauth('google')
-    console.log('hie')
+    dispatch(GoogleLoginThunk(response.credential,navigate))
   }
   // close the google handler
   
@@ -87,28 +85,8 @@ const Login = () => {
 
   // Facebook authetication handler
   const responseFacebook = (response) => {
-    setuserID(response.userID);
-    setaccessToken(response.accessToken);
-    if(response.email){
-      setauth('facebook')
-      setModal(true);
-    }else{
-      const obj={
-        clientId:response.userID,
-      }
-      axios.post('http://localhost:8000/facebookcheck',obj)
-      .then(responses=>{
-        console.log(responses)
-        const flag=responses.data.flag;
-        if(flag===true){
-          dispatch(FacebookThunk(response.accessToken,response.userID,'',navigate));
-        }else{
-          setModal(true);
-          setpopup(true);
-        }
-      });
-      // setpopup(true);          
-    }
+    console.log(response);
+    dispatch(FacebookLoginThunk(response.userID,navigate))
    }
      //  close Facebook authetication handler
 
@@ -135,7 +113,6 @@ const Login = () => {
       console.log('usergroup',usergroup);
       dispatch(Googlethunk(accessToken,userID,usergroup,navigate));
     }
-
    }
   //  close the facebook authentication
 
@@ -149,47 +126,7 @@ const Login = () => {
   //  close the login handler
   return ( <>
       {/* Modal */}
-      <div className={`modal  z-20 ${openModal ===true ? 'modal-open':''}`}>
-      <div className="modal-box h-[400px]">
-          <div className="ml-[20px] block mt-5 ">
-              {/* Email */}
-            {popup &&<>
-              <label> Email Enter</label>
-              <br/>
-              <input type="email" placeholder="Type here" className="input input-bordered input-secondary w-full max-w-xs" onChange={formik.handleChange} onBlur={formik.handleBlur} name='email' />
-              </> }  
-             {/* Close Email */}
-              {/* User type */}
-                  <label style={{float:'left'}}>Select the user type</label>
-                  <br/>
-                  <br/>
-                  <input type='radio' name='employee' id='employee' hidden/>
-                  <div style={{border:usergroup==='employee' ?'1px solid black':'1px solid lightgray',height:'80px',width:'80px',padding:'5px',paddingTop:'30px',color: 'black',float:'left',boxShadow:usergroup==='employee' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('employee')}}>
-                  <label htmlFor='employee'>
-                      employee
-                  </label>
-                  </div>
-                  <input type='radio' name='freelancer' id='freelancer' value='' hidden/>
-                  <div style={{border:usergroup==='freelancer' ?'1px solid black':'1px solid lightgray',width:'180px',padding:'5px',paddingTop:'30px',color:'black',float:'left',height:'80px',marginLeft:'5px',  boxShadow:usergroup==='freelancer' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('freelancer')}}>
-                  <label htmlFor='employee'>
-                      organization/Freelancer
-                  </label>
-                  </div>
-                  </div>
-                  <br/>
-              {/*Close User type  */}
-              {/* Button */}
-                  <br/>
-                  <br/>
-                  <br/>
-              <div className="mt-2 block ml-[20px] space-x-3">
-                  <button className="btn btn-outline btn-secondary"  onClick={continuebtnhandler} >Continue</button>
-                  <button className="btn btn-outline btn-accent"     onClick={()=>{setpopup(false)}}>Cancel</button>
 
-              </div>
-              {/* close Button */}
-      </div>
-    </div>
     <section className="bg-slate-700 lg:w-screen     lg:h-screen   absolute top-0 left-0 sm:w-auto ">
     {/* popup take email */}
 

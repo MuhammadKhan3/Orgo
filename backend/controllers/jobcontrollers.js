@@ -3,21 +3,7 @@ const mongoose=require('mongoose')
 const fs = require('fs');
 const favJob = require("../model/favJobs");
 const {validationResult}=require('express-validator');
-const NodeGeocoder = require('node-geocoder');
 
-// Start GeoCoding
-const options = {
-    provider: 'google',
-  
-    // Optional depending on the providers
-    apiKey: 'AIzaSyAicYwQPXl18yNg2lhY23XEDRlFm4icjW4', // for Mapquest, OpenCage, Google Premier
-    formatter: null // 'gpx', 'string', ...
-  };
-
-  const geocoder = NodeGeocoder(options);
-//   const response = await geocoder.reverse({ lat: 29.9807, lon: 71.8868 });
-//   console.log(response)
-// Close GeoCoding
 exports.createJob=(req,res,next)=>{
     const errors=validationResult(req);
     if(!errors.isEmpty()){

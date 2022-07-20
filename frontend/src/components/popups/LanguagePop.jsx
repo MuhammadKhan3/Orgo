@@ -36,8 +36,8 @@ function LanguagePop({ handleClose }) {
           <hr />
         </div>
         <div style={{ display: "flex", justifyContent: "center", marginBottom:"150px"}}>
-          <MuiDropDown text="Language" languages={languages}/>
-          <MuiDropDown text="Proficiency Level" languages={languageType}/>
+          <MuiDropDown text="Language" languages={languages} ability={false}/>
+          <MuiDropDown text="Proficiency Level" languages={languageType} ability={false} />
         </div>
         <div className="button-container">
           <Button className="cancel" content="Cancel" handle={handleClose} />

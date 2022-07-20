@@ -1,19 +1,22 @@
 import React,{useEffect,useState} from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
-
+import { Cookies } from 'react-cookie';
+const cookies=new Cookies();
 const Protect = (props) => {
   const Commponent=props.Component;
-  const [cookies, setCookie] = useCookies(['userId']);
+  const userId=cookies.get('userId')
+  const token=cookies.get('token')
+
+  console.log(userId)
   const navigate=useNavigate();
     useEffect(() => {
-      if(!cookies.userId || !cookies.token){
+      if(!userId || !token){
         navigate('/login')      
       }
     },[])
     console.log(Commponent)    
   return (<>
-    {cookies.token && cookies.userId && <Commponent/>}
+    {token && userId && <Commponent/>}
     </>
   )
 }

@@ -2,7 +2,7 @@ const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
 
 const proposals=new Schema({
-    frltId:{type:Schema.Types.ObjectId,ref:'flprofile'},
+    freelancerId:{type:Schema.Types.ObjectId,ref:'freelancer'},
     jobId:{type:Schema.Types.ObjectId,req:'job'},
     rate:{
         type:Number,

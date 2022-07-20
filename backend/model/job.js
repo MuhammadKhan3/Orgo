@@ -24,10 +24,10 @@ const Job=new mongoose.Schema({
         type:Array,
     },
     scope:
-        {
+    {
             projectLevel:String,
             duration:String,
-        },
+    },
     budget:{
             max:Number,
             min:Number,

@@ -11,13 +11,33 @@ const LoginThunk = (obj,navigate) => {
         axios.post('http://localhost:8000/login',obj)
         .then(response=>{
           console.log(response)
-          if(response.data.flag){
+          if(response.data.userType==='company' || response.data.userType==='freelancer'){
+            console.log('1')
             let hour = new Date();
             hour.setTime(hour.getTime() + (60*60*1000));
             cookies.set('token',response.data.token,{expires:hour});
             cookies.set('userId',response.data.userId,{expires:hour});    
-            navigate('/');
+            cookies.set('companyId',response.data.companyId,{expires:hour});
+            cookies.set('userType',response.data.userType,{expires:hour});    
+            cookies.set('authenticate',response.data.authenticate,{expires:hour});    
+            dispatch(user_action.setchangestatus(response.data.status));
+            navigate('/')
+
+          }else if(response.data.userType==='employee'){
+            console.log('2')
+
+              let hour = new Date();
+              hour.setTime(hour.getTime() + (60*60*1000));
+              cookies.set('token',response.data.token,{expires:hour});
+              cookies.set('userId',response.data.userId,{expires:hour});    
+              cookies.set('userType',response.data.userType,{expires:hour});
+              cookies.set('employeeId',response.data.employeeId,{expires:hour});    
+              cookies.set('authenticate',response.data.authenticate,{expires:hour});    
+              dispatch(user_action.setchangestatus(response.data.status));
+              navigate('/')
           }else{
+            console.log('3')
+
             dispatch(user_action.setflag(response.data.flag));
             dispatch(user_action.setdata(response.data.data));
           }

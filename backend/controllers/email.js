@@ -140,10 +140,10 @@ exports.verifyAccount=(req,res,next)=>{
         if(user){
             user.verified=true;
             user.save();
-            res.json({status:'one',flag:true});
+            res.json({status:'one',flag:true,authenticate:true});
         }
         else{
-            res.json({status:'two',flag:false,msg:'Kindly enter the right code '});
+            res.json({status:'two',flag:false,msg:'Kindly enter the right code ',});
         }
     })
     .catch((err)=>{

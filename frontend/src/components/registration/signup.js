@@ -14,13 +14,18 @@ import * as Yup from 'yup';
 import signupThunk from "../redux/thunk/signupthunk";
 import { user_action } from "../redux/slice/userSlice";
 import VerifiedThunk from "../redux/thunk/verifiedthunk";
+import SelectCompany from "../company/searchFiled";
 
 const Signup = () => {
   const email=useSelector(state=>state.userSlice.email);
   const errors=useSelector(state=>state.userSlice.errors);
+  const coordinates=useSelector(state=>state.userSlice.coordinates);
   const [usergroup,setuserGroup]=React.useState('')
   const msg=useSelector(state=>state.userSlice.msg)
+  const company=useSelector(state=>state.userSlice.company)
+
   const dispatch=useDispatch();
+  const companyflag=useSelector(state=>state.userSlice.companyflag)
   const [popup,setpopup]=useState(false);
   const [continuebtn,setcontinuebtn]=useState(false);
   const [userID,setuserID]=useState('');
@@ -32,6 +37,7 @@ const Signup = () => {
 
   //Yup library for use formik to validation
   const validationSchema=Yup.object().shape({
+    companyName:Yup.string().min(3,'Too Short').max(300,'Too Max').required('Required email'),
     email:Yup.string().email('Invalid Email').required('Required email'),
     firstname:Yup.string().min(3,'Too Short').max(100,'Too Long').required('Required First name'),
     lastname:Yup.string().min(3,'Too Short').max(100,'Too Long').required('Required Last name'),
@@ -49,6 +55,7 @@ const Signup = () => {
       password:'',
       confirmPassword:'',
       verification:'',
+      companyName:'',
     },
     validationSchema:validationSchema
   })
@@ -91,6 +98,7 @@ const Signup = () => {
 
    const responseFacebook = (response) => {
     setuserID(response.userID);
+    console.log(response.email)
     setaccessToken(response.accessToken);
     if(response.email){
       setauth('facebook')
@@ -98,13 +106,24 @@ const Signup = () => {
     }else{
       const obj={
         clientId:response.userID,
+        email:response.email,
       }
+      console.log(obj);
       axios.post('http://localhost:8000/facebookcheck',obj)
       .then(responses=>{
         console.log(responses)
         const flag=responses.data.flag;
+        const userType=responses.data.userType;
+        const email=responses.data.email;
+
         if(flag===true){
-          dispatch(FacebookThunk(response.accessToken,response.userID,'',navigate));
+          if(userType==='company'){
+            dispatch(FacebookThunk(response.accessToken,response.userID,userType,formik.values.companyName,coordinates,email,navigate));
+          }else if(userType==='freelancer'){
+            dispatch(FacebookThunk(accessToken,userID,usergroup,company,coordinates,email,navigate));
+          }else if(userType==='employee'){
+            dispatch(FacebookThunk(accessToken,userID,usergroup,company,coordinates,email,navigate));      
+          }
         }else{
           setModal(true);
           setpopup(true);
@@ -113,33 +132,79 @@ const Signup = () => {
       // setpopup(true);          
     }
    }
-
+   useEffect(()=>{
+    // Latitude & Longitude
+    const geolocation=()=>{
+      navigator.geolocation.getCurrentPosition((position)=>{
+        const geo={lat:position.coords.latitude,lon:position.coords.longitude};
+        console.log(geo)
+        dispatch(user_action.setcoordinates(geo))
+      })
+    }
+    geolocation();
+// Close Latitude & Longitude
+   },[usergroup])
    const continuebtnhandler=()=>{
     console.log('continuehandler')
     console.log(formik.values.email)
     if(accessToken && formik.values.email==='' && authtype==='facebook'){
-      dispatch(FacebookThunk(accessToken,userID,usergroup,'',navigate));
+      if(usergroup==='company'){
+        dispatch(FacebookThunk(accessToken,userID,usergroup,formik.values.companyName,coordinates,'',navigate));
+      }else if(usergroup==='freelancer'){
+        dispatch(FacebookThunk(accessToken,userID,usergroup,company,coordinates,'',navigate));
+      }else if(usergroup==='employee'){
+        dispatch(FacebookThunk(accessToken,userID,usergroup,company,coordinates,'',navigate));      
+       }
       setModal(false);
     }else if(formik.values.email.length>0){
       setcontinuebtn(true);
       setpopup(false);
       setModal(false)
-      dispatch(FacebookThunk(accessToken,userID,usergroup,formik.values.email,navigate));
+      if(usergroup==='company'){
+        dispatch(FacebookThunk(accessToken,userID,usergroup,company,coordinates,formik.values.email,navigate));
+      } else if(usergroup==='freelancer'){
+        dispatch(FacebookThunk(accessToken,userID,usergroup,company,coordinates,formik.values.email,navigate));      
+      }else if(usergroup==='employee'){
+        dispatch(FacebookThunk(accessToken,userID,usergroup,company,coordinates,formik.values.email,navigate));      
+      }
     }else  if(authtype==='google'){
       setpopup(false);
       setModal(false)
-      dispatch(Googlethunk(accessToken,userID,usergroup,navigate));
+      if(usergroup==='company'){
+        dispatch(Googlethunk(accessToken,userID,usergroup,company,coordinates,navigate));
+      }else if(usergroup==='freelancer'){
+        dispatch(Googlethunk(accessToken,userID,usergroup,company,coordinates,navigate));
+      }else if(usergroup==='employee'){
+        dispatch(Googlethunk(accessToken,userID,usergroup,company,coordinates,navigate));
+      }
     }
    }
+  // Company Name
+  const handlecompanyName=async (e)=>{
+    const response=await  axios.post(`http://localhost:8000/check-company?company=${e.target.value}`);
+    if(response.data.flag){
+      dispatch(user_action.setCompanyflag(response.data.flag))
+    }else{
+      dispatch(user_action.setCompany(e.target.value))
+      dispatch(user_action.setCompanyflag(response.data.flag))
+    }
+  }
+  // Close Company Name
+
+
 
   const submithandler=(e)=>{
     e.preventDefault();
-    if(formik.values.firstname && formik.values.lastname && formik.values.password && formik.values.confirmPassword && formik.values.email){
+    if(formik.values.firstname && formik.values.lastname && formik.values.password && formik.values.confirmPassword && formik.values.email && !companyflag){
       dispatch(user_action.setemail(formik.values.email));
-      dispatch(signupThunk({firstname:formik.values.firstname,type:usergroup,lastname:formik.values.lastname,email:formik.values.email,password:formik.values.password,confirmPassword:formik.values.confirmPassword},navigate));
+      console.log('submit')
+      if(usergroup==='company' || usergroup==='freelancer'){
+        dispatch(signupThunk({firstname:formik.values.firstname,type:usergroup,lastname:formik.values.lastname,email:formik.values.email,password:formik.values.password,confirmPassword:formik.values.confirmPassword,companyName:company,coordinates:coordinates},navigate));
+      }else{
+        dispatch(signupThunk({firstname:formik.values.firstname,type:usergroup,lastname:formik.values.lastname,email:formik.values.email,password:formik.values.password,confirmPassword:formik.values.confirmPassword,companyName:company,coordinates:coordinates},navigate));
+      }
     }
   }
-  
   const verificationhandler=(e)=>{
     e.preventDefault();
     if(formik.values.verification){
@@ -160,32 +225,53 @@ if(changestatus==='one'){
               <label> Email Enter</label>
               <br/>
               <input type="email" placeholder="Type here" className="input input-bordered input-secondary w-full max-w-xs" onChange={formik.handleChange} onBlur={formik.handleBlur} name='email' />
-              </> }  
+              </> }
              {/* Close Email */}
               {/* User type */}
                   <label style={{float:'left'}}>Select the user type</label>
                   <br/>
                   <br/>
                   <input type='radio' name='employee' id='employee' hidden/>
-                  <div style={{border:usergroup==='employee' ?'1px solid black':'1px solid lightgray',height:'80px',width:'80px',padding:'5px',paddingTop:'30px',color: 'black',float:'left',boxShadow:usergroup==='employee' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('employee')}}>
+                  <div style={{border:usergroup==='employee' ?'1px solid black':'1px solid lightgray',height:'80px',width:'100px',padding:'5px',paddingTop:'30px',color: 'black',float:'left',boxShadow:usergroup==='employee' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('employee')}}>
                   <label htmlFor='employee'>
                       employee
                   </label>
                   </div>
                   <input type='radio' name='freelancer' id='freelancer' value='' hidden/>
-                  <div style={{border:usergroup==='freelancer' ?'1px solid black':'1px solid lightgray',width:'180px',padding:'5px',paddingTop:'30px',color:'black',float:'left',height:'80px',marginLeft:'5px',  boxShadow:usergroup==='freelancer' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('freelancer')}}>
+                  <div style={{border:usergroup==='freelancer' ?'1px solid black':'1px solid lightgray',width:'100px',padding:'5px',paddingTop:'30px',color:'black',float:'left',height:'80px',marginLeft:'5px',  boxShadow:usergroup==='freelancer' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('freelancer')}}>
                   <label htmlFor='employee'>
-                      organization/Freelancer
+                      Freelancer
                   </label>
                   </div>
+                  <input type='radio' name='company' id='company' value='' hidden/>
+                  <div style={{border:usergroup==='company' ?'1px solid black':'1px solid lightgray',width:'100px',padding:'5px',paddingTop:'30px',color:'black',float:'left',height:'80px',marginLeft:'5px',  boxShadow:usergroup==='company' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('company')}}>
+                  <label htmlFor='company'>
+                    Company
+                  </label>
                   </div>
+                  {usergroup==='company' &&<>
+                    <input type="text"  placeholder="Type here Company Name" className="mt-[45px] input input-bordered input-secondary   w-full max-w-xs"     onChange={handlecompanyName}  />
+                    {companyflag===true ?  <div className="text-red-400 ">Already Exist</div> :''}
+
+                   </>
+                  }
+                  {usergroup==='freelancer' &&
+                  <SelectCompany/>  }
+                  </div>
+                  
                   <br/>
+                  {usergroup==='company' || usergroup==='freelancer' ?
+                  ''
+                  :
+                  <>
+                  <br/>
+                  <br/>
+                  <br/>
+                  </>
+                 }
               {/*Close User type  */}
               {/* Button */}
-                  <br/>
-                  <br/>
-                  <br/>
-              <div className="mt-2 block ml-[20px] space-x-3">
+              <div className=" block ml-[20px] space-x-3">
                   <button className="btn btn-outline btn-secondary"  onClick={continuebtnhandler} >Continue</button>
                   <button className="btn btn-outline btn-accent"     onClick={()=>{setpopup(false)}}>Cancel</button>
 
@@ -270,30 +356,61 @@ if(changestatus==='one'){
               {formik.errors.password && formik.touched.password ? <div className="text-red-400  ml-[444px]">{formik.errors.password}</div>:''}
               <input
                 type={showpassword}
-                className="bg-slate-200 opacity-50 ml-[140px] mt-5 w-[260px] h-10 outline-cyan-500 inline-block"
-                placeholder="confirmPassword"
+                className="bg-slate-200 opacity-50 block ml-[144px] mt-10 w-[260px] h-10 outline-cyan-500 float-left"
+                placeholder="Confirm Password"
                 name="confirmPassword"
+                value={formik.values.confirmPassword}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.confirmPassword}
               />
-              {formik.errors.confirmPassword && formik.touched.confirmPassword ? <div className="text-red-400 ml-[140px] mt-[5px]">{formik.errors.confirmPassword}</div>:''}
-                      {/* user group switch */}
+              {formik.errors.confirmPassword && formik.touched.confirmPassword ? <div className="text-red-400 relative left-[140px] h-[1px] w-[160px]">{formik.errors.confirmPassword}</div>:''}
+
+              {/* Company Dropdown */}
+              {usergroup==='freelancer' &&              
+                <SelectCompany style={{width:'260px',height:'30px',marginLeft:'40px'}} height={{height:'40px'}}/>
+              }
+              {/* Close Company Dropdown */}
+
+              {usergroup==='company' &&
+              <>
+              <input
+                type='text'
+                placeholder="Company Name"
+                className="bg-slate-200 opacity-50 ml-[40px] inline mt-[40px]   w-[260px] h-10 outline-cyan-500"
+                onChange={handlecompanyName}
+                />
+                {companyflag===true ?
+                <div className="text-red-400 ml-[440px]">Already Exist</div>
+                :''
+              }
+              {/* {formik.errors.companyName && formik.touched.companyName ? <div className="text-red-400  ml-[444px]">{formik.errors.companyName}</div>:''} */}
+              </>}
+          {/* user group switch */}
+                <br/>
+                <br/>
+
+                <br/>
+                <br/>
+
           <div className="ml-[140px] block mt-5 ">
-            <label style={{float:'left'}}>Select the user type</label>
-            <br/>
-            <input type='radio' name='employee' id='employee' hidden/>
-            <div style={{border:usergroup==='employee' ?'1px solid black':'1px solid lightgray',height:'80px',width:'80px',padding:'5px',paddingTop:'30px',color: 'black',float:'left',boxShadow:usergroup==='employee' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('employee')}}>
-            <label htmlFor='employee'>
-                employee
-            </label>
-            </div>
-            <input type='radio' name='freelancer' id='freelancer' value='' hidden/>
-            <div style={{border:usergroup==='freelancer' ?'1px solid black':'1px solid lightgray',width:'180px',padding:'5px',paddingTop:'30px',color:'black',float:'left',height:'80px',marginLeft:'5px',  boxShadow:usergroup==='freelancer' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('freelancer')}}>
-            <label htmlFor='employee'>
-                organization/Freelancer
-            </label>
-            </div>
+          <input type='radio' name='employee' id='employee' hidden/>
+                  <div style={{border:usergroup==='employee' ?'1px solid black':'1px solid lightgray',height:'80px',width:'100px',padding:'5px',paddingTop:'30px',color: 'black',float:'left',boxShadow:usergroup==='employee' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('employee')}}>
+                  <label htmlFor='employee'>
+                      employee
+                  </label>
+                  </div>
+                  <input type='radio' name='freelancer' id='freelancer' value='' hidden/>
+                  <div style={{border:usergroup==='freelancer' ?'1px solid black':'1px solid lightgray',width:'100px',padding:'5px',paddingTop:'30px',color:'black',float:'left',height:'80px',marginLeft:'5px',  boxShadow:usergroup==='freelancer' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('freelancer')}}>
+                  <label htmlFor='employee'>
+                      Freelancer
+                  </label>
+                  </div>
+                  <input type='radio' name='company' id='company' value='' hidden/>
+                  <div style={{border:usergroup==='company' ?'1px solid black':'1px solid lightgray',width:'100px',padding:'5px',paddingTop:'30px',color:'black',float:'left',height:'80px',marginLeft:'5px',  boxShadow:usergroup==='company' ? ' 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19':''}} onClick={()=>{setuserGroup('company')}}>
+                  <label htmlFor='company'>
+                    Company
+                  </label>
+              </div>
          </div>
          <br/>
 

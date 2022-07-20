@@ -1,4 +1,4 @@
-const Freelancer = require("../model/freelancer");
+const CompanyProfile= require("../model/companyProfile");
 const User = require("../model/users")
 const mongoose=require('mongoose')
 const { validationResult } = require('express-validator');
@@ -16,13 +16,14 @@ exports.freegetprofile=(req,res,next)=>{
         throw err;
     }
 
-    let id=req.params.userId;
-    Freelancer.findOne({id:mongoose.Types.ObjectId(id)}).populate('id').then((user)=>{
+    let userId=req.params.userId;
+    CompanyProfile.findOne({userId:mongoose.Types.ObjectId(userId)}).populate('id').then((user)=>{
         res.json(user);
     })
 }
 
 
+// In this function we upload the file in user profile
 exports.freeuploadProfile=(req,res,next)=>{
     const errors=validationResult(req);
     if(!errors.isEmpty()){
@@ -44,6 +45,7 @@ exports.freeuploadProfile=(req,res,next)=>{
         }
     })
 }
+// Close User Profile
 
 // Freelancing title and description 
 exports.freeinformation=(req,res,next)=>{    
@@ -56,19 +58,19 @@ exports.freeinformation=(req,res,next)=>{
     }
 
     const {title,description}=req.body
-    const id=req.params.userId;
+    const userId=req.params.userId;
 
-    Freelancer.findOne({id:id}).then((user)=>{
+    CompanyProfile.findOne({userId:mongoose.Types.ObjectId(userId)}).then((user)=>{
         if(user){
             user.title=title;
             user.description=description;
             user.save();
             res.json({flag:true,msg:' Succefully Updated'})
         }else{
-            Freelancer.create({
+            CompanyProfile.create({
                 title:title,
                 description:description,
-                id:id,
+                userId:userId,
             }).then((employee)=>{
                 if(employee){
                     res.json({flag:true,msg:'Message Succefully insert'})
@@ -95,17 +97,17 @@ exports.freeskills=(req,res,next)=>{
         throw err;
     }
     
-    const id=req.params.userId;
+    const userId=req.params.userId;
     const {skills}=req.body
-    Freelancer.findOne({id:id}).then((user)=>{
+    CompanyProfile.findOne({id:id}).then((user)=>{
         if(user){
             user.skills=skills;
             user.save();
             res.json({msg:'Siklls Succefully Upadte',flag:true})
         }  else{
-            Freelancer.create({
+            CompanyProfile.create({
                 skills:skills,
-                id:id,
+                userId:userId,
             }).then((user)=>{
                 if(user){
                     res.json({msg:'Created Succefully ',flag:true})
@@ -126,17 +128,17 @@ exports.freelanguages=(req,res,next)=>{
         throw err;
     }
 
-    const id=req.params.userId;
+    const userId=req.params.userId;
     const {languages}=req.body
-    Freelancer.findOne({id:id}).then((user)=>{
+    CompanyProfile.findOne({userId:userId}).then((user)=>{
         if(user){
             user.languages=languages;
             user.save();
             res.json({msg:'Languages Succefully Upadte',flag:true})
         }  else{
-            Freelancer.create({
+            CompanyProfile.create({
                 languages:languages,
-                id:id,
+                userId:userId,
             }).then((user)=>{
                 if(user){
                     res.json({msg:'Created Succefully ',flag:true})
@@ -158,19 +160,19 @@ exports.freeeducation=(req,res,next)=>{
         throw err;
     }
 
-    const id=req.params.userId;
+    const userId=req.params.userId;
     const {education}=req.body;
 
-    Freelancer.findOne({id:id}).then((user)=>{
+    CompanyProfile.findOne({userId:mongoose.Types.ObjectId(userId)}).then((user)=>{
         
         if(user){
             user.education=education;
             user.save();
             res.json({msg:'education Succefully Upadte',flag:true})
         }else{
-            Freelancer.create({
+            CompanyProfile.create({
                 education:education,
-                id:id,
+                userId:userId,
             }).then((user)=>{
                 if(user){
                     res.json({msg:'Created Succefully',flag:true})
@@ -193,22 +195,22 @@ exports.freeReviews=(req,res,next)=>{
         throw err;
     }
 
-    const id=req.params.userId;
+    const userId=req.params.userId;
     const {reviews}=req.body;
     const review=reviews.filter((value)=>{
-        return String(value.id)!==String(id);
+        return String(value.userId)!==String(userId);
     })
     
     // console.log(reviews);
-    Freelancer.findOne({id:id}).then((user)=>{
+    CompanyProfile.findOne({userId:mongoose.Types.ObjectId(userId)}).then((user)=>{
         if(user){
             user.reviews=reviews;
             user.save();
             res.json({msg:'Reviews Succefully Upadte',flag:true})
         }  else{
-            Freelancer.create({
+            CompanyProfile.create({
                 reviews:reviews,
-                id:id,
+                userId:userId,
             }).then((user)=>{
                 if(user){
                     res.json({msg:'Reviews Created Succefully ',flag:true})
@@ -236,7 +238,7 @@ exports.freePortfolio=async (req,res,next)=>{
         return file.filename;
     })
 
-    Freelancer.findOne({id:id}).then((user)=>{
+    CompanyProfile.findOne({id:id}).then((user)=>{
         if(user){
             console.log('update')
             console.log(user.portfolio.concat({title:title,images:images}))
@@ -245,7 +247,7 @@ exports.freePortfolio=async (req,res,next)=>{
             res.json({msg:'Updated Succefully Portfolio',flag:true});
 
         }else{
-            Freelancer.create({
+            CompanyProfile.create({
                 portfolio:[{title:title,images:images}],
                 id:id,
             }).then((profile)=>{
@@ -274,7 +276,7 @@ exports.freerate=(req,res,next)=>{
     const {price,time}=req.body;
     const id=req.params.userId;
 
-    Freelancer.findOne({id:id}).then((user)=>{
+    CompanyProfile.findOne({id:id}).then((user)=>{
         if(user){
             
             console.log('update')
@@ -284,7 +286,7 @@ exports.freerate=(req,res,next)=>{
 
         }else{
 
-            Freelancer.create({
+            CompanyProfile.create({
                 rate:{price:price,time:time},
                 id:id,
             }).then((profile)=>{        

@@ -15,6 +15,12 @@ const employee=new mongoose.Schema({
     phone:{
         type:String,
     },
+    country:{
+        type:String,
+    },
+    timezone:{
+        type:String,
+    },
     picture:{
         type:String,
     },

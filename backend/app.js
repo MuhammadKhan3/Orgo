@@ -5,11 +5,12 @@ const db=require('./untils/db');
 const  routes  = require('./routes/routes');
 const path=require('path')
 const User=require('./model/users')
-const Freelancer=require('./model/freelancer');
+const CompanyProfile=require('./model/companyProfile');
 const Employee=require('./model/employee');
 const Jobs=require('./model/job');
 const Proposals=require('./model/proposal')
 const favJob=require('./model/favJobs');
+const Company=require('./model/company');
 
 const port = 8000;
 

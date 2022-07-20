@@ -4,24 +4,71 @@ const router=express.Router();
 const regController=require('../controllers/registration');
 const email=require('../controllers/email');
 const Users = require('../model/users');
-const  Freelancer= require('../model/freelancer');
+const mongoose=require('mongoose')
+const  CompanyProfile= require('../model/companyProfile');
+const Employee=require('../model/employee');
 const profileRoutes=require('./profileroutes');
 const proposalRoutes=require('./proposalroutes');
-const jobRoutes=require('./jobroutes')
+const jobRoutes=require('./jobroutes');
+const Company = require('../model/company');
+const googleemployeeId = require('../middleware/googleemployeeId');
 // router page
-router.post('/google',regController.googlelogin);
-router.post('/facebook',regController.facebooklogin);
+
+router.post('/google-logins',regController.Googlelogin);
+router.post('/google',[
+    body('companyName')
+    .custom((companyName,{req})=>{
+        return Company.findOne({companyName:companyName})
+        .then((company)=>{
+            if(req.body.usergroup==='freelancer' && company){
+                req.companyId=company._id
+                return true;
+            }else if(req.body.usergroup==='company' && company){
+                return Promise.reject('Company Already Exist')
+            }else if(req.body.usergroup){
+                return true;
+            }
+        })
+    }),
+
+],regController.geocoding,regController.googleSignup);
+
+
+router.post('/facebook',regController.geocoding,regController.facebookSignup);
+router.post('/facebook-login',regController.facebooklogin);
 router.post('/facebookcheck',regController.facebooklogincheck);
+
+
 
 router.post('/signup',[
     body('firstname').notEmpty().isLength({min:3,max:150}),
     body('lastname').notEmpty().isLength({min:3,max:150}),
+    body('companyName').custom((companyName,{req})=>{        
+       return  Company.findOne({companyName:companyName})
+        .then((company)=>{
+            // req.companyId=company._id;
+            if(company && req.body.type==='company'){
+                return Promise.reject('Company Name Already exist')
+            } else if(!company && req.body.type==='freelancer'){
+                return Promise.reject('Company not  exist')
+            }
+            else{
+                if(company){
+                    req.companyId=company._id
+                }
+                return true;
+            }
+          
+        })
+    }),
     body('email').notEmpty().isEmail()
     .custom(value=>{
         return Users.findOne({email:value})
         .then(user=>{
             if(user){
                 return Promise.reject('Email Already exist')
+            }else{
+                return true
             }
         })
     })
@@ -35,7 +82,7 @@ router.post('/signup',[
             return true
         }
     })
-],email.sendemail,regController.signup);
+],email.sendemail,regController.geocoding,regController.signup);
 router.post('/login',
 [
     body('email').notEmpty().isEmail().normalizeEmail(),
@@ -56,6 +103,8 @@ router.post('/password-change',[body('password').notEmpty().custom((value,{req})
 
 })],email.passwordhandler);
 
+router.get('/get-company',regController.getCompany);
+router.post('/check-company',regController.SearchCompany);
 // Profile routes
 router.use(profileRoutes);
 router.use(jobRoutes);

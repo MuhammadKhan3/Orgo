@@ -17,7 +17,7 @@ function HoursPopUp({ handleClose }) {
               you{" "}
             </p>
             <p style={{ marginTop: "20px" }}>I can currently work</p>
-            <div style={{ marginTop: "-10px" }}>
+            <div>
               <input
                 type="radio"
                 id="more_30"
