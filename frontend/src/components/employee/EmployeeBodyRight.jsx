@@ -5,11 +5,11 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import TitlePop from "../popups/TitlePop";
 import HourlyRatePop from "../popups/HourlyRatePop";
 import PortfolioPop from "../popups/PortfolioPop";
-import {useDispatch} from 'react-redux'
+import {useDispatch,useSelector} from 'react-redux'
 
 function EmployeeBodyRight() {
-  const dispatch=useDispatch();
-  
+  const rate=useSelector(state=>state.companySlice.rate);
+
   const [pop,setPop]=useState({
     title:false,
     rate:false,
@@ -33,9 +33,7 @@ function EmployeeBodyRight() {
       portfolio:!pop.portfolio
     })
   }
-  useEffect(()=>{
 
-  })
   return (
     <div className="body-section-right">
       <div className="bsr1">
@@ -44,7 +42,7 @@ function EmployeeBodyRight() {
           <CreateTwoToneIcon onClick={handleTitlePop} style={{ marginLeft: "20px", cursor:"pointer" }} />
         </h2>
         <h3>
-          $10.00/hr <CreateTwoToneIcon onClick={handleRatePop} style={{ marginLeft: "20px", cursor:"pointer"}} />
+          ${rate}.00/hr <CreateTwoToneIcon onClick={handleRatePop} style={{ marginLeft: "20px", cursor:"pointer"}} />
         </h3>
       </div>
       <div className="bsr2">
@@ -93,8 +91,6 @@ function EmployeeBodyRight() {
       {pop.title ? <TitlePop handleClose={handleTitlePop}/>:null}
       {pop.rate ? <HourlyRatePop handleClose={handleRatePop}/>:null}
       {pop.portfolio ? <PortfolioPop handleClose={handlePortfolioPop}/>:null}
-
-
 
     </div>
   );

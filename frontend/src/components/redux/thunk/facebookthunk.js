@@ -1,5 +1,7 @@
 import axios from 'axios'
 import {Cookies} from 'react-cookie'
+import { user_action } from '../slice/userSlice';
+
 const cookies=new Cookies();
 const FacebookThunk = (token,clientId,usergroup,company,coordinates,email,navigate) => {
   return async(dispatch)=>{

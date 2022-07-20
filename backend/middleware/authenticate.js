@@ -22,7 +22,8 @@ module.exports=(req,res,next)=>{
     }
  
     const {userId}=decodetoken;
-    User.findOne({_id:mongoose.Types.ObjectId(userId)}).then((user)=>{
+    User.findOne({_id:mongoose.Types.ObjectId(userId)})
+    .then((user)=>{
         console.log(user)
         if(user){
             console.log('user')

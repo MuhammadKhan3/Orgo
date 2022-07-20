@@ -16,6 +16,8 @@ const FetchCompany = () => {
         dispatch(company_action.settimezone(response.data.companyId.timezone));
         dispatch(company_action.setcountry(response.data.companyId.country));
         dispatch(company_action.setpicture(response.data.picture));
+        dispatch(company_action.setrate(response.data.rate));
+
     }
     FetchProfile();
   }
