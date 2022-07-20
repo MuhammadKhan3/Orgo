@@ -7,7 +7,7 @@ const Employee = require("../model/employee");
 
 
 
-exports.freegetprofile=(req,res,next)=>{
+exports.companyprofile=(req,res,next)=>{
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -16,15 +16,17 @@ exports.freegetprofile=(req,res,next)=>{
         throw err;
     }
 
-    let userId=req.params.userId;
-    CompanyProfile.findOne({userId:mongoose.Types.ObjectId(userId)}).populate('id').then((user)=>{
+    let companyId=req.params.companyId;
+    CompanyProfile.findOne({companyId:mongoose.Types.ObjectId(companyId)})
+    .populate('companyId')
+    .then((user)=>{
         res.json(user);
     })
 }
 
 
 // In this function we upload the file in user profile
-exports.freeuploadProfile=(req,res,next)=>{
+exports.companypicture=(req,res,next)=>{
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -33,18 +35,17 @@ exports.freeuploadProfile=(req,res,next)=>{
         throw err;
     }
 
-    let {userId}=req.params;
+    let {companyId}=req.params;
     const file=req.file;
-    console.log(userId)
-    console.log(file);
-
-    User.updateOne({_id:mongoose.Types.ObjectId(userId)},{$set:{picture:file.filename}})
+    CompanyProfile.updateOne({companyId:mongoose.Types.ObjectId(companyId)},{$set:{picture:file.filename}})
     .then((update)=>{
         if(update){
             res.json({msg:'Upload  Succefully',flag:true})
         }
     })
 }
+
+
 // Close User Profile
 
 // Freelancing title and description 
@@ -263,7 +264,8 @@ exports.freePortfolio=async (req,res,next)=>{
 
 
 // Rate
-exports.freerate=(req,res,next)=>{
+exports.companyrate=(req,res,next)=>{
+    console.log('rate')
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -273,22 +275,22 @@ exports.freerate=(req,res,next)=>{
     }
 
 
-    const {price,time}=req.body;
-    const id=req.params.userId;
+    const {rate}=req.body;
+    const {companyId}=req.params;
+    console.log(rate)
+    CompanyProfile.findOne({companyId:mongoose.Types.ObjectId(companyId)})
+    .then((companyprofile)=>{
+        if(companyprofile){ 
 
-    CompanyProfile.findOne({id:id}).then((user)=>{
-        if(user){
-            
-            console.log('update')
-            user.rate={price:price,time:time},
-            user.save();
+            companyprofile.rate=rate,
+            companyprofile.save();
             res.json({msg:'Updated Succefully Portfolio',flag:true});
 
         }else{
 
             CompanyProfile.create({
-                rate:{price:price,time:time},
-                id:id,
+                rate:rate,
+                companyId:companyId,
             }).then((profile)=>{        
                 if(profile){
                     res.json({msg:'Created Succefully Portfolio',flag:true})

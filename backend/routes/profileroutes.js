@@ -6,17 +6,17 @@ const uploadProfile=require('../middleware/uploadprofile');
 const { body } = require('express-validator');
 const { param } = require('express-validator');
 const User = require('../model/users');
+const authenticate = require('../middleware/authenticate');
 const router=express.Router();
 // Freelancing Profile
 
 const FreelancerValidation=[
-    param('userId').custom((value)=>{
+    param('companyId').custom((value)=>{
         console.log('client',value)
         
         return User
         .findOne({_id:mongoose.Types.ObjectId(value)})
         .then((user)=>{
-            console.log(user.userType==='freelancer')
             if(user.userType==='freelancer'){
                 return true;
             }else{
@@ -50,9 +50,9 @@ router.post('/languages/:userId',FreelancerValidation,Profile.freelanguages);
 router.post('/education/:userId',FreelancerValidation,Profile.freeeducation);
 router.post('/reviews/:userId',FreelancerValidation,Profile.freeReviews);
 router.post('/portfolio/:userId',FreelancerValidation,upload.array('files'),Profile.freePortfolio);
-router.post('/rate/:userId',FreelancerValidation,Profile.freerate);
-router.post('/getprofile/:userId',FreelancerValidation,Profile.freegetprofile);
-router.post('/uploadprofile/:userId',FreelancerValidation,uploadProfile.single('file'),Profile.freeuploadProfile);
+router.post('/company-rate/:companyId',authenticate,Profile.companyrate);
+router.post('/company-profile/:companyId',authenticate,Profile.companyprofile);  //check
+router.post('/company-picture/:companyId',authenticate,uploadProfile.single('file'),Profile.companypicture);
 // Close Freelancing Profile
 
 

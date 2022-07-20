@@ -1,9 +1,15 @@
-import React from "react";
+import React,{useEffect} from "react";
 import EmployeeBody from "../components/employee/EmployeeBody";
 import EmployeeHeader from "../components/employee/EmployeeHeader";
+import {useDispatch} from 'react-redux'
 import "../pages/employee.css";
+import FetchCompany from "../components/redux/thunk/FetchCompany";
 
 function Employee() {
+  const dispatch=useDispatch();
+  useEffect(()=>{
+    dispatch(FetchCompany());
+  })
   return (
   <div>
     <div className="main-emp">

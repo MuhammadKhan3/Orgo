@@ -21,7 +21,8 @@ var corsOptions = {
 
 app.use(express.json())
 app.use(cors(corsOptions))
-app.use(express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'images','profile')));
+
 app.use('/',routes)
 
 

@@ -1,12 +1,15 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import TitlePop from "../popups/TitlePop";
 import HourlyRatePop from "../popups/HourlyRatePop";
 import PortfolioPop from "../popups/PortfolioPop";
+import {useDispatch} from 'react-redux'
 
 function EmployeeBodyRight() {
+  const dispatch=useDispatch();
+  
   const [pop,setPop]=useState({
     title:false,
     rate:false,
@@ -30,6 +33,9 @@ function EmployeeBodyRight() {
       portfolio:!pop.portfolio
     })
   }
+  useEffect(()=>{
+
+  })
   return (
     <div className="body-section-right">
       <div className="bsr1">
