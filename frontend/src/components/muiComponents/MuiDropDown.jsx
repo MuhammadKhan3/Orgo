@@ -21,7 +21,11 @@ const MenuProps = {
   },
 };
 
-export default function MultipleSelectPlaceholder({languages,text}) {
+export default function MultipleSelectPlaceholder({
+  languages,
+  text,
+  ability,
+}) {
   const theme = useTheme();
   const [languageName, setLanguageName] = React.useState([]);
   function getStyles(language, languageName, theme) {
@@ -43,6 +47,7 @@ export default function MultipleSelectPlaceholder({languages,text}) {
     <div>
       <FormControl sx={{ m: 1, width: 350, mt: 3 }}>
         <Select
+          disabled={ability}
           multiple
           displayEmpty
           value={languageName}
@@ -60,15 +65,16 @@ export default function MultipleSelectPlaceholder({languages,text}) {
           <MenuItem disabled value="">
             {text}
           </MenuItem>
-          {languages && languages.map((language) => (
-            <MenuItem
-              key={language}
-              value={language}
-              style={getStyles(language, languageName, theme)}
-            >
-              {language}
-            </MenuItem>
-          ))}
+          {languages &&
+            languages.map((language) => (
+              <MenuItem
+                key={language}
+                value={language}
+                style={getStyles(language, languageName, theme)}
+              >
+                {language}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
     </div>
