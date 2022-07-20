@@ -8,7 +8,6 @@ import LanguagePop from "../popups/LanguagePop";
 import EditLanguagePop from "../popups/EditLanguagePop";
 import EducationPop from "../popups/EducationPop";
 
-
 function EmployeeBodyLeft() {
   const [pop,setPop]=useState({
     video:false,
