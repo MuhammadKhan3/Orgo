@@ -77,10 +77,10 @@ function EmployeeBodyLeft() {
   return (
     <div className="body-section-left">
       <ul>
-        <li>
+        {/* <li>
           <h4>Video Introduction</h4>
           <AddCircleOutlineIcon onClick={handleClose} style={{cursor:"pointer"}} />
-        </li>
+        </li> */}
         <li>
           <h4>Hours per week</h4>
           <CreateTwoToneIcon onClick={handleHourPop} style={{cursor:"pointer"}}/>
@@ -90,8 +90,8 @@ function EmployeeBodyLeft() {
         <li>
           <h4>Languages</h4>
 
-          <AddCircleOutlineIcon onClick={handleLanguagePop} />
-          <CreateTwoToneIcon onClick={handleEditLanguagePop} />
+          <AddCircleOutlineIcon onClick={handleLanguagePop} style={{cursor:"pointer"}} />
+          <CreateTwoToneIcon onClick={handleEditLanguagePop}  style={{cursor:"pointer"}}/>
 
         </li>
         {languages.map((language)=>{
@@ -104,19 +104,10 @@ function EmployeeBodyLeft() {
 
           <li>
             <h4>Education</h4>
-            <AddCircleOutlineIcon onClick={handleEducationPop} />
+            <AddCircleOutlineIcon onClick={handleEducationPop} style={{cursor:"pointer"}} />
           </li>
           <li>{degree}, {school}</li>
           <li>{degreelevel}</li>
-        <li id="verification">
-          <h4>Verification</h4>
-          <li className="mli">
-            Military Vitiran
-            <AddCircleOutlineIcon />
-          </li>
-          <AddCircleOutlineIcon onClick={handleLanguagePop} style={{cursor:"pointer"}} />
-          <CreateTwoToneIcon onClick={handleEditLanguagePop} style={{cursor:"pointer"}} />
-        </li>
         <li>
           <h4>Education</h4>
           <AddCircleOutlineIcon onClick={handleEducationPop} style={{cursor:"pointer"}} />
