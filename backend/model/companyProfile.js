@@ -6,19 +6,30 @@ const Schema=mongoose.Schema;
 const companyProfile= new mongoose.Schema({
     title:{
         type:String,
+        default:'Dumy title'
+
     },
     description:{
         type:String,
+        default:'Dumy description'
+
     },
     picture:{
         type:String,
+        default:''
+
     },
     skills:{
         type:Array,
+        default:''
     },
     languages:{
         type:Array,
-        default:'[]'
+        default:[]
+    },
+    hourworking:{
+        type:String,
+        default:''
     },
     portfolio:{
         type:[{
@@ -29,9 +40,25 @@ const companyProfile= new mongoose.Schema({
     },
     rate:{
         type:Number,
+        default:0,
     },
     education:{
-        type:Array,
+            school:{
+                type:String,
+                default:''
+            },
+            degreelevel:{
+                type:String,
+                default:''
+            },
+            degree:{
+                type:String,
+                default:''
+            },
+            description:{
+                type:String,
+                default:''
+            },
     },
     // reviews:{
     //     type:[{

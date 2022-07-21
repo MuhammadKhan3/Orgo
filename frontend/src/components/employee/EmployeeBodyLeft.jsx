@@ -7,8 +7,17 @@ import HoursPopUp from "../popups/HoursPopUp";
 import LanguagePop from "../popups/LanguagePop";
 import EditLanguagePop from "../popups/EditLanguagePop";
 import EducationPop from "../popups/EducationPop";
+import {useSelector} from 'react-redux' 
 
 function EmployeeBodyLeft() {
+  const languages=useSelector(state=>state.companySlice.languages);
+  const school=useSelector(state=>state.companySlice.school);
+  const description=useSelector(state=>state.companySlice.sdescription);
+  const degree=useSelector(state=>state.companySlice.degree);
+  const degreelevel=useSelector(state=>state.companySlice.degreelevel);
+  const hourworking=useSelector(state=>state.companySlice.hourworking);
+  
+  
   const [pop,setPop]=useState({
     video:false,
     hours:false,
@@ -60,15 +69,29 @@ function EmployeeBodyLeft() {
           <h4>Hours per week</h4>
           <CreateTwoToneIcon onClick={handleHourPop}/>
         </li>
+        {hourworking &&
+        <li>{hourworking}</li>}
         <li>
           <h4>Languages</h4>
+          
           <AddCircleOutlineIcon onClick={handleLanguagePop} />
           <CreateTwoToneIcon onClick={handleEditLanguagePop} />
+
         </li>
-        <li>
-          <h4>Education</h4>
-          <AddCircleOutlineIcon onClick={handleEducationPop} />
-        </li>
+        {languages.map((language)=>{
+            return( 
+            <>
+              <li>{language.language} {language.level}</li>
+            </>)
+
+          })}
+
+          <li>
+            <h4>Education</h4>
+            <AddCircleOutlineIcon onClick={handleEducationPop} />
+          </li>
+          <li>{degree}, {school}</li>
+          <li>{degreelevel}</li>
         <li id="verification">
           <h4>Verification</h4>
           <li className="mli">

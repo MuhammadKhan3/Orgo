@@ -35,12 +35,7 @@ function EmployeeHeader() {
     const companyId=cookies.get('companyId');
     const token=cookies.get('token');
 
-    axios.post(`http://localhost:8000/company-picture/${companyId}`,{
-      formdata,
-      headers:{
-        authorization:"Bearer "+token,
-      }
-    })
+    axios.post(`http://localhost:8000/company-picture/${companyId}`,formdata)
     .then((response)=>{
       console.log(response)
     })

@@ -158,33 +158,62 @@ exports.companylanguages=(req,res,next)=>{
     })
 }
 // close Languages
-
-
-// Education
-exports.freeeducation=(req,res,next)=>{
+exports.workinghours=(req,res,next)=>{
     const errors=validationResult(req);
     if(!errors.isEmpty()){
+        console.log('error',errors.array())
+        const err=new Error('Information Profile')
+        err.statusCode=500;
+        err.data=errors.array();
+        throw err;
+    }
+    console.log(req)
+    const {companyId}=req.params;
+    const {hourworking}=req.body;
+    console.log(companyId,hourworking);
+    CompanyProfile
+    .updateOne({companyId:mongoose.Types.ObjectId(companyId)},{$set:{hourworking:hourworking}},(err,docs)=>{
+        if (err){
+            res.status(200).json({msg:err,flag:false})
+
+        }
+        else{
+            console.log(" : ", docs);
+            res.status(200).json({msg:"Updated working hour",flag:true,})
+        }   
+    })
+}
+
+// Education
+exports.companyeducation=(req,res,next)=>{
+    console.log(req)
+    const errors=validationResult(req);
+    if(!errors.isEmpty()){
+        console.log('error',errors.array())
         const err=new Error('Information Profile')
         err.statusCode=500;
         err.data=errors.array();
         throw err;
     }
 
-    const userId=req.params.userId;
-    const {education}=req.body;
-
-    CompanyProfile.findOne({userId:mongoose.Types.ObjectId(userId)}).then((user)=>{
-        
-        if(user){
-            user.education=education;
-            user.save();
+    const {companyId}=req.params;
+    console.log(companyId)
+    const {school,degree,degreelevel,description}=req.body;
+    console.log(school,degree,degreelevel,description)
+    CompanyProfile
+    .findOne({companyId:mongoose.Types.ObjectId(companyId)})
+    .then((companyprofile)=>{
+        console.log('company')
+        if(companyprofile){
+            companyprofile.education={school:school,degree:degree,degreelevel:degreelevel,description:description};
+            companyprofile.save();
             res.json({msg:'education Succefully Upadte',flag:true})
         }else{
             CompanyProfile.create({
-                education:education,
-                userId:userId,
-            }).then((user)=>{
-                if(user){
+                education:{school:school,degree:degree,degreelevel:degreelevel,description:description},
+                companyId:companyId
+            }).then((profile)=>{
+                if(profile){
                     res.json({msg:'Created Succefully',flag:true})
                 }                
             })
