@@ -2,8 +2,25 @@ import React from "react";
 import Button from "../button/Button";
 import { TextareaAutosize } from "@mui/material";
 import "../popups/popup.css";
+import {useDispatch,useSelector} from 'react-redux';
+import {company_action} from '../redux/slice/companySlice';
+import axios from 'axios'
 
 function TitlePop({ handleClose }) {
+  const dispatch=useDispatch();
+  const title=useSelector(state=>state.companySlice.title);
+  const description=useSelector(state=>state.companySlice.description);
+
+  const titlehandler=(e)=>{
+    dispatch(company_action.settitle(e.target.value))
+  }
+  const descriptionhandler=(e)=>{
+    dispatch(company_action.setdescription(e.target.value))
+
+  }
+  const savehandler=()=>{
+
+  }
   return (
     <div className="main-box">
       <div className="popup-box">
@@ -23,6 +40,8 @@ function TitlePop({ handleClose }) {
             style={{ margin: "10px 0 10px 0" }}
             className="pop-video-input"
             type="text"
+            value={title}
+            onChange={titlehandler}
             placeholder="Ex: Senior Mobile App developer"
           />
           <TextareaAutosize
@@ -35,6 +54,8 @@ function TitlePop({ handleClose }) {
               padding: "10px",
               fontSize:"0.9em",
             }}
+            value={description}
+            onChange={descriptionhandler}
             minRows={4}
           />
         </div>
@@ -43,7 +64,7 @@ function TitlePop({ handleClose }) {
 
         <div className="button-container">
           <Button className="cancel" content="Cancel" handle={handleClose} />
-          <Button className="save" content="Save" />
+          <Button className="save" content="Save" handle={savehandler} />
         </div>
       </div>
     </div>

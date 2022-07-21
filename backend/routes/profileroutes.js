@@ -44,7 +44,7 @@ const EmployeeValidation=[
         })
     })
 ]
-router.post('/free-profile/:userId',FreelancerValidation,Profile.freeinformation);
+router.post('/company-information/:companyId',Profile.companytitle);
 router.post('/skills/:userId',FreelancerValidation,Profile.freeskills);
 router.post('/company-language/:companyId',Profile.companylanguages);
 router.post('/company-education/:companyId',Profile.companyeducation);

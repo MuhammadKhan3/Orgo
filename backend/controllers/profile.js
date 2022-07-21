@@ -51,7 +51,7 @@ exports.companypicture=(req,res,next)=>{
 // Close User Profile
 
 // Freelancing title and description 
-exports.freeinformation=(req,res,next)=>{    
+exports.companytitle=(req,res,next)=>{    
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -61,21 +61,22 @@ exports.freeinformation=(req,res,next)=>{
     }
 
     const {title,description}=req.body
-    const userId=req.params.userId;
+    const {companyId}=req.params;
 
-    CompanyProfile.findOne({userId:mongoose.Types.ObjectId(userId)}).then((user)=>{
-        if(user){
-            user.title=title;
-            user.description=description;
-            user.save();
+    CompanyProfile.findOne({companyId:mongoose.Types.ObjectId(companyId)})
+    .then((companyprofile)=>{
+        if(companyprofile){
+            companyprofile.title=title;
+            companyprofile.description=description;
+            companyprofile.save();
             res.json({flag:true,msg:' Succefully Updated'})
         }else{
             CompanyProfile.create({
                 title:title,
                 description:description,
-                userId:userId,
-            }).then((employee)=>{
-                if(employee){
+                companyId:companyId,
+            }).then((profile)=>{
+                if(profile){
                     res.json({flag:true,msg:'Message Succefully insert'})
                 }
             }).catch((error)=>{
@@ -84,7 +85,7 @@ exports.freeinformation=(req,res,next)=>{
                 err.data=error;
                 throw err
             })
-                }
+        }
     })
 }
 // close title and description in freelancing

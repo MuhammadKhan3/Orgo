@@ -9,7 +9,9 @@ import {useDispatch,useSelector} from 'react-redux'
 
 function EmployeeBodyRight() {
   const rate=useSelector(state=>state.companySlice.rate);
-
+  const title=useSelector(state=>state.companySlice.title);
+  const description=useSelector(state=>state.companySlice.description);
+  
   const [pop,setPop]=useState({
     titlePop:false,
     ratePop:false,
@@ -38,7 +40,7 @@ function EmployeeBodyRight() {
     <div className="body-section-right">
       <div className="bsr1">
         <h2 style={{ width: "415px", fontSize: "1.2em", fontWeight: "bold" }}>
-          Project Management | Bootstrap, C#, CSS 3, CSS, Database, Firebase{" "}
+          {title}{" "}
           <CreateTwoToneIcon
             onClick={handleTitlePop}
             style={{ marginLeft: "20px", cursor: "pointer" }}
@@ -53,12 +55,7 @@ function EmployeeBodyRight() {
         <p>Objective</p>
         <br />
         <p style={{ marginBottom: "30px" }}>
-          Brilliant and creative IT professional with Bachelor’s Degree in
-          Information Technology and passionate about creating customized
-          solutions seeks the position of Front-end Developer in an exciting and
-          growing company. Coming with 3years experience and certifications in
-          and with TML, JavaScript,PHP, C# basic of ASP.NETmvc providing quality
-          support to company’s IT team.
+          {description}
         </p>
         <hr />
       </div>

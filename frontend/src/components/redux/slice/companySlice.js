@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
-    timezone:'',companyname:'',country:'',picture:'',languages:[],education:'',description:'',heading:'',rate:0,portfolio:[],language:'',level:'',
+    timezone:'',companyname:'',country:'',picture:'',languages:[],education:'',description:'',title:'',rate:0,portfolio:[],language:'',level:'',
     school:'',sdescription:'',degree:'',degreelevel:'',hourworking:''
 }
 // slices
@@ -25,8 +25,8 @@ export const companySlice = createSlice({
     seteducation:(state,action)=>{
       state.education=action.payload;
     },
-    setheading:(state,action)=>{
-      state.heading=action.payload;
+    settitle:(state,action)=>{
+      state.title=action.payload;
     },
     setdescription:(state,action)=>{
       state.description=action.payload;
