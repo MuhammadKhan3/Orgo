@@ -2,9 +2,11 @@ import React from "react";
 import Button from "../button/Button";
 import { TextareaAutosize } from "@mui/material";
 import "../popups/popup.css";
+import {Cookies} from 'react-cookie'
 import {useDispatch,useSelector} from 'react-redux';
 import {company_action} from '../redux/slice/companySlice';
 import axios from 'axios'
+const cookies=new Cookies();
 
 function TitlePop({ handleClose }) {
   const dispatch=useDispatch();
@@ -19,7 +21,15 @@ function TitlePop({ handleClose }) {
 
   }
   const savehandler=()=>{
-
+    const companyId=cookies.get('companyId');
+    const token=cookies.get('token')
+    axios.post(`http://localhost:8000/company-information/${companyId}`,{
+      title,
+      description,
+      headers:{
+        authorization:'Bearer '+token
+      }
+    })
   }
   return (
     <div className="main-box">
