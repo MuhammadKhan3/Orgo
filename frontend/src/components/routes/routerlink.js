@@ -24,9 +24,10 @@ function RouterLink() {
         <Route path="/login" element={<Navigate Component={Login}/>} />
         <Route  path="/signup" element={<Navigate Component={Signup} />}/>
         <Route path="/forgot-password" element={<Forgot/>}/>
-        <Route path="/profile" element={<Protect Component={Employee}/>}/>
+        {/* <Route path="/profile" element={<Protect Component={Employee}/>}/> */}
         <Route path="/client" element={<Protect Component={Client}/>}/>
         <Route path="/search" element={<Search/>}/>
+        <Route path="/profile" element={<Employee/>}/>
       </Routes>
   );
 }

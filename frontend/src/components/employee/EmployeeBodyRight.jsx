@@ -11,9 +11,9 @@ function EmployeeBodyRight() {
   const rate=useSelector(state=>state.companySlice.rate);
 
   const [pop,setPop]=useState({
-    title:false,
-    rate:false,
-    portfolio:false
+    titlePop:false,
+    ratePop:false,
+    portfolioPop:false
   })
 
   const handleTitlePop = () => {
@@ -98,9 +98,9 @@ function EmployeeBodyRight() {
         </div>
         <hr />
       </div>
-      {pop.title ? <TitlePop handleClose={handleTitlePop}/>:null}
-      {pop.rate ? <HourlyRatePop handleClose={handleRatePop}/>:null}
-      {pop.portfolio ? <PortfolioPop handleClose={handlePortfolioPop}/>:null}
+      {pop.titlePop ? <TitlePop handleClose={handleTitlePop}/>:null}
+      {pop.ratePop ? <HourlyRatePop handleClose={handleRatePop}/>:null}
+      {pop.portfolioPop ? <PortfolioPop handleClose={handlePortfolioPop}/>:null}
 
     </div>
   );
