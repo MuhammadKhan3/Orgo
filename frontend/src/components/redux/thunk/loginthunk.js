@@ -36,8 +36,6 @@ const LoginThunk = (obj,navigate) => {
               dispatch(user_action.setchangestatus(response.data.status));
               navigate('/')
           }else{
-            console.log('3')
-
             dispatch(user_action.setflag(response.data.flag));
             dispatch(user_action.setdata(response.data.data));
           }

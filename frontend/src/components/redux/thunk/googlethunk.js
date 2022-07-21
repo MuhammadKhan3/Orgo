@@ -37,7 +37,6 @@ const Googlethunk = (token,clientId,usergroup,companyName,coordinates,navigate) 
 
                 navigate('/');
               }else if(response.data.msg){
-                cookies.set('authenticate',response.data.authenticate,{expires:hour});
                  console.log(response.data.msg)
                  dispatch(user_action.seterrors(response.data.msg));
               }

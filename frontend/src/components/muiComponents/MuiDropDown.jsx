@@ -4,6 +4,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import {useDispatch} from 'react-redux'
 
 const ITEM_HEIGHT = 45;
 const ITEM_PADDING_TOP = 8;
@@ -25,7 +26,9 @@ export default function MultipleSelectPlaceholder({
   languages,
   text,
   ability,
+  setdata,
 }) {
+  const dispatch=useDispatch();
   const theme = useTheme();
   const [languageName, setLanguageName] = React.useState([]);
   function getStyles(language, languageName, theme) {
@@ -41,6 +44,7 @@ export default function MultipleSelectPlaceholder({
       target: { value },
     } = event;
     setLanguageName(typeof value === "string" ? value.split(",") : value);
+    dispatch(setdata(event.target.value))
   };
 
   return (

@@ -47,7 +47,8 @@ const EmployeeValidation=[
 router.post('/free-profile/:userId',FreelancerValidation,Profile.freeinformation);
 router.post('/skills/:userId',FreelancerValidation,Profile.freeskills);
 router.post('/company-language/:companyId',Profile.companylanguages);
-router.post('/education/:userId',FreelancerValidation,Profile.freeeducation);
+router.post('/company-education/:companyId',Profile.companyeducation);
+router.post('/company-workinghour/:companyId',Profile.workinghours);
 router.post('/reviews/:userId',FreelancerValidation,Profile.freeReviews);
 router.post('/portfolio/:userId',FreelancerValidation,upload.array('files'),Profile.freePortfolio);
 router.post('/company-rate/:companyId',authenticate,Profile.companyrate);
