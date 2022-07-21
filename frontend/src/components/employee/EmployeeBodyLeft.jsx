@@ -109,11 +109,6 @@ function EmployeeBodyLeft() {
           <li>{degree}, {school}</li>
           <li>{degreelevel}</li>
         <li>
-          <h4>Education</h4>
-          <AddCircleOutlineIcon onClick={handleEducationPop} style={{cursor:"pointer"}} />
-        </li>
-
-        <li>
           Skills
           <AddCircleOutlineIcon onClick={handleSkillPop} style={{cursor:"pointer"}} />
         </li>
