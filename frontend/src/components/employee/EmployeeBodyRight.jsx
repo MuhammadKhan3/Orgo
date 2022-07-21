@@ -30,7 +30,7 @@ function EmployeeBodyRight() {
 
   const handlePortfolioPop = () => {
     setPop({
-      portfolio:!pop.portfolio
+      portfolioPop:!pop.portfolioPop
     })
   }
 
@@ -63,7 +63,7 @@ function EmployeeBodyRight() {
         <hr />
       </div>
 
-      <div className="bsr3">
+      {/* <div className="bsr3">
         <h3 style={{ fontWeight: "bold", fontSize: "1.2em" }}>Work History</h3>
         <p>
           No work yet. Once you start getting hired on Upwork, your work with
@@ -72,7 +72,7 @@ function EmployeeBodyRight() {
         <p className="bsr-search">Start your search</p>
         <br />
         <hr />
-      </div>
+      </div> */}
 
       <div className="bsr4">
         <h3 style={{ fontWeight: "bold", fontSize: "1.2em" }}>Portfolio</h3>
@@ -81,20 +81,23 @@ function EmployeeBodyRight() {
           style={{ marginLeft: "20px", cursor: "pointer" }}
         />
       </div>
-
-      <br />
       <div className="bsr5main">
         <div className="bsr5">
-          {/* <ul>
-            {
+          <ul style={{width:"100%"}}>
+            <li style={{display:"flex", flexDirection:"row", justifyContent:"space-around", width:"100%"}}>
+              <p>1</p>
+              <p>Ecommerce App</p>
+              <img src="./img" />
+            </li>
+            {/* {
               portfolioData && portfolioData.map((item,key)=>(
                 <li key={key}>
                   {portfolioData.porname}
                   {portfolioData.porimage}
                 </li>
               ))
-            }
-          </ul> */}
+            } */}
+          </ul>
         </div>
         <hr />
       </div>
