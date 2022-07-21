@@ -9,9 +9,9 @@ import { Cookies } from "react-cookie";
 import Employee from "../../pages/Employee";
 import Signup from "../registration/signup"
 import Protect from "./protect";
-
 import Navigate from "./navigate";
 import Client from "../../pages/Client";
+import Search from "../../pages/Search";
 
 const cookies=new Cookies();
 
@@ -26,7 +26,7 @@ function RouterLink() {
         <Route path="/forgot-password" element={<Forgot/>}/>
         <Route path="/profile" element={<Protect Component={Employee}/>}/>
         <Route path="/client" element={<Protect Component={Client}/>}/>
-  
+        <Route path="/search" element={<Search/>}/>
       </Routes>
   );
 }

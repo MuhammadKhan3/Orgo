@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
 import avatar from '../client/avatar.png'
 import "../client/clientHeader.css";
+import ClientAccountPop from "../popups/ClientAccountPop";
 
 function ClientHeader() {
+  const [clientName,setClientName]=useState("");
+  const [accountPopUp,setAccountPopUp]=useState(false);
+
+  const handleAccountPop=()=>{
+    setAccountPopUp(!accountPopUp);
+  }
   const uploadedImage = React.useRef(null);
   const imageUploader = React.useRef(null);
   const handleImageUpload = (e) => {
@@ -23,7 +30,7 @@ function ClientHeader() {
     <div className="sub-client-head">
       <div className="client-top-header">
         <h3 style={{ fontWeight: "bold", fontSize: "1.2em" }}>Account</h3>
-        <CreateTwoToneIcon />
+        <CreateTwoToneIcon onClick={handleAccountPop} style={{cursor:"pointer"}} />
       </div>
       <hr />
       <div className="client-personal-info">
@@ -54,6 +61,7 @@ function ClientHeader() {
         </div>
       </div>
       <hr />
+      {accountPopUp ? <ClientAccountPop clientName setClientName handleClose={handleAccountPop}/> : null}
     </div>
   );
 }
