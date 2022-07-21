@@ -45,10 +45,10 @@ const EmployeeValidation=[
     })
 ]
 router.post('/company-information/:companyId',authenticate,Profile.companytitle);
-router.post('/skills/:userId',FreelancerValidation,Profile.freeskills);
-router.post('/company-language/:companyId',Profile.companylanguages);
-router.post('/company-education/:companyId',Profile.companyeducation);
-router.post('/company-workinghour/:companyId',Profile.workinghours);
+router.post('/company-skill/:companyId',Profile.companyskills);
+router.post('/company-language/:companyId',authenticate,Profile.companylanguages);
+router.post('/company-education/:companyId',authenticate,Profile.companyeducation);
+router.post('/company-workinghour/:companyId',authenticate,Profile.workinghours);
 router.post('/reviews/:userId',FreelancerValidation,Profile.freeReviews);
 router.post('/portfolio/:userId',FreelancerValidation,upload.array('files'),Profile.freePortfolio);
 router.post('/company-rate/:companyId',authenticate,Profile.companyrate);

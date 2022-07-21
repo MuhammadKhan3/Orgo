@@ -25,6 +25,8 @@ const FetchCompany = () => {
         dispatch(company_action.sethourswork(response.data.hourworking));
         dispatch(company_action.settitle(response.data.title));
         dispatch(company_action.setdescription(response.data.description));
+        dispatch(company_action.setskills(response.data.skills));
+
 
 
 

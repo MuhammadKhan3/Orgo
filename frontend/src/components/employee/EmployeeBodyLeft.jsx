@@ -94,11 +94,8 @@ function EmployeeBodyLeft() {
           <CreateTwoToneIcon onClick={handleEditLanguagePop}  style={{cursor:"pointer"}}/>
 
         </li>
-        {languages.map((language)=>{
-            return( 
-            <>
-              <li>{language.language} {language.level}</li>
-            </>)
+        {languages.map((language,i)=>{
+            return( <li key={i}>{language.language} {language.level}</li>)
 
           })}
 
@@ -106,13 +103,12 @@ function EmployeeBodyLeft() {
             <h4>Education</h4>
             <AddCircleOutlineIcon onClick={handleEducationPop} style={{cursor:"pointer"}} />
           </li>
-          <li>{degree}, {school}</li>
-          <li>{degreelevel}</li>
+          <li >{degree}, {school}</li>
+          <li >{degreelevel}</li>
         <li>
           <h4>Education</h4>
           <AddCircleOutlineIcon onClick={handleEducationPop} style={{cursor:"pointer"}} />
         </li>
-
         <li>
           Skills
           <AddCircleOutlineIcon onClick={handleSkillPop} style={{cursor:"pointer"}} />
@@ -127,7 +123,6 @@ function EmployeeBodyLeft() {
       ) : null}
       {pop.educationPop ? <EducationPop handleClose={handleEducationPop} /> : null}
       {pop.skillPop ? <SkillPop handleClose={handleSkillPop} /> : null}
-
     </div>
   );
 }

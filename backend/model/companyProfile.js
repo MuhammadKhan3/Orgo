@@ -20,7 +20,7 @@ const companyProfile= new mongoose.Schema({
 
     },
     skills:{
-        type:Array,
+        type:String,
         default:''
     },
     languages:{

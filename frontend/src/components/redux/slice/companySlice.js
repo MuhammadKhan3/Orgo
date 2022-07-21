@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     timezone:'',companyname:'',country:'',picture:'',languages:[],education:'',description:'',title:'',rate:0,portfolio:[],language:'',level:'',
-    school:'',sdescription:'',degree:'',degreelevel:'',hourworking:''
+    school:'',sdescription:'',degree:'',degreelevel:'',hourworking:'',skills:''
 }
 // slices
 //User slice we manage the registration process varaible
@@ -61,6 +61,9 @@ export const companySlice = createSlice({
     },
     sethourswork:(state,action)=>{
       state.hourworking=action.payload;
+    },
+    setskills:(state,action)=>{
+      state.skills=action.payload;
     }
   },
 })

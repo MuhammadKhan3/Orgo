@@ -92,7 +92,8 @@ exports.companytitle=(req,res,next)=>{
 
 
 // Skills
-exports.freeskills=(req,res,next)=>{
+exports.companyskills=(req,res,next)=>{
+    console.log('skillls')
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -101,19 +102,22 @@ exports.freeskills=(req,res,next)=>{
         throw err;
     }
     
-    const userId=req.params.userId;
+    const {companyId}=req.params;
     const {skills}=req.body
-    CompanyProfile.findOne({id:id}).then((user)=>{
-        if(user){
-            user.skills=skills;
-            user.save();
-            res.json({msg:'Siklls Succefully Upadte',flag:true})
+    
+    CompanyProfile
+    .findOne({companyId:mongoose.Types.ObjectId(companyId)})
+    .then((companyprofile)=>{
+        if(companyprofile){
+            companyprofile.skills=skills;
+            companyprofile.save();
+            res.json({msg:'Skills Succefully Update',flag:true})
         }  else{
             CompanyProfile.create({
                 skills:skills,
-                userId:userId,
-            }).then((user)=>{
-                if(user){
+                companyId:companyId,
+            }).then((profile)=>{
+                if(profile){
                     res.json({msg:'Created Succefully ',flag:true})
                 }                
             })
