@@ -6,7 +6,7 @@ import "./searchjob.css";
 
 function SearchJob() {
   const [favourite, setFavourite] = useState(false);
-  const [active,setActive] = useState(false);
+  const [active,setActive] = useState("1");
 
   const handleEvent=(e)=>{
     setActive(e.target.id)
