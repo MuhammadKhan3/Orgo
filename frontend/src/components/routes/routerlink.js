@@ -7,32 +7,40 @@ import Profile from "../profile/profile";
 import Login from "../registration/login";
 import { Cookies } from "react-cookie";
 import FreelancerCompany from "../../pages/Employee";
-import Signup from "../registration/signup"
+import Signup from "../registration/signup";
 import Protect from "./protect";
 import Navigate from "./navigate";
 import ClientCompany from "../../pages/Client";
 import Search from "../../pages/Search";
+import CreateProfile from "../../pages/CreateProfile";
 
-const cookies=new Cookies();
+const cookies = new Cookies();
 
 function RouterLink() {
-  const userType=cookies.get('userType');
-  console.log(userType)
+  const userType = cookies.get("userType");
+  console.log(userType);
 
   //This is Route where we include the Component and navigate the component
   return (
-    
-      <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/login" element={<Navigate Component={Login}/>} />
-        <Route  path="/signup" element={<Signup/>}/>
-        <Route path="/forgot-password" element={<Forgot/>}/>
-        {userType==='company' || userType==='freelancer' ?
-         <Route path="/profile" element={<Protect Component={FreelancerCompany}/>}/>:
-         <Route path="/profile" element={<Protect Component={ClientCompany}/>}/>
-        }
-        <Route path="/project" element={<Search/>}/>
-      </Routes>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Navigate Component={Login} />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/forgot-password" element={<Forgot />} />
+      {userType === "company" || userType === "freelancer" ? (
+        <Route
+          path="/profile"
+          element={<Protect Component={FreelancerCompany} />}
+        />
+      ) : (
+        <Route
+          path="/profile"
+          element={<Protect Component={ClientCompany} />}
+        />
+      )}
+      <Route path="/project" element={<Search />} />
+      <Route path="/createprofile" element={<CreateProfile />} />
+    </Routes>
   );
 }
 export default RouterLink;
