@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchJob from '../components/searchPage/SearchJob'
+import SearchJob from '../components/searchJob/SearchJob'
 import '../pages/search.css' 
 
 function Search() {
