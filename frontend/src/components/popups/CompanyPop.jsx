@@ -1,9 +1,35 @@
-import React, { useRef } from "react";
+import React from "react";
 import Button from "../button/Button";
 import "../popups/popup.css";
+import {useSelector,useDispatch} from 'react-redux';
+import {Cookies} from 'react-cookie';
+import { company_action } from "../redux/slice/companySlice";
+import axios from 'axios'
+const cookies=new Cookies();
 
 function CompanyPop({ handleClose }) {
-  const compNameRef = useRef(null);
+  const dispatch=useDispatch();
+  const companyName=useSelector(state=>state.companySlice.companyname)
+  const companyNamehandler=(e)=>{
+    const {value}=e.target;
+    dispatch(company_action.setcompanyname(value))
+  }
+
+  const savehandler=()=>{
+    const employeeId=cookies.get('employeeId');
+    const token=cookies.get('token');
+
+    axios.post(`http://localhost:8000/company-details/${employeeId}`,{
+      companyName,
+      headers:{
+        authorization:'Bearer '+token,
+      }
+    })
+    .then((response)=>{
+      console.log(response);
+    })
+  }
+
   return (
     <div className="main-box">
       <div className="popup-box">
@@ -17,14 +43,15 @@ function CompanyPop({ handleClose }) {
             className="pop-video-input"
             type="name"
             placeholder="Muhammad Osama"
-            ref={compNameRef}
+            value={companyName}
+            onChange={companyNamehandler}
           />
         </div>
         <br />
         <hr />
         <div className="button-container">
           <Button className="cancel" content="Cancel" handle={handleClose} />
-          <Button className="save" content="Save" />
+          <Button handle={savehandler} className="save" content="Save" />
         </div>
       </div>
     </div>

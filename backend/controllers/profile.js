@@ -267,7 +267,8 @@ exports.freeReviews=(req,res,next)=>{
 
 
 // Portfolio
-exports.freePortfolio=async (req,res,next)=>{
+exports.companyPortfolio=async (req,res,next)=>{
+    console.log('companyPortfolio');
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -276,30 +277,17 @@ exports.freePortfolio=async (req,res,next)=>{
         throw err;
     }
     
-    const id=req.params.userId;
+    const {companyId}=req.params;
+
     const {title}=req.body;
-    const images=req.files.map((file)=>{
-        return file.filename;
-    })
+    const {filename}=req.file;
 
-    CompanyProfile.findOne({id:id}).then((user)=>{
-        if(user){
-            console.log('update')
-            console.log(user.portfolio.concat({title:title,images:images}))
-            user.portfolio=user.portfolio.concat({title:title,images:images});
-            user.save();
-            res.json({msg:'Updated Succefully Portfolio',flag:true});
-
-        }else{
-            CompanyProfile.create({
-                portfolio:[{title:title,images:images}],
-                id:id,
-            }).then((profile)=>{
-            
-                if(user){
-                    res.json({msg:'Created Succefully Portfolio',flag:true})
-                }
-            })
+    CompanyProfile.findOneAndUpdate({companyId:companyId},{$push:{"portfolio":{title:title,file:filename}}},
+    (error, success)=>{
+        if (error) {
+            console.log(error);
+        } else {
+            console.log(success);
         }
     })
 }
@@ -345,7 +333,13 @@ exports.companyrate=(req,res,next)=>{
 // Close Rate
 
 
-exports.ClientuploadProfile=(req,res,next)=>{
+
+
+// This section is employee called client 
+
+exports.getemployee=(req,res,next)=>{
+    console.log('employee')
+    console.log(req.params)
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -353,15 +347,61 @@ exports.ClientuploadProfile=(req,res,next)=>{
         err.data=errors.array();
         throw err;
     }
+    let {employeeId}=req.params;
+    
+    Employee.findOne({_id:mongoose.Types.ObjectId(employeeId)})
+    .populate('userId')
+    .then((employee)=>{
+        if(employee){
+            res.json(employee)       
+        }
+    })
+}
 
-    let {userId}=req.params;
+exports.updatename=(req,res,next)=>{
+    console.log("user")
+    console.log(req.params);
+    const errors=validationResult(req);
+    if(!errors.isEmpty()){
+        const err=new Error('Information Profile')
+        err.statusCode=500;
+        err.data=errors.array();
+        throw err;
+    }
+    const {userId}=req.params;
+    const {name} =req.body;
+
+    let [firstname,...lastname]=name.split(" ");
+    lastname=lastname.toString().replaceAll(',','')
+
+
+     User.updateOne({_id:mongoose.Types.ObjectId(userId)},{$set:{firstname:firstname,lastname:lastname}})
+    .then((employee)=>{
+
+        if(employee.acknowledged){
+            console.log('ud')
+            res.json({msg:'updated Succefully',flag:true})
+        }
+    })
+}
+
+exports.emppicture=(req,res,next)=>{
+    console.log('fle')
+    const errors=validationResult(req);
+    if(!errors.isEmpty()){
+        const err=new Error('Information Profile')
+        err.statusCode=500;
+        err.data=errors.array();
+        throw err;
+    }
+    let {employeeId}=req.params;
     const file=req.file;
-    console.log(userId)
-    User.findOne({_id:mongoose.Types.ObjectId(userId)})
-    .then((user)=>{        
-        if(user){
-            user.picture=file.filename;
-            user.save();
+    console.log(file)
+    Employee.findOne({_id:mongoose.Types.ObjectId(employeeId)})
+    .then((employee)=>{        
+        if(employee){
+            employee.picture=file.filename;
+            employee.save();
             res.json({msg:'Upload  Succefully',flag:true})
         }
     })
@@ -369,7 +409,7 @@ exports.ClientuploadProfile=(req,res,next)=>{
 
 
 
-// Company Details
+// Employee Company Details
 exports.companyDetail=(req,res,next)=>{
     const errors=validationResult(req);
     if(!errors.isEmpty()){
@@ -378,23 +418,20 @@ exports.companyDetail=(req,res,next)=>{
         err.data=errors.array();
         throw err;
     }
-    // 
+    console.log(req.params);
+   const {employeeId}=req.params;
+   const {companyName}=req.body;
 
-   const {userId}=req.params;
-   const {companyName,companyDescription}=req.body;
-   Employee.findOne({userId:mongoose.Types.ObjectId(userId)})
-   .then((user)=>{
-        if(user){
-            user.companyName=companyName;
-            user.companyDescription=companyDescription;
-            user.save();
+   Employee.findOne({_id:mongoose.Types.ObjectId(employeeId)})
+   .then((employee)=>{
+        if(employee){
+            employee.companyName=companyName;
+            employee.save();
             res.json({msg:'Updated  Succefully',flag:true})
-
         }else{
             Employee.create({
                 companyName:companyName,
-                companyDescription:companyDescription,
-                userId:userId,
+                employeeId:employeeId,
             })
             .then(profile=>{
                 if(profile){
@@ -409,7 +446,10 @@ exports.companyDetail=(req,res,next)=>{
 
 
 // Company Contacts
-exports.clicontacts=(req,res,next)=>{
+exports.companycontact=(req,res,next)=>{
+    console.log('contact')
+    console.log(req.body)
+
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -417,30 +457,17 @@ exports.clicontacts=(req,res,next)=>{
         err.data=errors.array();
         throw err;
     }
-    // console.log('cient contacts')
-    const {userId}=req.params;
-    const {phone,address}=req.body;
+
+    const {employeeId}=req.params;
+    const {phone,country,ownerName}=req.body;
 
 
-    Employee.findOne({userId:mongoose.Types.ObjectId(userId)})
-    .then((user)=>{
-        if(user){
-            user.phone=phone;
-            user.address=address;
-            user.save();
-            res.json({msg:'Updated Succefully',flag:true})
-        }else{
-            Employee.create({
-                phone:phone,
-                address:address,
-                userId:userId,
-            }).then((profile)=>{
-                if(profile){
-                  res.json({msg:'Created Succefully',flag:true})
-                }
-            })
+    Employee.updateOne({_id:mongoose.Types.ObjectId(employeeId)},{$set:{phone:phone,country:country,ownerName:ownerName}})
+    .then((employee)=>{
+        if(employee.acknowledged){
+            console.log('ud')
+            res.json({msg:'updated Succefully',flag:true})
         }
-
     })
 }
-// Close Company Contact
+// Close Company Contact]

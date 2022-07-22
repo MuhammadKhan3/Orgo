@@ -17,7 +17,8 @@ function EmployeeBodyLeft() {
   const degree=useSelector(state=>state.companySlice.degree);
   const degreelevel=useSelector(state=>state.companySlice.degreelevel);
   const hourworking=useSelector(state=>state.companySlice.hourworking);
-  
+  const skills=useSelector(state=>state.companySlice.skills);
+
   
   const [pop,setPop]=useState({
     video:false,
@@ -95,7 +96,7 @@ function EmployeeBodyLeft() {
 
         </li>
         {languages.map((language,i)=>{
-            return( <li key={i}>{language.language} {language.level}</li>)
+            return( <li style={{fontWeight: 'normal'}} key={i}>{language.language} {language.level}</li>)
 
           })}
 
@@ -103,16 +104,14 @@ function EmployeeBodyLeft() {
             <h4>Education</h4>
             <AddCircleOutlineIcon onClick={handleEducationPop} style={{cursor:"pointer"}} />
           </li>
-          <li >{degree}, {school}</li>
-          <li >{degreelevel}</li>
-        <li>
-          <h4>Education</h4>
-          <AddCircleOutlineIcon onClick={handleEducationPop} style={{cursor:"pointer"}} />
-        </li>
-        <li>
-          Skills
-          <AddCircleOutlineIcon onClick={handleSkillPop} style={{cursor:"pointer"}} />
-        </li>
+          <li style={{fontWeight: 'normal'}}>{degree}, {school},  {degreelevel}</li>
+          <li>
+            Skills
+            <AddCircleOutlineIcon onClick={handleSkillPop} style={{cursor:"pointer"}} />
+          </li>
+          <li>
+            {skills}
+          </li>
       </ul>
 
       {pop.videoPop ? <VideoPopUp handleClose={handleClose} /> : null}

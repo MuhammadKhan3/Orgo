@@ -3,16 +3,27 @@ import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
 import avatar from '../client/avatar.png'
 import "../client/clientHeader.css";
 import ClientAccountPop from "../popups/ClientAccountPop";
+import {useDispatch,useSelector} from 'react-redux'
+import {Cookies} from 'react-cookie'
+import axios from 'axios'
+const cookies=new Cookies();
 
 function ClientHeader() {
-  const [clientName,setClientName]=useState("");
+
+  const name=useSelector(state=>state.companySlice.name);
+  const picture=useSelector(state=>state.companySlice.picture);
+  const email=useSelector(state=>state.companySlice.email);
+  
+  const uploadedImage = React.useRef(null);
+  const imageUploader = React.useRef(null);
   const [accountPopUp,setAccountPopUp]=useState(false);
+
+
+
 
   const handleAccountPop=()=>{
     setAccountPopUp(!accountPopUp);
   }
-  const uploadedImage = React.useRef(null);
-  const imageUploader = React.useRef(null);
   const handleImageUpload = (e) => {
     const [file] = e.target.files;
     if (file) {
@@ -23,6 +34,13 @@ function ClientHeader() {
         current.src = e.target.result;
       };
       reader.readAsDataURL(file);
+      const employeeId=cookies.get('employeeId');
+      const formdata=new FormData();
+      formdata.append('file',uploadedImage.current.file);
+      axios.post(`http://localhost:8000/employee-picture/${employeeId}`,formdata)
+      .then((response)=>{
+        console.log(response)
+      })
     }
   };
 
@@ -48,16 +66,16 @@ function ClientHeader() {
           >
             <img
               className="user-avatar-image"
-              src={avatar}
+              src={picture.length>0 ? `http://localhost:8000/${picture}` : avatar}
               ref={uploadedImage}
             />
           </div>
         </div>
         <div className="client-data">
-            <p style={{fontWeight:"bold"}}>mosamanadeem</p>
-            <p>Muhammad Osama</p>
+            {/* <p style={{fontWeight:"bold"}}>mosamanadeem</p> */}
+            <p style={{fontWeight:"bold"}}>{name}</p>
             <p style={{fontWeight:"bold"}}>Email</p>
-            <p>muhammadosama3556@gmail.com</p>
+            <p>{email}</p>
         </div>
       </div>
       <hr />

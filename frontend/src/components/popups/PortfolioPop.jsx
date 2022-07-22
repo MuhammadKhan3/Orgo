@@ -3,6 +3,9 @@ import "../popups/popup.css";
 import Button from "../button/Button";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import add_image2 from "../popups/add_image2.png";
+import axios from 'axios'
+import {Cookies} from 'react-cookie';
+const cookies=new Cookies();
 
 function PortfolioPop({ portfolioData, setPortfolioData, handleClose }) {
   const [project, setProject] = useState({
@@ -27,15 +30,22 @@ function PortfolioPop({ portfolioData, setPortfolioData, handleClose }) {
   };
 
   const handleSave = () => {
-    setProject({
-      proname: titleRef.current.value,
-      proImage: imageUploader.current.value,
-    });
-    let list=portfolioData.concat({project})
-    setPortfolioData(list)
+    console.log(uploadedImage.current.file)
+    console.log(imageUploader)
+    const formdata=new FormData();
+    const companyId=cookies.get('companyId');
+    const token=cookies.get('token');
+    formdata.append('file',uploadedImage.current.file);
+    formdata.append('title',titleRef.current.value);
+
+    axios.post(`http://localhost:8000/portfolio/${companyId}`,formdata)
+    .then((response)=>{
+      console.log(response)
+    })
+    // let list=portfolioData.concat({project})
+    // setPortfolioData(list)
     // setPortfolioData(portfolioData.add(project));
-    console.log(titleRef.current.value);
-    console.log(imageUploader);
+
   };
   return (
     <div className="main-box">

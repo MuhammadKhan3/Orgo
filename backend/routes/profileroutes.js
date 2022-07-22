@@ -49,8 +49,8 @@ router.post('/company-skill/:companyId',Profile.companyskills);
 router.post('/company-language/:companyId',authenticate,Profile.companylanguages);
 router.post('/company-education/:companyId',authenticate,Profile.companyeducation);
 router.post('/company-workinghour/:companyId',authenticate,Profile.workinghours);
-router.post('/reviews/:userId',FreelancerValidation,Profile.freeReviews);
-router.post('/portfolio/:userId',FreelancerValidation,upload.array('files'),Profile.freePortfolio);
+router.post('/reviews/:userId',FreelancerValidation,Profile.freeReviews);  //workin when review work
+router.post('/portfolio/:companyId',upload.single('file'),Profile.companyPortfolio);
 router.post('/company-rate/:companyId',authenticate,Profile.companyrate);
 router.post('/company-profile/:companyId',authenticate,Profile.companyprofile);  //check
 router.post('/company-picture/:companyId',uploadProfile.single('file'),Profile.companypicture);
@@ -58,16 +58,18 @@ router.post('/company-picture/:companyId',uploadProfile.single('file'),Profile.c
 
 
 // Employee................
-router.post('/cli-profile/:userId',uploadProfile.single('file'),
-Profile.ClientuploadProfile);
+router.post('/employee-picture/:employeeId',uploadProfile.single('file'),
+Profile.emppicture);
+router.put('/employe-name/:userId',authenticate,Profile.updatename)
+router.post('/get-employee/:employeeId',Profile.getemployee);
 
 // Company Details
-router.post('/company-details/:userId',EmployeeValidation,Profile.companyDetail);
+router.post('/company-details/:employeeId',authenticate,Profile.companyDetail);
 
 // Close Company Details
 
 // Client Contacts
-router.post('/company-contacts/:userId',EmployeeValidation,Profile.clicontacts);
+router.post('/company-contacts/:employeeId',Profile.companycontact);
 
 // Close Client Contacts
 // Close Client Profile..........

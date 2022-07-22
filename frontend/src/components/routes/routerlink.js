@@ -6,28 +6,32 @@ import Portfolio from "../profile/porfolio";
 import Profile from "../profile/profile";
 import Login from "../registration/login";
 import { Cookies } from "react-cookie";
-import Employee from "../../pages/Employee";
+import FreelancerCompany from "../../pages/Employee";
 import Signup from "../registration/signup"
 import Protect from "./protect";
 import Navigate from "./navigate";
-import Client from "../../pages/Client";
+import ClientCompany from "../../pages/Client";
 import Search from "../../pages/Search";
 
 const cookies=new Cookies();
 
 function RouterLink() {
   const userType=cookies.get('userType');
+  console.log(userType)
+
   //This is Route where we include the Component and navigate the component
   return (
+    
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/login" element={<Navigate Component={Login}/>} />
-        <Route  path="/signup" element={<Navigate Component={Signup} />}/>
+        <Route  path="/signup" element={<Signup/>}/>
         <Route path="/forgot-password" element={<Forgot/>}/>
-        {/* <Route path="/profile" element={<Protect Component={Employee}/>}/> */}
-        <Route path="/client" element={<Protect Component={Client}/>}/>
-        <Route path="/search" element={<Search/>}/>
-        <Route path="/profile" element={<Employee/>}/>
+        {userType==='company' || userType==='freelancer' ?
+         <Route path="/profile" element={<Protect Component={FreelancerCompany}/>}/>:
+         <Route path="/profile" element={<Protect Component={ClientCompany}/>}/>
+        }
+        <Route path="/project" element={<Search/>}/>
       </Routes>
   );
 }

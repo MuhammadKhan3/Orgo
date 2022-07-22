@@ -1,8 +1,50 @@
 import React, { useRef } from "react";
 import Button from "../button/Button";
 import "../popups/popup.css";
+import {useSelector,useDispatch} from 'react-redux'
+import {Cookies} from 'react-cookie';
+import {company_action } from '../redux/slice/companySlice';
+import axios from 'axios'
+const cookies=new Cookies();
 
 function CompContactPop({handleClose}) {
+  const dispatch=useDispatch();
+  const phone=useSelector(state=>state.companySlice.phone);
+  const country=useSelector(state=>state.companySlice.country);
+  const ownerName=useSelector(state=>state.companySlice.ownername);
+
+  
+  const phonehandler=(event)=>{
+    const {value}=event.target;
+    dispatch(company_action.setphone(value));
+  }
+
+  const countryhandler=(event)=>{
+    const {value}=event.target;
+    dispatch(company_action.setcountry(value));
+  }
+
+  const ownerhandler=(event)=>{
+    const {value}=event.target;
+    dispatch(company_action.setownername(value));
+  }
+
+  const savehandler=()=>{
+    const employeeId=cookies.get('employeeId');
+    const token=cookies.get('token');
+
+    axios.post(`http://localhost:8000/company-contacts/${employeeId}`,{
+      phone,
+      country,
+      ownerName,
+      headers:{
+        authorization:'Bearer '+token
+      }
+    }).then((response)=>{
+      console.log(response)
+    })
+  }
+
   return (
     <div className="main-box">
       <div className="popup-box">
@@ -16,6 +58,8 @@ function CompContactPop({handleClose}) {
             className="pop-video-input"
             type="email"
             placeholder="abc123"
+            value={ownerName}
+            onChange={ownerhandler}
           />
         </div>
         <div className="pop-video-content">
@@ -23,7 +67,9 @@ function CompContactPop({handleClose}) {
           <input
             className="pop-video-input"
             type="text"
-            value="0304xxxxxxx"
+            value={phone}
+            onChange={phonehandler}
+
           />
         </div>
         <div className="pop-video-content">
@@ -31,7 +77,9 @@ function CompContactPop({handleClose}) {
           <input
             className="pop-video-input"
             type="address"
-            placeholder="House, Street, Area, City"
+            placeholder="Country"
+            value={country}
+            onChange={countryhandler}
           />
         </div>
         <br />
@@ -39,7 +87,7 @@ function CompContactPop({handleClose}) {
 
         <div className="button-container">
           <Button className="cancel" content="Cancel" handle={handleClose} />
-          <Button className="save" content="Save" />
+          <Button handle={savehandler} className="save" content="Save" />
         </div>
       </div>
     </div>

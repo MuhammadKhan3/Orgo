@@ -5,9 +5,18 @@ import "../client/clientHeader.css";
 import { useState } from "react";
 import CompanyPop from "../popups/CompanyPop";
 import CompContactPop from "../popups/CompContactPop";
+import {useSelector,useDispatch} from 'react-redux';
+
 
 function CompanyDetails() {
-  const [selectedTimezone, setSelectedTimezone] = useState({});
+  const companyName=useSelector(state=>state.companySlice.companyname);
+  const timezone=useSelector(state=>state.companySlice.timezone);
+  const phone=useSelector(state=>state.companySlice.phone);
+  const country=useSelector(state=>state.companySlice.country);
+  const ownerName=useSelector(state=>state.companySlice.ownername);
+
+
+
   const [pop,setPop]=useState({
     companyNamePop:false,
     infoPop:false
@@ -35,7 +44,7 @@ function CompanyDetails() {
         <ApartmentIcon className="comp-icon" />
       </div>
       <hr />
-      <p style={{ padding: "15px", fontSize: "0.9em" }}>Muhammad Osama</p>
+      <p style={{ padding: "15px", fontSize: "0.9em" }}>{companyName}</p>
       <hr />
       <div className="company-info">
         <div className="company-contact">
@@ -48,22 +57,22 @@ function CompanyDetails() {
       <hr />
       <div className="company-detail">
         <p>Owner</p>
-        <p>muhammadosama3556@gmail.com</p>
+        <p>{ownerName}</p>
       </div>
       <hr />
       <div className="company-detail">
         <p>Phone</p>
-        <p>0304xxxxxxx</p>
+        <p>{phone}</p>
       </div>
       <hr />
       <div className="company-detail">
         <p>Time zone</p>
-        <p>UTC 5:00 Islamabad, Pakistan</p>
+        <p>{timezone}</p>
       </div>
       <hr />
       <div className="company-detail">
         <p>Address</p>
-        <p>Pakistan</p>
+        <p>{country}</p>
       </div>
       <hr />
       {pop.companyNamePop ? <CompanyPop handleClose={handleCompanyNamePop}/> : null}

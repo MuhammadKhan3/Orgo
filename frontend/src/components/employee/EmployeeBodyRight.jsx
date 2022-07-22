@@ -11,6 +11,8 @@ function EmployeeBodyRight() {
   const rate=useSelector(state=>state.companySlice.rate);
   const title=useSelector(state=>state.companySlice.title);
   const description=useSelector(state=>state.companySlice.description);
+  const portfolio=useSelector(state=>state.companySlice.portfolio);
+  console.log(portfolio)
   
   const [pop,setPop]=useState({
     titlePop:false,
@@ -81,11 +83,16 @@ function EmployeeBodyRight() {
       <div className="bsr5main">
         <div className="bsr5">
           <ul style={{width:"100%"}}>
-            <li style={{display:"flex", flexDirection:"row", justifyContent:"space-around", width:"100%"}}>
-              <p>1</p>
-              <p>Ecommerce App</p>
-              <img src="./img" />
-            </li>
+            {portfolio.length>0 && portfolio.map((data,i)=>{
+              return <>
+                <li style={{display:"flex", flexDirection:"row", justifyContent:"space-around", width:"100%"}}>
+                  <p>{i+1}</p>
+                  <p>{data.title}</p>
+                  <img src={`http://localhost:8000/${data.file}`} style={{width:'100px'}} />
+                </li>
+              </>
+            })
+              }
             {/* {
               portfolioData && portfolioData.map((item,key)=>(
                 <li key={key}>

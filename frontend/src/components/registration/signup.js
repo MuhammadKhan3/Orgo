@@ -137,13 +137,16 @@ const Signup = () => {
     const geolocation=()=>{
       navigator.geolocation.getCurrentPosition((position)=>{
         const geo={lat:position.coords.latitude,lon:position.coords.longitude};
-        console.log(geo)
         dispatch(user_action.setcoordinates(geo))
       })
     }
     geolocation();
+    const timer=setTimeout(geolocation,4000)
+    return ()=>{
+      clearTimeout(timer)
+    }
 // Close Latitude & Longitude
-   },[usergroup])
+   },[])
    const continuebtnhandler=()=>{
     console.log('continuehandler')
     console.log(formik.values.email)

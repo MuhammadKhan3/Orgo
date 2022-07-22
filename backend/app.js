@@ -24,6 +24,8 @@ app.use(express.urlencoded({ extended:true }))
 // app.use(formidable());
 app.use(cors(corsOptions))
 app.use(express.static(path.join(__dirname, 'images','profile')));
+app.use(express.static(path.join(__dirname, 'images','portfolio')));
+
 
 app.use('/',routes)
 

@@ -34,7 +34,7 @@ const companyProfile= new mongoose.Schema({
     portfolio:{
         type:[{
             title:String,
-            images:Array
+            file:String
             }],
         default:[],
     },

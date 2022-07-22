@@ -238,13 +238,15 @@ exports.Googlelogin=(req,res,next)=>{
         const {name,picture,email,email_verified}=response.payload;
       Users.findOne({email:email})
       .then(user=>{
+        console.log(user)
         if(user && user.google.length>0){
+            console.log('in')
             const token=jwt.sign({name:user.firstname,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                 expiresIn:'1h'
             })
             if(user.userType==='freelancer' || user.userType==='company'){
                 res.json({token:token,flag:true,userType:user.userType,userId:user._id,companyId:user.companyId,authenticate:user.verified});
-            }else if(user.userType==='freelancer'){
+            }else if(user.userType==='employee'){
                 Employee.findOne({userId:user._id})
                 .then((employee)=>{
                     res.json({token:token,flag:true,userType:user.userType,userId:user._id,employeeId:employee._id,authenticate:user.verified});
