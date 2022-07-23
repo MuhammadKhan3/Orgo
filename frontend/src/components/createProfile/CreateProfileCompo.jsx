@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../createProfile/create.css";
-import { TextareaAutosize } from "@mui/material";
+import {TextareaAutosize} from "@mui/material";
+import Button from "../button/Button";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
 import FileUploader from "../FileUploader";
 import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
@@ -16,6 +17,7 @@ function CreateProfileCompo() {
   return (
     <div className="create-main-head">
       <br />
+      <h1 style={{fontSize:"1.5em", margin:"30px", fontWeight:"bold"}}>Create Job</h1>
       <hr />
       <div className="head-container1">
         <h3 style={{ fontSize: "1em", fontWeight: "500" }}>Headline</h3>
@@ -121,6 +123,10 @@ function CreateProfileCompo() {
             <p>$12.00 - $25.00/hr</p>
             <CreateTwoToneIcon style={{ marginLeft: "20px" }}/>
           </div>
+        </div>
+        <div style={{marginTop:"20px", width:"100%", display:"flex", justifyContent:"flex-end"}}>
+          <Button content="Cancle Job" />
+          <Button content="Create Job"/>
         </div>
       </div>
     </div>
