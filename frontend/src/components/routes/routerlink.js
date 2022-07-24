@@ -12,7 +12,8 @@ import Protect from "./protect";
 import Navigate from "./navigate";
 import ClientCompany from "../../pages/Client";
 import Search from "../../pages/Search";
-import CreateProfile from "../../pages/CreateProfile";
+import CreateJob from "../../pages/CreateJob";
+import EditJob from '../../pages/EditJob';
 
 const cookies = new Cookies();
 
@@ -39,7 +40,8 @@ function RouterLink() {
         />
       )}
       <Route path="/project" element={<Search />} />
-      <Route path="/createprofile" element={<CreateProfile />} />
+      <Route path="/createjob" element={<CreateJob />} />
+      <Route path="editjob" element={<EditJob/>} />
     </Routes>
   );
 }
