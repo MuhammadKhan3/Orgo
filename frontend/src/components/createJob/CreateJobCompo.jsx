@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../createProfile/create.css";
+import "../createJob/create.css";
 import { TextareaAutosize } from "@mui/material";
 import Button from "../button/Button";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
@@ -10,7 +10,7 @@ import SkillListPop from "../popups/SkillListPop";
 import BudgetPop from "../popups/BudgetPop";
 
 const skillList = ["MongoDb", "Node", "React", "Api", "GraphQL"];
-function CreateProfileCompo() {
+function CreateJobCompo() {
   const [categoryPop, setCategoryPop] = useState(false);
   const [skillPop, setSkillPop] = useState(false);
   const [budgetPop, setBudgetPop] = useState(false);
@@ -174,4 +174,4 @@ function CreateProfileCompo() {
   );
 }
 
-export default CreateProfileCompo;
+export default CreateJobCompo;
