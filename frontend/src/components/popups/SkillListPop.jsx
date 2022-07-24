@@ -1,12 +1,8 @@
 import React from "react";
 import "../popups/popup.css";
 import Button from "../button/Button";
-import MuiDropDown from "../muiComponents/MuiDropDown";
+import MultiSelection from "../MultiSelection";
 
-const skills = [
-    "React",
-    "Node"
-];
 export default function SkillListPop({ handleClose }) {
   return (
     <div className="main-box">
@@ -23,11 +19,7 @@ export default function SkillListPop({ handleClose }) {
             marginBottom: "150px",
           }}
         >
-          <MuiDropDown
-            text="Add Skills"
-            languages={skills}
-            ability={false}
-          />
+          <MultiSelection/>
         </div>
         <div className="button-container">
           <Button className="cancel" content="Cancel" handle={handleClose} />

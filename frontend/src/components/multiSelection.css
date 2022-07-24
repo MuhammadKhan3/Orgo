@@ -1,0 +1,10 @@
+.multi-select {
+  padding: 10px 0 10px 0px;
+}
+
+.searchBox {
+  border: none;
+  font-size: 0.9em;
+  min-height: 30px;
+  width: 500px;
+}
