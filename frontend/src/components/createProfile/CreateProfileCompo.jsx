@@ -1,23 +1,43 @@
 import React, { useState } from "react";
 import "../createProfile/create.css";
-import {TextareaAutosize} from "@mui/material";
+import { TextareaAutosize } from "@mui/material";
 import Button from "../button/Button";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
 import FileUploader from "../FileUploader";
 import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
+import CategoryPop from "../popups/CategoryPop";
+import SkillListPop from "../popups/SkillListPop";
+import BudgetPop from "../popups/BudgetPop";
 
+const skillList = ["MongoDb", "Node", "React", "Api", "GraphQL"];
 function CreateProfileCompo() {
+  const [categoryPop, setCategoryPop] = useState(false);
+  const [skillPop, setSkillPop] = useState(false);
+  const [budgetPop, setBudgetPop] = useState(false);
+
   const [description, setDescription] = useState("");
   const handleDescription = (e) => {
     setDescription(e.target.value);
   };
 
-  const skillList = ["MongoDb", "Node", "React", "Api", "GraphQL"];
+  const handleCategoryPop = () => {
+    setCategoryPop(!categoryPop);
+  };
+
+  const handleSkillPop = () => {
+    setSkillPop(!skillPop);
+  };
+
+  const handleBudgetPop = () => {
+    setBudgetPop(!budgetPop);
+  };
 
   return (
     <div className="create-main-head">
       <br />
-      <h1 style={{fontSize:"1.5em", margin:"30px", fontWeight:"bold"}}>Create Job</h1>
+      <h1 style={{ fontSize: "1.5em", margin: "30px", fontWeight: "bold" }}>
+        Create Job
+      </h1>
       <hr />
       <div className="head-container1">
         <h3 style={{ fontSize: "1em", fontWeight: "500" }}>Headline</h3>
@@ -70,7 +90,10 @@ function CreateProfileCompo() {
           style={{ display: "flex", flexDirection: "row", marginTop: "5px" }}
         >
           <p>Full stack development</p>
-          <CreateTwoToneIcon style={{ marginLeft: "20px" }} />
+          <CreateTwoToneIcon
+            onClick={handleCategoryPop}
+            style={{ marginLeft: "20px", cursor: "pointer" }}
+          />
         </div>
         <div style={{ marginTop: "20px" }}>
           <h3 style={{ fontSize: "1em", fontWeight: "500" }}>Skills</h3>
@@ -110,7 +133,12 @@ function CreateProfileCompo() {
                 : null}
             </ul>
             <CreateTwoToneIcon
-              style={{ marginLeft: "30px", marginTop: "12px" }}
+              onClick={handleSkillPop}
+              style={{
+                marginLeft: "30px",
+                marginTop: "12px",
+                cursor: "pointer",
+              }}
             />
           </div>
         </div>
@@ -121,14 +149,27 @@ function CreateProfileCompo() {
             style={{ display: "flex", flexDirection: "row", marginTop: "5px" }}
           >
             <p>$12.00 - $25.00/hr</p>
-            <CreateTwoToneIcon style={{ marginLeft: "20px" }}/>
+            <CreateTwoToneIcon
+              onClick={handleBudgetPop}
+              style={{ marginLeft: "20px", cursor: "pointer" }}
+            />
           </div>
         </div>
-        <div style={{marginTop:"20px", width:"100%", display:"flex", justifyContent:"flex-end"}}>
+        <div
+          style={{
+            marginTop: "20px",
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
           <Button content="Cancle Job" />
-          <Button content="Create Job"/>
+          <Button content="Create Job" />
         </div>
       </div>
+      {categoryPop ? <CategoryPop handleClose={handleCategoryPop} /> : null}
+      {skillPop ? <SkillListPop handleClose={handleSkillPop} /> : null}
+      {budgetPop ? <BudgetPop handleClose={handleBudgetPop} /> : null}
     </div>
   );
 }
