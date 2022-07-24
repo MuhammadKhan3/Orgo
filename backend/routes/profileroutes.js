@@ -61,15 +61,21 @@ router.post('/company-picture/:companyId',uploadProfile.single('file'),Profile.c
 router.post('/employee-picture/:employeeId',uploadProfile.single('file'),
 Profile.emppicture);
 router.put('/employe-name/:userId',authenticate,Profile.updatename)
-router.post('/get-employee/:employeeId',Profile.getemployee);
+router.post('/get-employee/:employeeId',authenticate,Profile.getemployee);
 
 // Company Details
-router.post('/company-details/:employeeId',authenticate,Profile.companyDetail);
+router.post('/company-details/:employeeId',authenticate,[
+    body('companyName','Company Name is greater than 3 and less than 200').isLength({min:3,max:200})
+],Profile.companyDetail);
 
 // Close Company Details
 
 // Client Contacts
-router.post('/company-contacts/:employeeId',Profile.companycontact);
+router.post('/company-contacts/:employeeId',authenticate,[
+    body('phone','Phone No is equal to 11 numbers').isLength({min:11,max:11}),
+    body('country','country length greater then 3 and less then 300').isLength({min:3,max:300}),
+    body('ownerName','ownername greater than 3 and less than 200').isLength({min:3,max:200})
+],Profile.companycontact);
 
 // Close Client Contacts
 // Close Client Profile..........

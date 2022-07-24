@@ -1,14 +1,18 @@
 const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
 
+var now = new Date(),
+    utcDate =now.toUTCString();
+
 const Job=new mongoose.Schema({
-    headline:{
+    heading:{
         type:String,
-        required:true
+        lowercase: true
     },
     description:{
         type:String,
-        required:true
+        required:true,
+        lowercase: true
     },
     file:{
         type:Array,
@@ -16,12 +20,15 @@ const Job=new mongoose.Schema({
     },
     category:{
         type:String,
+        lowercase: true
     },
     status:{
         type:String,
+        default:'pending',
     },
     skills:{
         type:Array,
+        lowercase: true
     },
     scope:
     {
@@ -29,15 +36,30 @@ const Job=new mongoose.Schema({
             duration:String,
     },
     budget:{
-            max:Number,
-            min:Number,
+            max:{
+                type:String
+            },
+            min:{
+                type:String
+            },
     },
     userId:{type:Schema.Types.ObjectId,ref:'user'},
     employeeId:{type:Schema.Types.ObjectId,ref:'employee'},
     createdAt:{
         type:Date,
-        default:new Date().toUTCString(),
-    }
+        default:utcDate,
+    },
+    // {
+    //     // type:Date,
+    //     date:{
+    //     type:Date,
+    //     default:new Date()
+    //     },
+    //     offset:{
+    //         type:Date,
+    //         default:new Date().getTimezoneOffset()
+    //     },
+    // }
 })
 
 Job.index({'$**': 'text'});

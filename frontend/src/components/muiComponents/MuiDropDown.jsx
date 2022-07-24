@@ -46,7 +46,7 @@ export default function MultipleSelectPlaceholder({
     setLanguageName(typeof value === "string" ? value.split(",") : value);
     dispatch(setdata(event.target.value))
   };
-
+  
   return (
     <div>
       <FormControl sx={{ m: 1, width: 350, mt: 3 }}>

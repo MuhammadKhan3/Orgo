@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <>
 
-      <Loading/>
+      {/* <Loading/> */}
     </>
   )
 }

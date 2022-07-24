@@ -26,7 +26,9 @@ const Header = () => {
   <div className="flex-1 inline-block w-[80px] text-white">
     <h2 className=" text-[45px] text-white w-[60px] float-left ">Orgo</h2>
     <ul className='flex flex-row   mt-[-15px] !ml-[190px] space-x-2  '>
-        <li className={` text-[14px] btn btn-ghost w-[90px]  ${acitve==='dashboard' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('dashboard')}}>Dashboard</li>
+        <Link to='/'>
+          <li className={` text-[14px] btn btn-ghost w-[90px]  ${acitve==='dashboard' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('dashboard')}}>Dashboard</li>
+        </Link>
         <Link to='/project'>
           <li className={`text-[14px]  btn btn-ghost w-[90px] ${acitve==='projects' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('projects')}}>Projects</li>
         </Link>

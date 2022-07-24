@@ -3,6 +3,10 @@ const mongoose=require('mongoose')
 const fs = require('fs');
 const favJob = require("../model/favJobs");
 const {validationResult}=require('express-validator');
+const Searches = require("../model/search");
+
+
+
 
 exports.createJob=(req,res,next)=>{
     const errors=validationResult(req);
@@ -15,11 +19,13 @@ exports.createJob=(req,res,next)=>{
 
     const {employeeId}=req.params;
     const file=req.files.map(value=>{
-        return value.filename
+        return value.filename;
     });
-    const {headline,description,category,skills,scope,budget}=req.body;
+
+    const {heading,description,category,skills,scope,budget}=req.body;
+    console.log(typeof budget);
     Jobs.create({
-        headline:headline,
+        heading:heading,
         description:description,
         category:category,
         file:file,
@@ -27,11 +33,10 @@ exports.createJob=(req,res,next)=>{
         scope:scope,
         budget:budget,
         employeeId:employeeId,
-        status:'pending',
     }).then(job=>{
-        
+        console.log(job)
         if(job){
-            res.json({msg:'Created Succefully User',flag:true,jobId:job._id})
+            res.json({msg:'Created Succefully Job',flag:true,jobId:job._id})
         }
 
     }).catch((error)=>{
@@ -46,7 +51,7 @@ exports.createJob=(req,res,next)=>{
 exports.updateJob=(req,res,next)=>{
 
     const {jobId}=req.params;
-    const {headline,description,category,skills,scope,budget,deletefile}=req.body;
+    const {heading,description,category,skills,scope,budget,deletefile}=req.body;
     
     let {files}=req.body
 
@@ -78,7 +83,7 @@ exports.updateJob=(req,res,next)=>{
     Jobs.updateOne({
         _id:mongoose.Types.ObjectId(jobId),
     },{$set:{
-        headline:headline,
+        heading:heading,
         description:description,
         category:category,
         file:files,
@@ -128,35 +133,54 @@ exports.getJob=(req,res,next)=>{
     })
 }
 
-exports.getJobs=async (req,res,next)=>{
-    
+exports.getJobs=(req,res,next)=>{
+    console.log('hi')
     Jobs.find({status:'active'})
-    .populate('userId')
+    // .populate('userId')
+    // .populate('employeeId')
     .then(jobs=>{
         console.log(jobs)
         if(jobs){
-            res.json({jobs:jobs,flag:true,msg:'Succefully Fetch Jobs'});
+            res.json({jobs:jobs,searches:req.searches,flag:true,msg:'Succefully Fetch Jobs'});
         }
     })
 
 
 }
 
+exports.searchlist=(req,res,next)=>{
+    const {userId}=req.body;
+    Searches.find({userId:userId})
+    .then((searches)=>{
+        req.searches=searches;
+        next();
+    })
+}
+
 
 exports.FavJob=(req,res,next)=>{
-    const {userId,jobId}=req.body;
-    Jobs.findOne({jobId:mongoose.Types.ObjectId(jobId)})
+    console.log('favourit.')
+    const {userId}=req.body;
+    const {jobId}=req.params;
+    console.log(jobId,userId)
+
+    favJob.findOne({$and:[
+        {jobId:mongoose.Types.ObjectId(jobId)},
+        {userId:mongoose.Types.ObjectId(userId)}
+    ]})
     .then((job)=>{
         if(job){
-            res.json({msg:"Already Add",flag:true})
+            console.log('already')
+            res.json({msg:"Already Added",flag:true})
         }else{
+            console.log('not exist')
+
             favJob.create({
                 userId:userId,
                 jobId:jobId
             }).then((favjob)=>{
                 if(favjob){
-                    res.json({flag:true,msg:'Succefully added '});
-        
+                    res.json({flag:true,msg:'Succefully added'});        
                 }
             })
         }
@@ -169,18 +193,90 @@ exports.FavJob=(req,res,next)=>{
 }
 
 exports.getfavJob=(req,res,next)=>{
-    favJob.find()
-    .populate('userId')
-    .populate('jobId')
+    const {userId}=req.body;
+    console.log(userId);
+    
+    favJob.find({userId:mongoose.Types.ObjectId(userId)})
     .then((favjob)=>{
-        res.json({FavouriteJob:favjob,flag:true,msg:'Succefull Fetched'});
+        const id=favjob.map((value)=>{
+            return value.jobId;
+        })
+        Jobs.find({_id:id})
+        .then((jobs)=>{
+            console.log(jobs)
+            res.json({jobs:jobs,flag:true,msg:'Succefull Fetched'});
+        })
     })
 }
 
-exports.searchJob=(req,res,next)=>{
-    const {search}=req.body;
-    Jobs.find({$text:{$search:search}})
-    .then((jobs)=>{
-        res.json({jobs:jobs,msg:'Succefully Fetched',flag:true});
+
+
+
+
+
+exports.bestmatchJob=(req,res,next)=>{
+    const {userId}=req.body;
+    Searches.find({userId:userId})
+    .select('-userId')
+    .select('-_id')
+    .select('-__v')
+    .then(searches=>{
+        const search=searches.map((value,i)=>{
+            return value.search;
+        })
+        Jobs.find({$text:{$search:search.toString()}})
+        .then((jobs)=>{
+            if(jobs){
+                res.json({searches:req.searches,jobs:jobs,msg:'Succesfully Fetched',flag:true})
+            }else{
+                res.json({msg:'Not Found the jobs',flag:false})
+
+            }
+        })
     })
+}
+exports.searchJob=(req,res,next)=>{
+    
+    const errors=validationResult(req);
+    if(!errors.isEmpty()){
+        const err=new Error('Information Profile')
+        err.statusCode=500;
+        err.data=errors.array();
+        throw err;
+    }
+
+    const {search}=req.body;
+    const {userId}=req.body;
+    console.log(search,userId)
+    Jobs.find({$text:{$search:search},status:"active"})
+    .then((jobs)=>{
+        console.log('job',jobs)
+        if(jobs){
+            console.log(jobs)
+            Searches.find({userId:mongoose.Types.ObjectId(userId)}, function(err, count) {
+            console.log("count",count.length)
+                if(count.length<5){
+                    console.log('1')
+                    Searches.create({
+                        userId:userId,
+                        search:search
+                    }).then(()=>{
+                        res.json({jobs:jobs,msg:'Succefully Fetched'})
+                    })
+                }else{
+                    console.log('2')
+                    Searches.updateOne({userId:mongoose.Types.ObjectId(userId)},{$set:{search:search}})
+                    .then((search)=>{
+                        console.log(search)
+                        if(search.acknowledged){
+                            res.json({jobs:jobs,msg:'Succefully Fetched',flag:true})
+                        }
+                    })
+                }
+              });
+        }else{
+            res.json({jobs:jobs,msg:'Jobs Not found',flag:true})
+        }
+    })
+
 }
