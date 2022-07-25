@@ -14,16 +14,27 @@ function BudgetPop({ handleClose }) {
         <div
           style={{
             padding: "20px",
-            display: "flex",
-            justifyContent: "flex-start",
-            marginBottom: "150px",
           }}
         >
+          <p style={{fontWeight:"500"}}>Minimum</p>
           <input
             style={{ margin: "10px 0 10px 0" }}
             className="pop-video-input"
             type="text"
             placeholder="Ex: 10.00 $/hr"
+          />
+        </div>
+        <div
+          style={{
+            padding: "20px",
+          }}
+        >
+          <p style={{fontWeight:"500"}}>Maximum</p>
+          <input
+            style={{ margin: "10px 0 10px 0" }}
+            className="pop-video-input"
+            type="text"
+            placeholder="Ex: 25.00 $/hr"
           />
         </div>
         <div className="button-container">

@@ -53,7 +53,6 @@ export default function MultipleSelectPlaceholder({
       <FormControl sx={{ m: 1, width: 350, mt: 3 }}>
         <Select
           disabled={ability}
-          multiple
           displayEmpty
           value={languageName}
           onChange={handleChange}
