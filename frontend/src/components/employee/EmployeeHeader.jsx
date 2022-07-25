@@ -11,13 +11,10 @@ function EmployeeHeader() {
   const [time, setTime] = useState();
   const uploadedImage = React.useRef(null);
   const imageUploader = React.useRef(null);
-
   const companyName=useSelector(state=>state.companySlice.companyname);
   const timezone=useSelector(state=>state.companySlice.timezone);
   const country=useSelector(state=>state.companySlice.country);
   const picture=useSelector(state=>state.companySlice.picture);
-
-
   
   const handleImageUpload = (e) => {
     const [file] = e.target.files;
@@ -34,7 +31,6 @@ function EmployeeHeader() {
     formdata.append('file',file);
     const companyId=cookies.get('companyId');
     const token=cookies.get('token');
-
     axios.post(`http://localhost:8000/company-picture/${companyId}`,formdata)
     .then((response)=>{
       console.log(response)
