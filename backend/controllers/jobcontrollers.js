@@ -9,6 +9,9 @@ const Searches = require("../model/search");
 
 
 exports.createJob=(req,res,next)=>{
+    console.log('create-job')
+    console.log(req)
+
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -16,20 +19,24 @@ exports.createJob=(req,res,next)=>{
         err.data=errors.array();
         throw err;
     }
+    console.log('create-job')
 
     const {employeeId}=req.params;
     const file=req.files.map(value=>{
-        return value.filename;
+        return value;
     });
+    console.log(file)
 
-    const {heading,description,category,skills,scope,budget}=req.body;
-    console.log(typeof budget);
+    const {heading,description,category,skill,scope,budget}=req.body;
+    console.log(budget)
+    
+  
     Jobs.create({
         heading:heading,
         description:description,
         category:category,
         file:file,
-        skills:skills,
+        skills:skill,
         scope:scope,
         budget:budget,
         employeeId:employeeId,

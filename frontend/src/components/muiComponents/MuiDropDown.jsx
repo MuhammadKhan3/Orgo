@@ -27,11 +27,11 @@ export default function MultipleSelectPlaceholder({
   text,
   ability,
   setdata,
+  value,
 }) {
   const theme = useTheme();
   const dispatch=useDispatch();
   const [languageName, setLanguageName] = React.useState([]);
-  console.log(languages)
   function getStyles(language, languageName, theme) {
     return {
       fontWeight:
@@ -45,19 +45,22 @@ export default function MultipleSelectPlaceholder({
       target: { value },
     } = event;
     setLanguageName(typeof value === "string" ? value.split(",") : value);
+    console.log(event.target.value);
     dispatch(setdata(event.target.value))
   };
-  
+  console.log(value)
   return (
     <div>
       <FormControl sx={{ m: 1, width: 350, mt: 3 }}>
         <Select
           disabled={ability}
+          multiple
           displayEmpty
           value={languageName}
           onChange={handleChange}
           input={<OutlinedInput />}
           renderValue={(selected) => {
+            console.log(selected)
             if (selected.length === 0) {
               return text;
             }

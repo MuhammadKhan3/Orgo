@@ -24,7 +24,7 @@ export const jobSlice = createSlice({
       state.file=action.payload;
     },
     setcategory:(state,action)=>{
-      state.category=action.payload[0];
+      state.category=action.payload;
     },
     setskill:(state,action)=>{
       state.skill=action.payload;

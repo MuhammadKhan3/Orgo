@@ -4,6 +4,7 @@ import Button from "../button/Button";
 import MuiDropDown from "../muiComponents/MuiDropDown";
 import {useSelector,useDispatch} from 'react-redux';
 import { job_action } from "../redux/slice/jobSlice";
+import SingleSelectPlaceholder from "../categorydropdown/categorydropdown";
 const category = [
     "Full Stack Development",
     "React Native Developer"
@@ -29,7 +30,7 @@ function CategoryPop({ handleClose }) {
             marginBottom: "150px",
           }}
         >
-          <MuiDropDown text="Add Category" languages={category} setdata={job_action.setcategory}  ability={false} />
+          <MuiDropDown text="Add Category" languages={category} setdata={job_action.setcategory}  ability={false} value={categorys}/>
         </div>
         <div className="button-container">
           <Button className="cancel" content="Cancel" handle={handleClose} />

@@ -8,9 +8,13 @@ import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
 import CategoryPop from "../popups/CategoryPop";
 import SkillListPop from "../popups/SkillListPop";
 import BudgetPop from "../popups/BudgetPop";
+import {Cookies} from 'react-cookie'
 import { useDispatch,useSelector } from "react-redux";
 import { job_action } from "../redux/slice/jobSlice";
+import axios from "axios";
 
+
+const cookies=new Cookies();
 const skillList = ["MongoDb", "Node", "React", "Api", "GraphQL"];
 function CreateJobCompo() {
   const dispatch=useDispatch();
@@ -28,8 +32,7 @@ function CreateJobCompo() {
   const [categoryPop, setCategoryPop] = useState(false);
   const [skillPop, setSkillPop] = useState(false);
   const [budgetPop, setBudgetPop] = useState(false);
-  // const [description, setDescription] = useState("");
-  
+   
 
 
   const handleheading=(e)=>{
@@ -54,8 +57,35 @@ function CreateJobCompo() {
   };
 
   const savehandler=()=>{
-    console.log('ho')
-    console.log(heading,description,files,skill,category,min,max)  
+    const employeeId=cookies.get('employeeId');
+    const token=cookies.get('token');
+
+    console.log(heading,description,files,skill,category,{budget:{min,max}});
+    const formdata=new FormData();
+    formdata.append('heading',heading);
+    formdata.append('description',description);
+    files.forEach((file)=>{
+      formdata.append('files',file);
+    })
+
+    
+    skill.forEach((value)=>{
+      formdata.append('skill[]',JSON.stringify(value));
+      // formdata.append('skill[id]',value.id);
+
+    })
+
+    formdata.append('category',category);
+    formdata.append('budget[min]',min);
+    formdata.append('budget[max]',max);
+
+
+
+    axios.post(`http://localhost:8000/create-job/${employeeId}`,formdata,{
+      headers:{
+        token:"Bearer "+token
+      }
+    })  
   }
 
   return (
@@ -119,7 +149,7 @@ function CreateJobCompo() {
         <div
           style={{ display: "flex", flexDirection: "row", marginTop: "5px" }}
         >
-          <p>Full stack development</p>
+          <p>{category}</p>
           <CreateTwoToneIcon
             onClick={handleCategoryPop}
             style={{ marginLeft: "20px", cursor: "pointer" }}
@@ -138,13 +168,14 @@ function CreateJobCompo() {
                 flexWrap: "wrap",
               }}
             >
-              {skillList
-                ? skillList.map((list, key) => {
-                    console.log(list.length);
+              {skill
+                ? skill.map((list, key) => {
+                    console.log(list.name.length);
                     return (
                       <li
+                        key={list.id}
                         style={{
-                          width: `${list.length + 1}0px`,
+                          width: `${list.name.length + 1}0px`,
                           padding: "6px",
                           display: "flex",
                           justifyContent: "center",
@@ -156,7 +187,7 @@ function CreateJobCompo() {
                           color: "white",
                         }}
                       >
-                        {list}
+                        {list.name}
                       </li>
                     );
                   })
@@ -178,7 +209,7 @@ function CreateJobCompo() {
           <div
             style={{ display: "flex", flexDirection: "row", marginTop: "5px" }}
           >
-            <p>$12.00 - $25.00/hr</p>
+            <p>${min} - ${max}/hr</p>
             <CreateTwoToneIcon
               onClick={handleBudgetPop}
               style={{ marginLeft: "20px", cursor: "pointer" }}
@@ -197,6 +228,7 @@ function CreateJobCompo() {
           <Button content="Create Job" handle={savehandler} />
         </div>
       </div>
+
       {categoryPop ? <CategoryPop handleClose={handleCategoryPop} /> : null}
       {skillPop ? <SkillListPop handleClose={handleSkillPop} /> : null}
       {budgetPop ? <BudgetPop handleClose={handleBudgetPop} /> : null}

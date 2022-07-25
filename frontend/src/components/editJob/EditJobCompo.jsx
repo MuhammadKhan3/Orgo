@@ -8,16 +8,30 @@ import CategoryPop from "../popups/CategoryPop";
 import SkillListPop from "../popups/SkillListPop";
 import BudgetPop from "../popups/BudgetPop";
 import '../createJob/create.css'
-
+import {useSelector,useDispatch} from 'react-redux';
+import { job_action } from "../redux/slice/jobSlice";
 const skillList = ["MongoDb", "Node", "React", "Api", "GraphQL"];
 function EditJobCompo() {
+  const dispatch=useDispatch();
+    const heading=useSelector(state=>state.jobSlice.heading);
+    const description=useSelector(state=>state.jobSlice.description);
+    const file=useSelector(state=>state.jobSlice.file);
+    const category=useSelector(state=>state.jobSlice.category);
+    const skill=useSelector(state=>state.jobSlice.skill);
+    const min=useSelector(state=>state.jobSlice.min);
+    const max=useSelector(state=>state.jobSlice.max);
+
+
+
+    console.log(heading)
+
   const [categoryPop, setCategoryPop] = useState(false);
   const [skillPop, setSkillPop] = useState(false);
   const [budgetPop, setBudgetPop] = useState(false);
 
-  const [description, setDescription] = useState("");
   const handleDescription = (e) => {
-    setDescription(e.target.value);
+    // setDescription(e.target.value);
+    dispatch(job_action.setdescription(e.target.value))
   };
 
   const handleCategoryPop = () => {
@@ -45,6 +59,7 @@ function EditJobCompo() {
           className="head-input"
           type="text"
           placeholder="Your profession"
+          value={heading}
         />
       </div>
       <hr />
@@ -81,6 +96,9 @@ function EditJobCompo() {
       <div className="attach-file">
         <FileUploader />
         <p>Max file size : 100MB</p>
+        {file.map((value)=>{
+          return  <li>{value.originalname}</li>;
+        })}
       </div>
       <br />
       <hr />
@@ -89,7 +107,7 @@ function EditJobCompo() {
         <div
           style={{ display: "flex", flexDirection: "row", marginTop: "5px" }}
         >
-          <p>Full stack development</p>
+          <p>{category}</p>
           <CreateTwoToneIcon
             onClick={handleCategoryPop}
             style={{ marginLeft: "20px", cursor: "pointer" }}
@@ -148,7 +166,7 @@ function EditJobCompo() {
           <div
             style={{ display: "flex", flexDirection: "row", marginTop: "5px" }}
           >
-            <p>$12.00 - $25.00/hr</p>
+            <p>${min}.00 - ${max}.00/hr</p>
             <CreateTwoToneIcon
               onClick={handleBudgetPop}
               style={{ marginLeft: "20px", cursor: "pointer" }}
