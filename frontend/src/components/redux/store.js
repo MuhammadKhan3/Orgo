@@ -7,4 +7,7 @@ export const store = configureStore({
   reducer: {
       userSlice:userSlice.reducer,companySlice:companySlice.reducer,jobSlice:jobSlice.reducer
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+  }),
 })

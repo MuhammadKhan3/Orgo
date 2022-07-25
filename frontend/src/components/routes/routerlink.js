@@ -40,8 +40,8 @@ function RouterLink() {
         />
       )}
       <Route path="/project" element={<Search />} />
-      <Route path="/createjob" element={<CreateJob />} />
-      <Route path="editjob" element={<EditJob/>} />
+      <Route path="/create-job" element={<CreateJob />} />
+      <Route path="/edit-job" element={<EditJob/>} />
     </Routes>
   );
 }

@@ -2,13 +2,18 @@ import React from "react";
 import "../popups/popup.css";
 import Button from "../button/Button";
 import MuiDropDown from "../muiComponents/MuiDropDown";
-
+import {useSelector,useDispatch} from 'react-redux';
+import { job_action } from "../redux/slice/jobSlice";
 const category = [
     "Full Stack Development",
     "React Native Developer"
 ];
 
 function CategoryPop({ handleClose }) {
+  const categorys=useSelector(state=>state.jobSlice.category);
+  console.log(categorys);
+
+
   return (
     <div className="main-box">
       <div style={{ width: "750px" }} className="popup-box">
@@ -24,7 +29,7 @@ function CategoryPop({ handleClose }) {
             marginBottom: "150px",
           }}
         >
-          <MuiDropDown text="Add Category" languages={category} ability={false} />
+          <MuiDropDown text="Add Category" languages={category} setdata={job_action.setcategory}  ability={false} />
         </div>
         <div className="button-container">
           <Button className="cancel" content="Cancel" handle={handleClose} />

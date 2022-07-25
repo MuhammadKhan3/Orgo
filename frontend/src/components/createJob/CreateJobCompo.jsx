@@ -8,16 +8,37 @@ import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
 import CategoryPop from "../popups/CategoryPop";
 import SkillListPop from "../popups/SkillListPop";
 import BudgetPop from "../popups/BudgetPop";
+import { useDispatch,useSelector } from "react-redux";
+import { job_action } from "../redux/slice/jobSlice";
 
 const skillList = ["MongoDb", "Node", "React", "Api", "GraphQL"];
 function CreateJobCompo() {
+  const dispatch=useDispatch();
+  const heading=useSelector(state=>state.jobSlice.heading);
+  const description=useSelector(state=>state.jobSlice.description);
+  const files=useSelector(state=>state.jobSlice.file);
+  const category=useSelector(state=>state.jobSlice.category);
+  const skill=useSelector(state=>state.jobSlice.skill);
+  const min=useSelector(state=>state.jobSlice.min);
+  const max=useSelector(state=>state.jobSlice.max);
+
+
+
+  
   const [categoryPop, setCategoryPop] = useState(false);
   const [skillPop, setSkillPop] = useState(false);
   const [budgetPop, setBudgetPop] = useState(false);
+  // const [description, setDescription] = useState("");
+  
 
-  const [description, setDescription] = useState("");
+
+  const handleheading=(e)=>{
+    dispatch(job_action.setheading(e.target.value))
+  }
+
   const handleDescription = (e) => {
-    setDescription(e.target.value);
+    dispatch(job_action.setdescription(e.target.value))
+
   };
 
   const handleCategoryPop = () => {
@@ -32,6 +53,11 @@ function CreateJobCompo() {
     setBudgetPop(!budgetPop);
   };
 
+  const savehandler=()=>{
+    console.log('ho')
+    console.log(heading,description,files,skill,category,min,max)  
+  }
+
   return (
     <div className="create-main-head">
       <br />
@@ -44,6 +70,7 @@ function CreateJobCompo() {
         <input
           className="head-input"
           type="text"
+          onChange={handleheading}
           placeholder="Your profession"
         />
       </div>
@@ -81,6 +108,9 @@ function CreateJobCompo() {
       <div className="attach-file">
         <FileUploader />
         <p>Max file size : 100MB</p>
+        {files.map((file)=>{
+          return <li>{file.name}</li>
+        })}
       </div>
       <br />
       <hr />
@@ -164,7 +194,7 @@ function CreateJobCompo() {
           }}
         >
           <Button content="Cancle Job" />
-          <Button content="Create Job" />
+          <Button content="Create Job" handle={savehandler} />
         </div>
       </div>
       {categoryPop ? <CategoryPop handleClose={handleCategoryPop} /> : null}

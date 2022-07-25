@@ -16,7 +16,6 @@ const Job=new mongoose.Schema({
     },
     file:{
         type:Array,
-        required:true,
     },
     category:{
         type:String,

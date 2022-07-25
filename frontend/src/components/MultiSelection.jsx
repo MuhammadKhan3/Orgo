@@ -1,8 +1,10 @@
 import React from "react";
 import Multiselect from "multiselect-react-dropdown";
 import '../components/multiSelection.css'
-
+import {useDispatch,useSelector} from 'react-redux';
+import { job_action } from "./redux/slice/jobSlice";
 const state = {
+  
   options: [
     { name: "React", id: 1 },
     { name: "Node", id: 2 },
@@ -12,22 +14,25 @@ const state = {
     { name: "Java", id: 6 },
     { name: "Java", id: 7 },
     { name: "Java", id: 8 },
-
+    
   ],
 };
 
 function MultiSelection() {
+  const dispatch=useDispatch();
+  const skill=useSelector(state=>state.jobSlice.skill);
   function onSelect(selectedList, selectedItem) {
-    console.log("Hello");
+    dispatch(job_action.setskill(selectedList))
   }
   function onRemove(selectedList, removedItem) {
-    console.log("Hello");
+    console.log(selectedList);
+    dispatch(job_action.setskill(selectedList))
   }
   return (
     <Multiselect
       className="multi-select"
       options={state.options} // Options to display in the dropdown
-      selectedValues={state.selectedValue} // Preselected value to persist in dropdown
+      selectedValues={skill} // Preselected value to persist in dropdown
       onSelect={onSelect} // Function will trigger on select event
       onRemove={onRemove} // Function will trigger on remove event
       displayValue="name" // Property name to display in the dropdown options

@@ -28,9 +28,10 @@ export default function MultipleSelectPlaceholder({
   ability,
   setdata,
 }) {
-  const dispatch=useDispatch();
   const theme = useTheme();
+  const dispatch=useDispatch();
   const [languageName, setLanguageName] = React.useState([]);
+  console.log(languages)
   function getStyles(language, languageName, theme) {
     return {
       fontWeight:
