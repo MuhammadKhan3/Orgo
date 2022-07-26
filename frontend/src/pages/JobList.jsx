@@ -50,7 +50,7 @@ function JobList() {
         <div className="job-list-header">
           <h1 style={{ fontSize: "1.2em", fontWeight: "500",color:"#656565" }}>Job List</h1>
         </div>
-        <div className="job-search-nav">
+        <div className="job-search-nav-items">
           <button id={"1"} onClick={mostrecenthandler} className={active === "1" ? "active" : undefined}>Jobs</button>
           <button id={"2"} onClick={bestmatchhandler} className={active === "2" ? "active" : undefined}>Hire</button>
         </div>
