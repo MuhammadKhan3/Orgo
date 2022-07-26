@@ -27,10 +27,11 @@ export default function MultipleSelectPlaceholder({
   text,
   ability,
   setdata,
+  value
 }) {
   const theme = useTheme();
   const dispatch=useDispatch();
-  const [languageName, setLanguageName] = React.useState([]);
+  const [languageName, setLanguageName] = React.useState([value]);
   console.log(languages)
   function getStyles(language, languageName, theme) {
     return {

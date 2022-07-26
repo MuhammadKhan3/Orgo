@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import {useSelector,useDispatch} from 'react-redux';
-import { formatDistance, subDays } from 'date-fns'
-import { parseISO } from "date-fns";
+import { formatDistance} from 'date-fns'
 import {Cookies} from 'react-cookie';
 import {job_action} from '../redux/slice/jobSlice';
 import "./searchjob.css";
 import axios from 'axios'
 import FetchJob from "../redux/thunk/fetchJob";
-import  format from 'date-fns/format'
+import { Link } from "react-router-dom";
 
 function SearchJob() {
   const dispatch=useDispatch();
@@ -94,6 +93,21 @@ function SearchJob() {
       console.log(response)
     })
 }
+
+const downloadfile=(file)=>{
+  fetch(`http://localhost:8000/${file.filename}`)
+            .then(response => {
+              console.log(response)
+                response.blob().then(blob => {
+                    let url = window.URL.createObjectURL(blob);
+                    let a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${file.originalname}`;
+                    a.click();
+                });
+                //window.location.href = response.url;
+        });
+}
   
 
   return (
@@ -165,7 +179,6 @@ function SearchJob() {
                         )}
                       </div>
                       <p>
-
                         {formatDistance( new Date(job.createdAt), new Date(), { addSuffix: true })}
                       </p>
                       <p style={{ marginTop: "10px" }}>
@@ -176,9 +189,16 @@ function SearchJob() {
                       </p>
                       <div className="required-skills">
                         {job.skills.map((skill,i)=>{
-                           return <button key={skill+i} className="skillsButton">{skill}</button>
+                           return <button key={skill+i} className="skillsButton">{skill.name}</button>
                         })}
                       </div>
+                      {job.file.length>0 &&
+                      <div style={{marginTop:'5px',}}>
+                        <p style={{fontWeight:'bold'}}>File</p>
+                        {job.file.map((file,j)=>{
+                                  return <button onClick={()=>downloadfile(file)} style={{marginLeft:'5px'}} key={j}>{file.originalname}</button>
+                        })}
+                      </div>}
                       <br />
                       <p>Proposals : 15 to 20</p>
                     </div>

@@ -6,8 +6,7 @@ const User= require('../model/users');
 
 module.exports=(req,res,next)=>{
     const authheader=req.body.headers.authorization;
-    console.log(req)
-    console.log(authheader);
+
     if(!authheader){
         const err=new Error('Not Authenticated');
         throw err;

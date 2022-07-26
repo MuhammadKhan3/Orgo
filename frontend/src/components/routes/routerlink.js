@@ -44,7 +44,7 @@ function RouterLink() {
       )}
       <Route path="/project" element={<Search />} />
       <Route path="/create-job" element={<CreateJob />} />
-      <Route path="/edit-job" element={<EditJob/>} />
+      <Route path="/edit-job/:jobId" element={<EditJob/>} />
       <Route path="/job-list" element={<JobList/>} />
       <Route path="/proposal-list" element={<ProposalList/>} />
       <Route path="/submit-proposal" element={<SubmitProposal/>} />

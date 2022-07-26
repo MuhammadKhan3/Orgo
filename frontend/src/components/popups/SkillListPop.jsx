@@ -2,8 +2,10 @@ import React from "react";
 import "../popups/popup.css";
 import Button from "../button/Button";
 import MultiSelection from "../MultiSelection";
+import {useSelector,useDispatch} from 'react-redux';
 
 export default function SkillListPop({ handleClose }) {
+  const skill=useSelector(state=>state.jobSlice.skill) 
   return (
     <div className="main-box">
       <div style={{ width: "750px" }} className="popup-box">

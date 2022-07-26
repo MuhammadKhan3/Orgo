@@ -29,7 +29,7 @@ function CategoryPop({ handleClose }) {
             marginBottom: "150px",
           }}
         >
-          <MuiDropDown text="Add Category" languages={category} setdata={job_action.setcategory}  ability={false} />
+          <MuiDropDown text="Add Category" languages={category} setdata={job_action.setcategory}  ability={false} value={categorys}/>
         </div>
         <div className="button-container">
           <Button className="cancel" content="Cancel" handle={handleClose} />

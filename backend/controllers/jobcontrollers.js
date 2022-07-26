@@ -9,6 +9,8 @@ const Searches = require("../model/search");
 
 
 exports.createJob=(req,res,next)=>{
+    console.log('create-job')
+
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -19,17 +21,19 @@ exports.createJob=(req,res,next)=>{
 
     const {employeeId}=req.params;
     const file=req.files.map(value=>{
-        return value.filename;
+        return value;
     });
-
-    const {heading,description,category,skills,scope,budget}=req.body;
-    console.log(typeof budget);
+    
+    const {heading,description,category,skill,scope,budget}=req.body;
+    
+    console.log(heading,description,category,skill,scope,budget,file)
+  
     Jobs.create({
         heading:heading,
         description:description,
         category:category,
         file:file,
-        skills:skills,
+        skills:skill,
         scope:scope,
         budget:budget,
         employeeId:employeeId,
@@ -49,37 +53,37 @@ exports.createJob=(req,res,next)=>{
 
 
 exports.updateJob=(req,res,next)=>{
+    console.log('update job')
 
     const {jobId}=req.params;
-    const {heading,description,category,skills,scope,budget,deletefile}=req.body;
-    
-    let {files}=req.body
+    const {heading,description,category,skills,scope,budget,deletefile,files=[]}=req.body;
+    console.log(files)
+    let file=req.files
 
 // Add file
-    if(req.files.length>0){
-        req.files.map((value)=>{
-            files.push(value.filename)
-        })
+        if(file){
+            console.log('file')
+            file.map((value)=>{
+               files.push(value)
+            })
+        }
+// // Close file
+    // Delete the file   
+        if(deletefile)
+        {
 
-    }
-// Close file
-   // Delete the file   
-   console.log(deletefile.length) 
-    if(deletefile.length>0)
-    {
-        console.log('delte')
-        deletefile.forEach((value)=>{
+            deletefile.forEach((value)=>{
 
-            fs.unlink(`images/job/${value}`, (err => {
-                if (err) console.log(err);
-                else {
-                console.log("Deleted file: image.jpg");
-                }
-            }));
-        })
-    }
-    // Close the File
-    console.log('files',files)
+                fs.unlink(`images/job/${value}`, (err => {
+                    if (err) console.log(err);
+                    else {
+                    console.log("Deleted file: image.jpg");
+                    }
+                }));
+            })
+        }
+
+     // Close the File
     Jobs.updateOne({
         _id:mongoose.Types.ObjectId(jobId),
     },{$set:{
@@ -110,7 +114,7 @@ exports.getJob=(req,res,next)=>{
     const {jobId}=req.params;
     Jobs.findOne({$and:[
         {_id:mongoose.Types.ObjectId(jobId)},
-        {status:'active'}
+        // {status:'active'}
     ]})
     .select("-status")
     .populate({
@@ -138,6 +142,7 @@ exports.getJobs=(req,res,next)=>{
     Jobs.find({status:'active'})
     // .populate('userId')
     // .populate('employeeId')
+    .sort('-createdAt')
     .then(jobs=>{
         console.log(jobs)
         if(jobs){
@@ -168,6 +173,7 @@ exports.FavJob=(req,res,next)=>{
         {jobId:mongoose.Types.ObjectId(jobId)},
         {userId:mongoose.Types.ObjectId(userId)}
     ]})
+    
     .then((job)=>{
         if(job){
             console.log('already')
@@ -220,6 +226,7 @@ exports.bestmatchJob=(req,res,next)=>{
     .select('-userId')
     .select('-_id')
     .select('-__v')
+    .sort('-createdAt')
     .then(searches=>{
         const search=searches.map((value,i)=>{
             return value.search;
@@ -279,4 +286,19 @@ exports.searchJob=(req,res,next)=>{
         }
     })
 
+}
+
+
+exports.getemployeejob=(req,res,next)=>{
+    
+    const {employeeId}=req.body;
+    Jobs.find({employeeId:employeeId})
+    .sort('-createdAt')
+    .then((jobs)=>{
+        if(jobs){
+            res.json({msg:'Succefully Fetched',flag:true,jobs:jobs})
+        }else{
+
+        }
+    })
 }

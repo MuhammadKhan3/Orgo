@@ -32,6 +32,11 @@ const Header = () => {
         <Link to='/project'>
           <li className={`text-[14px]  btn btn-ghost w-[90px] ${acitve==='projects' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('projects')}}>Projects</li>
         </Link>
+        {cookies.get('userType')==='employee'  &&
+          <Link to='job-list'>
+            <li className={` text-[14px] btn btn-ghost w-[90px] ${acitve==='job' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('job')}}>Job</li>
+          </Link>
+        }
         <li className={` text-[14px] btn btn-ghost w-[90px] ${acitve==='message' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('message')}}>Message</li>
         {!cookies.get('userId') && !cookies.get('token')  &&
           <Link to='login'>

@@ -8,16 +8,41 @@ import CategoryPop from "../popups/CategoryPop";
 import SkillListPop from "../popups/SkillListPop";
 import BudgetPop from "../popups/BudgetPop";
 import '../createJob/create.css'
+import {useSelector,useDispatch} from 'react-redux';
+import { job_action } from "../redux/slice/jobSlice";
+import axios from 'axios';
+import { useParams } from "react-router-dom";
+import {Cookies} from 'react-cookie';
+const cookies=new Cookies();
 
 const skillList = ["MongoDb", "Node", "React", "Api", "GraphQL"];
 function EditJobCompo() {
+  const dispatch=useDispatch();
+    const {jobId}=useParams();
+    const heading=useSelector(state=>state.jobSlice.heading);
+    const description=useSelector(state=>state.jobSlice.description);
+    const file=useSelector(state=>state.jobSlice.file);
+    //Files get the file name from db 
+    const files=useSelector(state=>state.jobSlice.files);
+    const deletefile=useSelector(state=>state.jobSlice.deletefile);
+
+    const category=useSelector(state=>state.jobSlice.category);
+    const skill=useSelector(state=>state.jobSlice.skill);
+    const min=useSelector(state=>state.jobSlice.min);
+    const max=useSelector(state=>state.jobSlice.max);
+
+
   const [categoryPop, setCategoryPop] = useState(false);
   const [skillPop, setSkillPop] = useState(false);
   const [budgetPop, setBudgetPop] = useState(false);
 
-  const [description, setDescription] = useState("");
+
+  const headinghandler=(e)=>{
+    dispatch(job_action.setheading(e.target.value))
+  }
   const handleDescription = (e) => {
-    setDescription(e.target.value);
+    // setDescription(e.target.value);
+    dispatch(job_action.setdescription(e.target.value))
   };
 
   const handleCategoryPop = () => {
@@ -32,6 +57,70 @@ function EditJobCompo() {
     setBudgetPop(!budgetPop);
   };
 
+  const deletefiles=(id)=>{
+
+    dispatch(job_action.setdeletefile(files[id].filename))
+    const remfile=files.filter((file,i)=>{
+      return id!==i
+    })
+    console.log(remfile)
+    dispatch(job_action.setfiles(remfile))
+  }
+
+  const localdeletefile=(id)=>{
+    const remfile=file.filter((file,i)=>{
+      return id!==i
+    })
+    dispatch(job_action.setremovefile(remfile))
+
+  }
+// Edit handler
+  const edithandler=()=>{
+    const token=cookies.get('token');
+    const formdata=new FormData();
+    formdata.append('heading',heading);
+    formdata.append('description',description);
+    skill.forEach((s,i)=>{
+      formdata.append(`skills[${i}][id]`,s.id);
+      formdata.append(`skills[${i}][name]`,s.name);
+    })
+    files.forEach((file,i)=>{
+      formdata.append(`files[${i}][fieldname]`,file.fieldname);
+      formdata.append(`files[${i}][originalname]`,file.originalname);
+      formdata.append(`files[${i}][encoding]`,file.encoding);
+      formdata.append(`files[${i}][mimetype]`,file.mimetype);
+      formdata.append(`files[${i}][destination]`,file.destination);
+      formdata.append(`files[${i}][filename]`,file.filename);
+      formdata.append(`files[${i}][path]`,file.path);
+      formdata.append(`files[${i}][size]`,file.size);
+    })
+
+    file.forEach((f)=>{
+      formdata.append('file',f);
+    })
+    formdata.append('budget[min]',min);
+    formdata.append('budget[max]',max);
+    deletefile.forEach((deletef)=>{
+      formdata.append('deletefile[]',deletef)
+    })
+    
+
+    axios({
+      method: 'POST',
+      headers:{
+        authorization:'Bearer '+token
+      },
+      url: `http://localhost:8000/edit-job/${jobId}`,
+      data: formdata,
+      headers:{
+        'Content-Type': 'multipart/form-data',
+        token:"Bearer "+token
+      }
+    })
+    .then((response)=>{
+      console.log(response)
+    })
+  }
   return (
     <div className="create-main-head">
       <br />
@@ -45,6 +134,8 @@ function EditJobCompo() {
           className="head-input"
           type="text"
           placeholder="Your profession"
+          value={heading}
+          onChange={headinghandler}
         />
       </div>
       <hr />
@@ -81,6 +172,12 @@ function EditJobCompo() {
       <div className="attach-file">
         <FileUploader />
         <p>Max file size : 100MB</p>
+        {files.map((value,i)=>{
+          return  <li key={i}>{value.originalname} <button onClick={()=>deletefiles(i)} >delete</button></li>;
+        })}
+        {file.map((value,i)=>{
+          return  <li key={i} >{value.name} <button onClick={()=>localdeletefile(i)}>delete</button></li>;
+        })}
       </div>
       <br />
       <hr />
@@ -89,7 +186,7 @@ function EditJobCompo() {
         <div
           style={{ display: "flex", flexDirection: "row", marginTop: "5px" }}
         >
-          <p>Full stack development</p>
+          <p>{category}</p>
           <CreateTwoToneIcon
             onClick={handleCategoryPop}
             style={{ marginLeft: "20px", cursor: "pointer" }}
@@ -108,13 +205,14 @@ function EditJobCompo() {
                 flexWrap: "wrap",
               }}
             >
-              {skillList
-                ? skillList.map((list, key) => {
-                    console.log(list.length);
+              {skill
+                ? skill.map((list, key) => {
+
                     return (
                       <li
+                        key={key}
                         style={{
-                          width: `${list.length + 1}0px`,
+                          width: `${list.name.length + 1}0px`,
                           padding: "6px",
                           display: "flex",
                           justifyContent: "center",
@@ -126,7 +224,7 @@ function EditJobCompo() {
                           color: "white",
                         }}
                       >
-                        {list}
+                        {list.name}
                       </li>
                     );
                   })
@@ -148,7 +246,7 @@ function EditJobCompo() {
           <div
             style={{ display: "flex", flexDirection: "row", marginTop: "5px" }}
           >
-            <p>$12.00 - $25.00/hr</p>
+            <p>${min}.00 - ${max}.00/hr</p>
             <CreateTwoToneIcon
               onClick={handleBudgetPop}
               style={{ marginLeft: "20px", cursor: "pointer" }}
@@ -164,7 +262,7 @@ function EditJobCompo() {
           }}
         >
           <Button content="Cancle Job" />
-          <Button content="Edit Job" />
+          <Button handle={edithandler} content="Edit Job" />
         </div>
       </div>
       {categoryPop ? <CategoryPop handleClose={handleCategoryPop} /> : null}
