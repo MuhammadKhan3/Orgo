@@ -176,7 +176,7 @@ function SearchJob() {
                       </p>
                       <div className="required-skills">
                         {job.skills.map((skill,i)=>{
-                           return <button key={skill+i} className="skillsButton">{JSON.parse(skill).name}</button>
+                           return <button key={skill+i} className="skillsButton">{skill.name}</button>
                         })}
                       </div>
                       <br />

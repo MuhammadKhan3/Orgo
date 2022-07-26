@@ -23,7 +23,7 @@ const EmployeeValidation=[param('employeeId').custom(employeeId=>{
 router.post('/create-job/:employeeId',EmployeeValidation,uploadJob.array('files'),Jobcontroller.createJob);
 
 
-router.put('/create-job/:jobId',uploadJob.array('files'),Jobcontroller.updateJob);
+router.post('/edit-job/:jobId',uploadJob.array('file'),Jobcontroller.updateJob);
 
 router.post('/get-job/:jobId',Jobcontroller.getJob);
 

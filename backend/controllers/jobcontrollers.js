@@ -19,17 +19,15 @@ exports.createJob=(req,res,next)=>{
         err.data=errors.array();
         throw err;
     }
-    console.log('create-job')
 
     const {employeeId}=req.params;
     const file=req.files.map(value=>{
         return value;
     });
-    console.log(file)
-
-    const {heading,description,category,skill,scope,budget}=req.body;
-    console.log(budget)
     
+    const {heading,description,category,skill,scope,budget}=req.body;
+    
+    console.log(heading,description,category,skill,scope,budget,file)
   
     Jobs.create({
         heading:heading,
@@ -56,37 +54,39 @@ exports.createJob=(req,res,next)=>{
 
 
 exports.updateJob=(req,res,next)=>{
+    console.log('update job')
 
     const {jobId}=req.params;
-    const {heading,description,category,skills,scope,budget,deletefile}=req.body;
-    
-    let {files}=req.body
+    const {heading,description,category,skills,scope,budget,deletefile,files}=req.body;
+    console.log(req.body)
+    console.log(req.files)
+    let file=req.files
 
 // Add file
-    if(req.files.length>0){
-        req.files.map((value)=>{
-            files.push(value.filename)
-        })
+        if(file){
+            console.log('file')
+            file.map((value)=>{
+               files.push(value)
+            })
+        }
+// // Close file
+    // Delete the file   
+        if(deletefile)
+        {
+            console.log('in')
+            deletefile.forEach((value)=>{
+                console.log(value)
+                fs.unlink(`images/job/${value}`, (err => {
+                    if (err) console.log(err);
+                    else {
+                    console.log("Deleted file: image.jpg");
+                    }
+                }));
+            })
+        }
 
-    }
-// Close file
-   // Delete the file   
-   console.log(deletefile.length) 
-    if(deletefile.length>0)
-    {
-        console.log('delte')
-        deletefile.forEach((value)=>{
-
-            fs.unlink(`images/job/${value}`, (err => {
-                if (err) console.log(err);
-                else {
-                console.log("Deleted file: image.jpg");
-                }
-            }));
-        })
-    }
-    // Close the File
-    console.log('files',files)
+     // Close the File
+     console.log(skills)
     Jobs.updateOne({
         _id:mongoose.Types.ObjectId(jobId),
     },{$set:{

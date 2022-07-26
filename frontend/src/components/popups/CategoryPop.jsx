@@ -4,7 +4,6 @@ import Button from "../button/Button";
 import MuiDropDown from "../muiComponents/MuiDropDown";
 import {useSelector,useDispatch} from 'react-redux';
 import { job_action } from "../redux/slice/jobSlice";
-import SingleSelectPlaceholder from "../categorydropdown/categorydropdown";
 const category = [
     "Full Stack Development",
     "React Native Developer"

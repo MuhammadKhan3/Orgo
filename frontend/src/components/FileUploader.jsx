@@ -13,9 +13,11 @@ function FileUploader(props) {
   };
   
   const handleChange = async(event) => {
-      const [...FileList] = event.target.files;
+     
+      for (let file of event.target.files) {
+        dispatch(job_action.setfile(file))
+      }
 
-      dispatch(job_action.setfile([...FileList]))
   };
   
   return (

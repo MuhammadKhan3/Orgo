@@ -69,9 +69,9 @@ function CreateJobCompo() {
     })
 
     
-    skill.forEach((value)=>{
-      formdata.append('skill[]',JSON.stringify(value));
-      // formdata.append('skill[id]',value.id);
+    skill.forEach((value,i)=>{
+      formdata.append(`skill[${i}][id]`,value.id);
+      formdata.append(`skill[${i}][name]`,value.name);
 
     })
 

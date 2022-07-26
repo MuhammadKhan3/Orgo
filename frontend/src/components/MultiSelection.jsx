@@ -21,9 +21,9 @@ const state = {
 function MultiSelection() {
   const dispatch=useDispatch();
   const skill=useSelector(state=>state.jobSlice.skill);
+  console.log(skill);
   function onSelect(selectedList, selectedItem) {
     console.log(selectedList);
-
     dispatch(job_action.setskill(selectedList))
   }
   function onRemove(selectedList, removedItem) {
