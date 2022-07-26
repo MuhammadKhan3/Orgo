@@ -59,7 +59,9 @@ function JobList() {
                 <Link to={`/edit-job/${job._id}`}>
                    <Button content="Edit"/>
                 </Link>
-                <Button content="Puposal"/>
+                <Link to={`/proposal-list/${job._id}`}>
+                   <Button content="Puposal"/>
+                </Link>
               </div>
             </div>
             <hr />

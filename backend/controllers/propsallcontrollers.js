@@ -2,14 +2,14 @@ const Proposals = require('../model/proposal');
 const mongoose=require('mongoose');
 
 exports.createProposal=(req,res,next)=>{
-
-    const {jobId}=req.params;
+    const jobId=req.params.jobId;
     const file=req.files.map((file)=>{
-        return file.filename;
+        return file;
     })
-    const {rate,coverletter,freelancerId}=req.body;
-  
-    Proposals.findOne({$and:[{freelancerId:mongoose.Types.ObjectId(freelancerId)},{jobId:mongoose.Types.ObjectId(jobId)}]})
+
+    const {rate,coverletter,companyId,freelancerId}=req.body;
+    
+    Proposals.findOne({$and:[{companyId:mongoose.Types.ObjectId(companyId)}]})
     .then((proposal)=>{
         if(proposal){
             res.json({msg:'Already submit proposal',flag:false})
@@ -18,8 +18,9 @@ exports.createProposal=(req,res,next)=>{
                 rate:rate,
                 coverletter:coverletter,
                 freelancerId:freelancerId,
+                companyId:companyId,
                 jobId:jobId,
-                file:file,
+                file:file
             }).then(proposal=>{
                 if(proposal){
                   res.json({msg:'Submit Proposal',flag:true})
@@ -44,8 +45,7 @@ exports.getProposal=(req,res,next)=>{
     console.log(jobId)
     Proposals.find({jobId:mongoose.Types.ObjectId(jobId)})
     .populate({
-        path:'freelancerId',
-        
+        path:'companyId',        
     })
     .then((proposals)=>{
         res.json({proposals:proposals,msg:'Succefully Fetch Proposal',flag:true});

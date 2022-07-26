@@ -17,10 +17,11 @@ const Job = (jobId) => {
         dispatch(job_action.setdescription(response.data.job.description));
         dispatch(job_action.setfiles(response.data.job.file));
         dispatch(job_action.setcategory(response.data.job.category));
-        
         dispatch(job_action.setskill(response.data.job.skills));
         dispatch(job_action.setminimum(response.data.job.budget.min));
         dispatch(job_action.setmaximum(response.data.job.budget.max));
+        dispatch(job_action.setcreatedat(response.data.job.createdAt));
+
 
 
 

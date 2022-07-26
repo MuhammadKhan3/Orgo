@@ -2,18 +2,78 @@ import React from "react";
 import "../pages/submitProposal.css";
 import { TextareaAutosize } from "@mui/material";
 import Button from '../components/button/Button'
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import DragDropFile from "../components/dragFileUploader/DragDropFile";
-
+import { format} from 'date-fns'
+import {useParams} from 'react-router-dom'
+import axios from 'axios'
+import {useDispatch,useSelector} from 'react-redux'
+import Job from "../components/redux/thunk/job";
+import { job_action } from "../components/redux/slice/jobSlice";
+import {Cookies} from 'react-cookie'
 const skills = ["React", "Node", "MongoDB"];
 
-function SubmitProposal() {
+const cookies=new Cookies();
 
-    const [description,setDescription]=useState();
+function SubmitProposal() {
+    const {jobId}=useParams();
+    const category=useSelector(state=>state.jobSlice.category);
+    const heading=useSelector(state=>state.jobSlice.heading);
+    const description=useSelector(state=>state.jobSlice.description);
+    const skill=useSelector(state=>state.jobSlice.skill);
+    const coverletter=useSelector(state=>state.jobSlice.coverletter);
+    const rate=useSelector(state=>state.jobSlice.rate);
+    const proposalfile=useSelector(state=>state.jobSlice.proposalfile);
+
+
+
+
+// date
+    const createdat=useSelector(state=>state.jobSlice.createdat);
+    const year=new Date(createdat).getFullYear();
+    const month=new Date(createdat).getMonth();
+    const day=new Date(createdat).getDay();
+    console.log(year,month,day)
+    const date=new Date(`${year},${month},${day}`);
+// close date
+    const dispatch=useDispatch();
     
-    const handleDescription=()=>{
-        /* .... */
+    useEffect(()=>{
+      dispatch(Job(jobId));
+    },[])
+
+
+    const ratehandler=(e)=>{
+      dispatch(job_action.setrate(e.target.value));
     }
+    const coverhandler=(e)=>{
+      dispatch(job_action.setcoverletter(e.target.value));
+    }
+
+    const submithandler=()=>{
+      const token=cookies.get('token');
+      const companyId=cookies.get('companyId');
+      const userType=cookies.get('userType');
+
+
+      const formdata=new FormData();
+      formdata.append('rate',rate);
+      formdata.append('coverletter',coverletter);
+      formdata.append('file',proposalfile);
+      formdata.append('companyId',companyId);
+
+      axios({
+        method:"post",
+        url:`http://localhost:8000/create-proposal/${jobId}`,
+        data:formdata,
+        headers:{
+          token:'Bearer '+token
+        }
+      }).then((response)=>{
+        console.log(response)
+      })
+    }
+
   return (
     <div className="main-submit-proposal">
       <div className="sub-submit-proposal-1" style={{ marginTop: "20px" }}>
@@ -22,7 +82,7 @@ function SubmitProposal() {
       <hr />
       <div className="sub-submit-proposal-1">
         <h1 style={{ fontSize: "1.1em", fontWeight: "500" }}>
-          Full Stack Developer(reactJs + nextJs)
+          {category}({heading})
         </h1>
         <div
           style={{
@@ -41,31 +101,32 @@ function SubmitProposal() {
               fontSize: "0.9em",
             }}
           >
-            Full stack development
+          {category}
           </p>
           <p style={{ margin: "4px 0 0 30px", fontSize: "0.9em" }}>
-            Posted July 13,2022
+            Posted {createdat && format(date, 'MMMM dd,yyyy')}
           </p>
         </div>
-        <div style={{ marginTop: "15px" }}>
+        {/* <div style={{ marginTop: "15px" }}>
           <p style={{ fontSize: "0.9em" }}>Developer must have experience</p>
           <ol style={{ fontSize: "0.9em" }}>
             <li>React Js</li>
             <li>Node Js</li>
             <li>Next Js</li>
           </ol>
-        </div>
-        <div style={{ marginTop: "15px" }}>
-          <p style={{ fontSize: "0.9em" }}>
+        </div> */}
+          {/* <p style={{ fontSize: "0.9em" }}>
             Service developed reactjs + nextjs + nodejs.
-          </p>
-          <p style={{ fontSize: "0.9em" }}>
+          </p> */}
+          {/* <p style={{ fontSize: "0.9em" }}>
             Developer must have experience about 3 skill set.
-          </p>
-        </div>
-        <br />
+          </p> */}
+          <div style={{ marginTop: "15px" }}>
+            {description}
+          </div>
+        {/* <br />
         <p>Thanks.</p>
-        <br />
+        <br /> */}
         <button className="view-job-post-btn">View job Posting</button>
       </div>
       <hr />
@@ -74,13 +135,13 @@ function SubmitProposal() {
           Skills and Expertise
         </h1>
         <ul className="skills-list">
-          {skills
-            ? skills.map((list, key) => {
+          {skill
+            ? skill.map((list, key) => {
                 console.log(list.length);
                 return (
                   <li
                     style={{
-                      width: `${list.length + 1}0px`,
+                      width: `${list.name.length + 1}0px`,
                       padding: "6px",
                       display: "flex",
                       justifyContent: "center",
@@ -93,7 +154,7 @@ function SubmitProposal() {
                       marginLeft: "10px",
                     }}
                   >
-                    {list}
+                    {list.name}
                   </li>
                 );
               })
@@ -124,7 +185,7 @@ function SubmitProposal() {
             }}
           >
             <p>$</p>
-            <input className="rate-input" type="text" value="60" />
+            <input className="rate-input" type="number" onChange={ratehandler} value={rate} />
           </div>
         </div>
       </div>
@@ -133,8 +194,8 @@ function SubmitProposal() {
         <h1 style={{ fontSize: "1.1em", fontWeight: "500" }}>Cover letter</h1>
         <TextareaAutosize
           aria-label="Enter Description"
-          onChange={handleDescription}
-          value={description}
+          onChange={coverhandler}
+          value={coverletter}
           placeholder="Already have a job description ? paste ir here!"
           style={{
             width: 990,
@@ -149,7 +210,7 @@ function SubmitProposal() {
         <DragDropFile/>
       </div>
       <div className="sub-submit-proposal-1">
-        <Button content="Submit" />
+        <Button content="Submit" handle={submithandler}/>
         <Button content="Cancel" />
       </div>
     </div>

@@ -1,8 +1,10 @@
 import React from "react";
 import './dragDropFile.css'
-
+import {useDispatch} from 'react-redux';
+import {job_action} from '../redux/slice/jobSlice';
 
 function DragDropFile() {
+  const dispatch=useDispatch();
   // drag state
   const [dragActive, setDragActive] = React.useState(false);
   // ref
@@ -26,6 +28,8 @@ function DragDropFile() {
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       // handleFiles(e.dataTransfer.files);
+      dispatch(job_action.setproposalfile(e.target.files[0]))
+
     }
   };
 
@@ -34,6 +38,9 @@ function DragDropFile() {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
       // handleFiles(e.target.files);
+    
+
+      dispatch(job_action.setproposalfile(e.target.files[0]))
     }
   };
 
@@ -67,7 +74,8 @@ function DragDropFile() {
           </button>
         </div>
       </label>
-      {dragActive && (
+      {dragActive && 
+      (
         <div
           id="drag-file-element"
           onDragEnter={handleDrag}
