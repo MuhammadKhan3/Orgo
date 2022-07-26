@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import {useSelector,useDispatch} from 'react-redux';
-import { formatDistance, subDays } from 'date-fns'
-import { parseISO } from "date-fns";
+import { formatDistance} from 'date-fns'
 import {Cookies} from 'react-cookie';
 import {job_action} from '../redux/slice/jobSlice';
 import "./searchjob.css";
 import axios from 'axios'
 import FetchJob from "../redux/thunk/fetchJob";
-import  format from 'date-fns/format'
 
 function SearchJob() {
   const dispatch=useDispatch();
@@ -165,7 +163,6 @@ function SearchJob() {
                         )}
                       </div>
                       <p>
-
                         {formatDistance( new Date(job.createdAt), new Date(), { addSuffix: true })}
                       </p>
                       <p style={{ marginTop: "10px" }}>

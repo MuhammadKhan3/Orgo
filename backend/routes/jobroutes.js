@@ -46,6 +46,7 @@ router.post('/search-list',Jobcontroller.searchlist);
 router.post('/fav-job/:jobId',Jobcontroller.FavJob);
 router.post('/fav-jobs',Jobcontroller.getfavJob);
 
+router.post('/get-employeeJob',Jobcontroller.getemployeejob);
 
 
 module.exports=router

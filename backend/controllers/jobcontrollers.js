@@ -117,7 +117,7 @@ exports.getJob=(req,res,next)=>{
     const {jobId}=req.params;
     Jobs.findOne({$and:[
         {_id:mongoose.Types.ObjectId(jobId)},
-        {status:'active'}
+        // {status:'active'}
     ]})
     .select("-status")
     .populate({
@@ -286,4 +286,18 @@ exports.searchJob=(req,res,next)=>{
         }
     })
 
+}
+
+
+exports.getemployeejob=(req,res,next)=>{
+    
+    const {employeeId}=req.body;
+    Jobs.find({employeeId:employeeId})
+    .then((jobs)=>{
+        if(jobs){
+            res.json({msg:'Succefully Fetched',flag:true,jobs:jobs})
+        }else{
+
+        }
+    })
 }
