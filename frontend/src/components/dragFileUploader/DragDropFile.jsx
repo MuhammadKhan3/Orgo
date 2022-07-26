@@ -1,6 +1,5 @@
 import React from "react";
-import './dragDropFile.css'
-
+import "./dragDropFile.css";
 
 function DragDropFile() {
   // drag state
