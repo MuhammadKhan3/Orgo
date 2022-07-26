@@ -37,7 +37,11 @@ function JobList() {
           <h1 style={{ fontSize: "1.2em", fontWeight: "500",color:"#656565" }}>Job List</h1>
         </div>
         <ul style={{marginLeft:"30px"}}>
+
           <li style={{color:"#656565"}}>Jobs</li>
+
+          {/* <li style={{color:"#656565", fontWeight:"400"}}>Recent Job</li> */}
+
         </ul>
         <hr />
         {jobs.map((job)=>{

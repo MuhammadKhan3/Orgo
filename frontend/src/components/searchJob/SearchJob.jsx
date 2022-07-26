@@ -8,6 +8,7 @@ import {job_action} from '../redux/slice/jobSlice';
 import "./searchjob.css";
 import axios from 'axios'
 import FetchJob from "../redux/thunk/fetchJob";
+import { Link } from "react-router-dom";
 
 function SearchJob() {
   const dispatch=useDispatch();
@@ -91,6 +92,21 @@ function SearchJob() {
       dispatch(job_action.setjobs(response.data.jobs))
       console.log(response)
     })
+}
+
+const downloadfile=(file)=>{
+  fetch(`http://localhost:8000/${file.filename}`)
+            .then(response => {
+              console.log(response)
+                response.blob().then(blob => {
+                    let url = window.URL.createObjectURL(blob);
+                    let a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${file.originalname}`;
+                    a.click();
+                });
+                //window.location.href = response.url;
+        });
 }
   
 
@@ -176,6 +192,13 @@ function SearchJob() {
                            return <button key={skill+i} className="skillsButton">{skill.name}</button>
                         })}
                       </div>
+                      {job.file.length>0 &&
+                      <div style={{marginTop:'5px',}}>
+                        <p style={{fontWeight:'bold'}}>File</p>
+                        {job.file.map((file,j)=>{
+                                  return <button onClick={()=>downloadfile(file)} style={{marginLeft:'5px'}} key={j}>{file.originalname}</button>
+                        })}
+                      </div>}
                       <br />
                       <p>Proposals : 15 to 20</p>
                     </div>

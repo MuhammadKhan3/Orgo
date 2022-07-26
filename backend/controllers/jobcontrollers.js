@@ -10,7 +10,6 @@ const Searches = require("../model/search");
 
 exports.createJob=(req,res,next)=>{
     console.log('create-job')
-    console.log(req)
 
     const errors=validationResult(req);
     if(!errors.isEmpty()){
@@ -57,9 +56,8 @@ exports.updateJob=(req,res,next)=>{
     console.log('update job')
 
     const {jobId}=req.params;
-    const {heading,description,category,skills,scope,budget,deletefile,files}=req.body;
-    console.log(req.body)
-    console.log(req.files)
+    const {heading,description,category,skills,scope,budget,deletefile,files=[]}=req.body;
+    console.log(files)
     let file=req.files
 
 // Add file
@@ -73,9 +71,9 @@ exports.updateJob=(req,res,next)=>{
     // Delete the file   
         if(deletefile)
         {
-            console.log('in')
+
             deletefile.forEach((value)=>{
-                console.log(value)
+
                 fs.unlink(`images/job/${value}`, (err => {
                     if (err) console.log(err);
                     else {
@@ -86,7 +84,6 @@ exports.updateJob=(req,res,next)=>{
         }
 
      // Close the File
-     console.log(skills)
     Jobs.updateOne({
         _id:mongoose.Types.ObjectId(jobId),
     },{$set:{
@@ -145,6 +142,7 @@ exports.getJobs=(req,res,next)=>{
     Jobs.find({status:'active'})
     // .populate('userId')
     // .populate('employeeId')
+    .sort('-createdAt')
     .then(jobs=>{
         console.log(jobs)
         if(jobs){
@@ -175,6 +173,7 @@ exports.FavJob=(req,res,next)=>{
         {jobId:mongoose.Types.ObjectId(jobId)},
         {userId:mongoose.Types.ObjectId(userId)}
     ]})
+    
     .then((job)=>{
         if(job){
             console.log('already')
@@ -227,6 +226,7 @@ exports.bestmatchJob=(req,res,next)=>{
     .select('-userId')
     .select('-_id')
     .select('-__v')
+    .sort('-createdAt')
     .then(searches=>{
         const search=searches.map((value,i)=>{
             return value.search;
@@ -293,6 +293,7 @@ exports.getemployeejob=(req,res,next)=>{
     
     const {employeeId}=req.body;
     Jobs.find({employeeId:employeeId})
+    .sort('-createdAt')
     .then((jobs)=>{
         if(jobs){
             res.json({msg:'Succefully Fetched',flag:true,jobs:jobs})

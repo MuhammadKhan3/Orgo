@@ -31,7 +31,6 @@ function EditJobCompo() {
     const min=useSelector(state=>state.jobSlice.min);
     const max=useSelector(state=>state.jobSlice.max);
 
-    console.log(skill)
 
   const [categoryPop, setCategoryPop] = useState(false);
   const [skillPop, setSkillPop] = useState(false);
@@ -64,11 +63,11 @@ function EditJobCompo() {
     const remfile=files.filter((file,i)=>{
       return id!==i
     })
+    console.log(remfile)
     dispatch(job_action.setfiles(remfile))
   }
 
   const localdeletefile=(id)=>{
-    console.log(id)
     const remfile=file.filter((file,i)=>{
       return id!==i
     })
@@ -78,7 +77,6 @@ function EditJobCompo() {
 // Edit handler
   const edithandler=()=>{
     const token=cookies.get('token');
-    console.log(heading,description,skill,files,file,min,max,skill,deletefile);
     const formdata=new FormData();
     formdata.append('heading',heading);
     formdata.append('description',description);
@@ -96,7 +94,7 @@ function EditJobCompo() {
       formdata.append(`files[${i}][path]`,file.path);
       formdata.append(`files[${i}][size]`,file.size);
     })
-    console.log(file)
+
     file.forEach((f)=>{
       formdata.append('file',f);
     })
@@ -106,13 +104,17 @@ function EditJobCompo() {
       formdata.append('deletefile[]',deletef)
     })
     
-    for(let x of formdata.entries()){
-      console.log(x)
-    }
 
-    axios.post(`http://localhost:8000/edit-job/${jobId}`,formdata,{
+    axios({
+      method: 'POST',
       headers:{
         authorization:'Bearer '+token
+      },
+      url: `http://localhost:8000/edit-job/${jobId}`,
+      data: formdata,
+      headers:{
+        'Content-Type': 'multipart/form-data',
+        token:"Bearer "+token
       }
     })
     .then((response)=>{
@@ -205,7 +207,7 @@ function EditJobCompo() {
             >
               {skill
                 ? skill.map((list, key) => {
-                    console.log(list);
+
                     return (
                       <li
                         key={key}

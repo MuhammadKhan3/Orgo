@@ -8,6 +8,7 @@ import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
 import CategoryPop from "../popups/CategoryPop";
 import SkillListPop from "../popups/SkillListPop";
 import BudgetPop from "../popups/BudgetPop";
+import { useNavigate } from "react-router-dom";
 import {Cookies} from 'react-cookie'
 import { useDispatch,useSelector } from "react-redux";
 import { job_action } from "../redux/slice/jobSlice";
@@ -17,6 +18,7 @@ import axios from "axios";
 const cookies=new Cookies();
 const skillList = ["MongoDb", "Node", "React", "Api", "GraphQL"];
 function CreateJobCompo() {
+  const navigate=useNavigate();
   const dispatch=useDispatch();
   const heading=useSelector(state=>state.jobSlice.heading);
   const description=useSelector(state=>state.jobSlice.description);
@@ -72,7 +74,6 @@ function CreateJobCompo() {
     skill.forEach((value,i)=>{
       formdata.append(`skill[${i}][id]`,value.id);
       formdata.append(`skill[${i}][name]`,value.name);
-
     })
 
     formdata.append('category',category);
@@ -81,11 +82,18 @@ function CreateJobCompo() {
 
 
 
-    axios.post(`http://localhost:8000/create-job/${employeeId}`,formdata,{
+    axios({
+      method: 'POST',
+      url: `http://localhost:8000/create-job/${employeeId}`,
+      data: formdata,
       headers:{
+        'Content-Type': 'multipart/form-data',
         token:"Bearer "+token
       }
-    })  
+    }).then((response)=>{
+      navigate('/job-list')
+      console.log(response);
+    })
   }
 
   return (
