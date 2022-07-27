@@ -6,7 +6,7 @@ import {useDispatch,useSelector} from 'react-redux';
 import {Cookies} from 'react-cookie'
 import axios from 'axios';
 import StripeCheckout from 'react-stripe-checkout'
-import {useParams} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import { job_action } from "../components/redux/slice/jobSlice";
 
 const cookies=new Cookies();
@@ -110,6 +110,7 @@ function ProposalList() {
     {proposal.length>0 &&
       proposal.map((proposal,i)=>{
         return (<>
+        {console.log(proposal)}
         <div key={proposal[0]._id} onMouseEnter={()=>payment(proposal[1].companyId._id,proposal[1]._id,proposal[0].rate)}>
         <hr />
         <div className="proposal-list-user-info">
@@ -146,7 +147,9 @@ function ProposalList() {
               </p>
             </div>
             <div style={{ marginLeft: "50px"}}>
-              <Button content="Messages" />
+              <Link to={`/message/${proposal[0].companyId}`}>
+                <Button content="Messages" />
+              </Link>
               <div >
               <StripeCheckout
                 stripeKey='pk_test_51LMaPPSASfMwgZx33njrIb1xC9iXdn5RunLezSNxEXyXPPcaToK1X9DIOobYFdrqrTasN80x2bzYyLQo0Sv3zlF800mlMIBUKG'

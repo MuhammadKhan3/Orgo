@@ -1,11 +1,17 @@
 import React from "react";
 import CallIcon from "@mui/icons-material/Call";
+
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import Messages from "./Messages";
 import { TextareaAutosize } from "@mui/material";
 import "../chat/chat.css";
+const { io } = require("socket.io-client");
+const socket = io('http://localhost:8000');
 
 function ChatRightSection() {
+  const sendhandler=()=>{
+
+  }
   return (
     <div className="right-section">
       <div className="chat-body-nav">

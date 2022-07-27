@@ -13,7 +13,14 @@ const Searches=require('./model/search');
 const favJob=require('./model/favJobs');
 const Company=require('./model/company');
 const Hire=require('./model/hire');
-const stripe=require('stripe')('sk_test_51LMaPPSASfMwgZx39yrUzyKqhmnng5XPuiSZug0cEH0cPxHMQIxbuo26845Ba18aOpKStOGUPrFuNHcmWqgGFLMq00AljYn8eH')
+const Chat=require('./model/chat');
+
+// socket
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const httpServer = createServer(app);
+module.exports= new Server(httpServer, { /* options */ });
+// close socket
 
 const port = 8000;
 
@@ -38,6 +45,6 @@ app.use((err, req, res, next) => {
 })
 
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

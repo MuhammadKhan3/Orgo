@@ -54,7 +54,7 @@ function RouterLink() {
       <Route extact path="/submit-proposal/:jobId" element={<SubmitProposal/>} />
       <Route path="/proposal-list" element={<ProposalList/>} />
       <Route path="/submit-proposal" element={<SubmitProposal/>} />
-      <Route path="/message" element={<ChatPage/>} />
+      <Route path="/message/:receiveId" element={<ChatPage/>} />
     </Routes>
   );
 }
