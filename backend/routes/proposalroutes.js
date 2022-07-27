@@ -9,6 +9,6 @@ const ProposalControllers=require('../controllers/propsallcontrollers');
 
 
 router.post('/create-proposal/:jobId',uploadProposal.single('file'),ProposalControllers.createProposal);
-router.post('/create-proposals/:jobId',ProposalControllers.getProposal);
+router.post('/proposal-list/:jobId',ProposalControllers.getProposal);
 router.post('/proposal-length/:jobId',ProposalControllers.numberProposal);
 module.exports=router;

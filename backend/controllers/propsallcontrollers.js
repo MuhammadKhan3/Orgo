@@ -1,34 +1,40 @@
 const Proposals = require('../model/proposal');
+const Job= require('../model/job');
+
 const mongoose=require('mongoose');
+const CompanyProfile = require('../model/companyProfile');
 
 exports.createProposal=(req,res,next)=>{
+    console.log('proposal')
     const jobId=req.params.jobId;
-    const file=req.files.map((file)=>{
-        return file;
-    })
+    const {file}=req;
 
-    const {rate,coverletter,companyId,freelancerId}=req.body;
+
+    const {rate,coverletter,companyId,userId}=req.body;
     
-    Proposals.findOne({$and:[{companyId:mongoose.Types.ObjectId(companyId)}]})
+    Proposals.findOne({$and:[{companyId:mongoose.Types.ObjectId(companyId)},{jobId:mongoose.Types.ObjectId(jobId)}]})
     .then((proposal)=>{
         if(proposal){
             res.json({msg:'Already submit proposal',flag:false})
         }else{
-            Proposals.create({
-                rate:rate,
-                coverletter:coverletter,
-                freelancerId:freelancerId,
-                companyId:companyId,
-                jobId:jobId,
-                file:file
-            }).then(proposal=>{
-                if(proposal){
-                  res.json({msg:'Submit Proposal',flag:true})
-                }
-            }).catch((error)=>{
-                const err=new Error('Create Proposal issue');
-                err.data=error;
-                throw error;
+            Job.updateOne({_id:mongoose.Types.ObjectId(jobId)},{$inc:{proposal:1}})
+            .then(()=>{
+                Proposals.create({
+                    rate:rate,
+                    userId:userId,
+                    coverletter:coverletter,
+                    companyId:companyId,
+                    jobId:jobId,
+                    file:file
+                }).then(proposal=>{
+                    if(proposal){
+                      res.json({msg:'Submit Proposal',flag:true})
+                    }
+                }).catch((error)=>{
+                    const err=new Error('Create Proposal issue');
+                    err.data=error;
+                    throw error;
+                })
             })
         }
     }).catch((error)=>{
@@ -40,15 +46,22 @@ exports.createProposal=(req,res,next)=>{
 
 
 exports.getProposal=(req,res,next)=>{
-    console.log('getproposal')
     const {jobId}=req.params;
-    console.log(jobId)
     Proposals.find({jobId:mongoose.Types.ObjectId(jobId)})
-    .populate({
-        path:'companyId',        
-    })
+    .populate('userId')
     .then((proposals)=>{
-        res.json({proposals:proposals,msg:'Succefully Fetch Proposal',flag:true});
+        const companyId=proposals.map((proposal)=>{
+            return mongoose.Types.ObjectId(proposal.companyId) ;
+        })
+        CompanyProfile.find({companyId:companyId})
+        .populate('companyId')
+        .then((profile)=>{
+            const proposal=proposals.map((propos,i)=>{
+                return [propos,profile[i]];
+            })
+            res.json({proposal})
+        })
+       
     }).catch((error)=>{
         const err=new Error('Get Proposal Error')
         err.statusCode=500;

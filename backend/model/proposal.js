@@ -2,8 +2,8 @@ const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
 
 const proposals=new Schema({
-    companyId:{type:mongoose.Schema.Types.ObjectId,ref:'user'},
-    freelancerId:{type:mongoose.Schema.Types.ObjectId,ref:'user'},
+    userId:{type:mongoose.Schema.Types.ObjectId,ref:'user'},
+    companyId:{type:mongoose.Schema.Types.ObjectId,ref:'company'},
     jobId:{type:mongoose.Schema.Types.ObjectId,ref:'job'},
     rate:{
         type:Number,

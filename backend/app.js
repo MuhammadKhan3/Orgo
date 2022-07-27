@@ -12,7 +12,9 @@ const Proposals=require('./model/proposal');
 const Searches=require('./model/search');
 const favJob=require('./model/favJobs');
 const Company=require('./model/company');
-const formidable = require('express-formidable');
+const Hire=require('./model/hire');
+const stripe=require('stripe')('sk_test_51LMaPPSASfMwgZx39yrUzyKqhmnng5XPuiSZug0cEH0cPxHMQIxbuo26845Ba18aOpKStOGUPrFuNHcmWqgGFLMq00AljYn8eH')
+
 const port = 8000;
 
 var corsOptions = {
@@ -22,7 +24,6 @@ var corsOptions = {
 
 app.use(express.json())
 app.use(express.urlencoded({ extended:true }))
-// app.use(formidable());
 app.use(cors(corsOptions))
 app.use(express.static(path.join(__dirname, 'images','profile')));
 app.use(express.static(path.join(__dirname, 'images','portfolio')));

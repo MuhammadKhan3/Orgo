@@ -4,7 +4,7 @@ const mongoose=require('mongoose')
 const {param}=require('express-validator')
 const {body}=require('express-validator')
 const authenticate=require('../middleware/authenticate');
-
+const proposalcontroll=require('../controllers/propsallcontrollers.js')
 const Jobcontroller=require("../controllers/jobcontrollers");
 const Employee = require('../model/employee');
 const Jobs = require('../model/job');

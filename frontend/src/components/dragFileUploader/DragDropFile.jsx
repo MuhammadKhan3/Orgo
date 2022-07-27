@@ -2,6 +2,7 @@ import React from "react";
 import './dragDropFile.css'
 import {useDispatch} from 'react-redux';
 import {job_action} from '../redux/slice/jobSlice';
+import "./dragDropFile.css";
 
 function DragDropFile() {
   const dispatch=useDispatch();

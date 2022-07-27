@@ -12,6 +12,10 @@ const company=new Schema({
     },
     timezone:{
         type:String,
+    },
+    earn:{
+        type:Number,
+        default:0
     }
 })
 

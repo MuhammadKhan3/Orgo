@@ -25,6 +25,10 @@ const Job=new mongoose.Schema({
         type:String,
         default:'pending',
     },
+    proposal:{
+        type:Number,
+        default:0,
+    },
     skills:{
         type:Array,
         lowercase: true

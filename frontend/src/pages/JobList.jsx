@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{useEffect,useState} from "react";
 import "../pages/jobList.css";
 import Button from '../components/button/Button'
 import {job_action} from '../components/redux/slice/jobSlice';
@@ -10,9 +10,23 @@ import { Link } from "react-router-dom";
 
 const cookies=new Cookies();
 function JobList() {
+  const [active,setActive] = useState("1");
   const dispatch=useDispatch();
   const jobs=useSelector(state=>state.jobSlice.jobs)
   console.log(jobs)
+
+  const savedhandler=(e)=>{
+    setActive(e.target.id);
+  }
+
+  const mostrecenthandler=(e)=>{
+    setActive(e.target.id);
+  } 
+
+  const bestmatchhandler = (e) => {
+    setActive(e.target.id);
+  };
+
   useEffect(()=>{
     const Joblist=()=>{
       const token=cookies.get('token');
@@ -36,13 +50,10 @@ function JobList() {
         <div className="job-list-header">
           <h1 style={{ fontSize: "1.2em", fontWeight: "500",color:"#656565" }}>Job List</h1>
         </div>
-        <ul style={{marginLeft:"30px"}}>
-
-          <li style={{color:"#656565"}}>Jobs</li>
-
-          {/* <li style={{color:"#656565", fontWeight:"400"}}>Recent Job</li> */}
-
-        </ul>
+        <div className="job-search-nav-items">
+          <button id={"1"} onClick={mostrecenthandler} className={active === "1" ? "active" : undefined}>Jobs</button>
+          <button id={"2"} onClick={bestmatchhandler} className={active === "2" ? "active" : undefined}>Hire</button>
+        </div>
         <hr />
         {jobs.map((job)=>{
           return <>
@@ -54,13 +65,14 @@ function JobList() {
               <p style={{backgroundColor:job.status==='active' ? '#6CC417' :'#DE3163',color:'white',padding:'5px',width:'80px',borderRadius:'10px',paddingLeft:'10px'}}>{job.status}</p>
             </div>
             <div className="job-list-proposal">
-              <p>Proposals : 15 to 20</p>
+              <p>Proposals : {job.proposal}</p>
               <div className="job-list-button">
                 <Link to={`/edit-job/${job._id}`}>
                    <Button content="Edit"/>
                 </Link>
+
                 <Link to={`/proposal-list/${job._id}`}>
-                   <Button content="Puposal"/>
+                   <Button content="Proposal"/>
                 </Link>
               </div>
             </div>

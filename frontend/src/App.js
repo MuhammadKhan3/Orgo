@@ -6,6 +6,7 @@ import Header from "./components/header/header";
 import Employee from "./pages/Employee";
 import axios from "axios";
 import { useEffect } from "react";
+import Checkout from "./components/checkout/checkout";
 
 function App() {
   return (

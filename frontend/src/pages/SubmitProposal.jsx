@@ -5,7 +5,8 @@ import Button from '../components/button/Button'
 import { useState,useEffect } from "react";
 import DragDropFile from "../components/dragFileUploader/DragDropFile";
 import { format} from 'date-fns'
-import {useParams} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 import {useDispatch,useSelector} from 'react-redux'
 import Job from "../components/redux/thunk/job";
@@ -16,6 +17,7 @@ const skills = ["React", "Node", "MongoDB"];
 const cookies=new Cookies();
 
 function SubmitProposal() {
+    let navigate = useNavigate();
     const {jobId}=useParams();
     const category=useSelector(state=>state.jobSlice.category);
     const heading=useSelector(state=>state.jobSlice.heading);
@@ -53,27 +55,30 @@ function SubmitProposal() {
     const submithandler=()=>{
       const token=cookies.get('token');
       const companyId=cookies.get('companyId');
-      const userType=cookies.get('userType');
+      const userId=cookies.get('userId');
 
+      if(rate && coverletter && proposalfile && companyId){
+        const formdata=new FormData();
+        formdata.append('rate',rate);
+        formdata.append('coverletter',coverletter);
+        formdata.append('file',proposalfile);
+        formdata.append('companyId',companyId);
+        formdata.append('userId',userId);
 
-      const formdata=new FormData();
-      formdata.append('rate',rate);
-      formdata.append('coverletter',coverletter);
-      formdata.append('file',proposalfile);
-      formdata.append('companyId',companyId);
-
-      axios({
-        method:"post",
-        url:`http://localhost:8000/create-proposal/${jobId}`,
-        data:formdata,
-        headers:{
-          token:'Bearer '+token
-        }
-      }).then((response)=>{
-        console.log(response)
+        axios({
+          method:"post",
+          url:`http://localhost:8000/create-proposal/${jobId}`,
+          data:formdata,
+          headers:{
+            token:'Bearer '+token
+          }
+        }).then((response)=>{
+          navigate(-1);
+          console.log(response)
       })
+     } 
     }
-
+    
   return (
     <div className="main-submit-proposal">
       <div className="sub-submit-proposal-1" style={{ marginTop: "20px" }}>
@@ -127,7 +132,8 @@ function SubmitProposal() {
         {/* <br />
         <p>Thanks.</p>
         <br /> */}
-        <button className="view-job-post-btn">View job Posting</button>
+
+           <button className="view-job-post-btn" onClick={()=>{navigate(-1)}}>View job Posting</button>
       </div>
       <hr />
       <div className="sub-submit-proposal-1">

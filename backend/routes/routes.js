@@ -105,6 +105,9 @@ router.post('/password-change',[body('password').notEmpty().custom((value,{req})
 
 router.get('/get-company',regController.getCompany);
 router.post('/check-company',regController.SearchCompany);
+// Checkout
+
+router.post('/checkout',regController.checkout);
 // Profile routes
 router.use(profileRoutes);
 router.use(jobRoutes);

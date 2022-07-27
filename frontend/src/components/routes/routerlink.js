@@ -1,4 +1,4 @@
-import * as React from "react";
+import React,{useEffect} from "react";
 import { Routes, Route } from "react-router-dom";
 import Forgot from "../forgot/forgot";
 import Home from "../home";
@@ -23,7 +23,9 @@ const cookies = new Cookies();
 function RouterLink() {
   const userType = cookies.get("userType");
   console.log(userType);
-
+  useEffect(()=>{
+    // window.location.reload();
+  },[])
   //This is Route where we include the Component and navigate the component
   return (
     <Routes>
@@ -47,7 +49,7 @@ function RouterLink() {
       <Route path="/edit-job/:jobId" element={<EditJob/>} />
       <Route path="/job-list" element={<JobList/>} />
       <Route path="/proposal-list/:jobId" element={<ProposalList/>} />
-      <Route path="/submit-proposal/:jobId" element={<SubmitProposal/>} />
+      <Route extact path="/submit-proposal/:jobId" element={<SubmitProposal/>} />
     </Routes>
   );
 }

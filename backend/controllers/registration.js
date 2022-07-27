@@ -1,7 +1,10 @@
 const fetch =require('node-fetch');
 const { validationResult } = require('express-validator');
 const {OAuth2Client}=require('google-auth-library');
+
 const Users = require('../model/users');
+const Hire= require('../model/hire');
+
 var bcrypt = require('bcryptjs');
 const jwt=require('jsonwebtoken')
 const ct = require('countries-and-timezones');
@@ -11,6 +14,11 @@ const Company = require('../model/company');
 const CompanyProfile = require('../model/companyProfile');
 const mongoose=require('mongoose')
 const Employee = require('../model/employee');
+
+// Stripe
+const stripe=require('stripe')('sk_test_51LMaPPSASfMwgZx39yrUzyKqhmnng5XPuiSZug0cEH0cPxHMQIxbuo26845Ba18aOpKStOGUPrFuNHcmWqgGFLMq00AljYn8eH')
+const uuid=require('uuid').v4
+// closeStripe
 
 // Start GeoCoding
 const options = {
@@ -768,4 +776,62 @@ exports.login=(req,res,next)=>{
     .catch((err)=>{
         throw new Error(err);
     })
+}
+
+
+// Check out
+
+exports.checkout=async (req,res,next)=>{
+    console.log('payment')
+    console.log(req.body)
+    
+    const {employeeId,companyId,companyprofile,amount}=req.body;
+    console.log(employeeId,companyId,companyprofile,amount)
+
+    const {tokens,addresses}=req.body;
+    console.log(tokens,addresses)
+    Hire.create({
+        employeeId:employeeId,
+            companyId:companyId,
+            companyprofile:companyprofile,
+            amount:amount,
+            token:tokens,
+            addresses:addresses,
+        }).then((hire)=>{
+
+         try{
+            Company.updateOne({_id:mongoose.Types.ObjectId(companyId)},{$inc:{earn:amount}})
+            .then(async(value)=>{
+                // const key=uuid();
+                // const charge = await stripe.charges.create(
+                //     {
+                //       amount: amount * 100,
+                //       payment_method_types: ['card'],
+                //       source: tokens.id,
+                //       customer: hire._id,
+                //       receipt_email: tokens.email,
+                //       description: `Stripe Hire ${companyId}`,
+                //       shipping: {
+                //         name: tokens.card.name,
+                //         address: {
+                //           line1: tokens.card.address_line1,
+                //           line2: tokens.card.address_line2,
+                //           city: tokens.card.address_city,
+                //           country: tokens.card.address_country,
+                //           postal_code: tokens.card.address_zip,
+                //         },
+                //       },
+                //     },
+                //     {
+                //         idempotencyKey:key,
+                //     }
+                //   );
+                  
+            })
+         }catch(err){
+            console.log(err)
+             res.json(err)
+         }
+    })
+
 }
