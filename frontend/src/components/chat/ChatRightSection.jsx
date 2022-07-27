@@ -1,17 +1,16 @@
 import React from "react";
 import CallIcon from "@mui/icons-material/Call";
-
+import SendIcon from "@mui/icons-material/Send";
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import Messages from "./Messages";
-import { TextareaAutosize } from "@mui/material";
+import { TextareaAutosize, TextField } from "@mui/material";
 import "../chat/chat.css";
 const { io } = require("socket.io-client");
-const socket = io('http://localhost:8000');
+const socket = io("http://localhost:8000");
 
 function ChatRightSection() {
-  const sendhandler=()=>{
-
-  }
+  const sendhandler = () => {};
   return (
     <div className="right-section">
       <div className="chat-body-nav">
@@ -39,18 +38,21 @@ function ChatRightSection() {
         <Messages />
         <Messages />
       </div>
-      <TextareaAutosize
-          aria-label="Enter Description"
-          placeholder="Write your message here!"
-          style={{
-            width: "1015px",
-            borderTop:"1px solid lightgrey",
-            padding: "10px",
-            fontSize: "0.9em",
-            marginTop: "5px",
-          }}
-          minRows={3}
-        />
+      <TextField
+        // label="Write your message here !"
+        placeholder="Write your message here !"
+        multiline
+        rowsMax="3"
+        InputProps={{ endAdornment: <><AttachFileIcon style={{marginRight:"10px"}}/><SendIcon style={{color:"green"}} /></>}}
+        style={{
+          width: "100%",
+          padding: "10px",
+          fontSize: "0.9em",
+          padding:"5px",
+          marginTop: "100px",
+          outline: "none"
+        }}
+      />
     </div>
   );
 }
