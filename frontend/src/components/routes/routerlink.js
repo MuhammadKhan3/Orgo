@@ -17,6 +17,7 @@ import EditJob from '../../pages/EditJob';
 import JobList from "../../pages/JobList";
 import ProposalList from '../../pages/ProposalList';
 import SubmitProposal from "../../pages/SubmitProposal";
+import ChatPage from "../../pages/ChatPage";
 
 const cookies = new Cookies();
 
@@ -48,8 +49,12 @@ function RouterLink() {
       <Route path="/create-job" element={<CreateJob />} />
       <Route path="/edit-job/:jobId" element={<EditJob/>} />
       <Route path="/job-list" element={<JobList/>} />
+
       <Route path="/proposal-list/:jobId" element={<ProposalList/>} />
       <Route extact path="/submit-proposal/:jobId" element={<SubmitProposal/>} />
+      <Route path="/proposal-list" element={<ProposalList/>} />
+      <Route path="/submit-proposal" element={<SubmitProposal/>} />
+      <Route path="/message" element={<ChatPage/>} />
     </Routes>
   );
 }

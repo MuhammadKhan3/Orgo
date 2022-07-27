@@ -37,7 +37,9 @@ const Header = () => {
             <li className={` text-[14px] btn btn-ghost w-[90px] ${acitve==='job' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('job')}}>Job</li>
           </Link>
         }
-        <li className={` text-[14px] btn btn-ghost w-[90px] ${acitve==='message' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('message')}}>Message</li>
+        <Link to='/message'>
+          <li className={` text-[14px] btn btn-ghost w-[90px] ${acitve==='message' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('message')}}>Message</li>
+        </Link>
         {!cookies.get('userId') && !cookies.get('token')  &&
           <Link to='login'>
             <li className='btn btn-ghost text-[18px] w-[90px]' >Login</li>

@@ -1,0 +1,84 @@
+/* main-chat*/
+
+.main-chat{
+    display: flex;
+    justify-content: center;
+    position: fixed;
+}
+
+/* sidebar*/
+
+.sidebar {
+  width: 350px;
+  height: 100vh;
+  color: #656565;
+  border-right: 1px solid lightgray;
+  background-color: white;
+}
+.side-bar-header {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-items: center;
+}
+.side-search-container {
+  display: flex;
+  border: 1px solid green;
+  border-radius: 15px;
+  font-size: 0.9em;
+  padding: 8px;
+  width: 250px;
+}
+.search-icon {
+  font-size: 1.3em !important;
+  color: green;
+}
+.side-search-input {
+  outline: none;
+  margin-left: 2px;
+  width: 100%;
+}
+.side-bar-body {
+  padding-left: 10px;
+}
+.single-user {
+  display: flex;
+  background-color: #f5f6f8;
+  border: 1px solid lightgray;
+  border-right: none;
+  border-left: 4px solid green;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+}
+
+/* Right section */
+.right-section {
+  width: 1015px;
+  height: 100vh;
+  color: #656565;
+  background-color: white;
+}
+.chat-body-nav{
+    padding: 16.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid lightgrey;
+}
+.icon{
+    color: green;
+}
+
+/* Message */
+.main-message{
+    padding: 10px;
+    display: flex;
+    color: #656565;
+}
