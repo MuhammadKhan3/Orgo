@@ -10,7 +10,10 @@ const socket = io('http://localhost:8000');
 
 function ChatRightSection() {
   const sendhandler=()=>{
-
+    // socket.("connect", () => {
+    //   console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+    // });
+    socket.emit('hello','world');
   }
   return (
     <div className="right-section">
