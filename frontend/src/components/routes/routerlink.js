@@ -23,38 +23,36 @@ const cookies = new Cookies();
 
 function RouterLink() {
   const userType = cookies.get("userType");
-  console.log(userType);
-  useEffect(()=>{
-    // window.location.reload();
-  },[])
+  console.log(userType)
   //This is Route where we include the Component and navigate the component
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
       <Route path="/login" element={<Navigate Component={Login} />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgot-password" element={<Forgot />} />
-      {userType === "company" || userType === "freelancer" ? (
-        <Route
-          path="/profile"
-          element={<Protect Component={FreelancerCompany} />}
-        />
-      ) : (
-        <Route
-          path="/profile"
-          element={<Protect Component={ClientCompany} />}
-        />
-      )}
-      <Route path="/project" element={<Search />} />
-      <Route path="/create-job" element={<CreateJob />} />
-      <Route path="/edit-job/:jobId" element={<EditJob/>} />
-      <Route path="/job-list" element={<JobList/>} />
+      {userType === "employee"  ? (
+        <>
+        <Route path="/profile" element={<Protect Component={ClientCompany} />}/>
+        <Route path="/create-job" element={<Protect Component={CreateJob} />} />
+        <Route path="/edit-job/:jobId" element={<Protect Component={EditJob} />}/>
+        <Route path="/job-list" element={<Protect Component={JobList}/>} />
+        <Route path="/proposal-list/:jobId" element={<ProposalList/>} />
+        <Route path="/proposal-list" element={<ProposalList/>} />
 
-      <Route path="/proposal-list/:jobId" element={<ProposalList/>} />
-      <Route extact path="/submit-proposal/:jobId" element={<SubmitProposal/>} />
-      <Route path="/proposal-list" element={<ProposalList/>} />
-      <Route path="/submit-proposal" element={<SubmitProposal/>} />
-      <Route path="/message/:receiveId" element={<ChatPage/>} />
+       </>) : (
+        <>
+         <Route path="/profile" element={<Protect Component={FreelancerCompany} />}/>
+         <Route extact path="/submit-proposal/:jobId" element={<SubmitProposal/>} />
+         </>
+         )}
+         <Route path="/message" element={<Protect Component={ChatPage}/>} />
+         <Route path="/project" element={<Protect Component={Search} />} />
+      
+      {/* <Route path="/submit-proposal" element={<SubmitProposal/>} /> */}
+      {/* <Route path="/message/:receiveId" element={<ChatPage/>} /> */}
+      <Route path="/" element={<Home />} />
+
+
     </Routes>
   );
 }

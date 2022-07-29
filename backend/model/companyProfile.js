@@ -70,5 +70,7 @@ const companyProfile= new mongoose.Schema({
     userId:{type:Schema.Types.ObjectId,ref:'user'},
     companyId:{type:Schema.Types.ObjectId,ref:'company'}
 })
+
+companyProfile.index({'$**': 'text'});
 const CompanyProfile=mongoose.model('companyprofile',companyProfile);
 module.exports=CompanyProfile;

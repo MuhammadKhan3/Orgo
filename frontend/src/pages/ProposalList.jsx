@@ -147,11 +147,12 @@ function ProposalList() {
               </p>
             </div>
             <div style={{ marginLeft: "50px"}}>
-              <Link to={`/message/${proposal[0].companyId}`}>
+            {/* ${proposal[0].companyId} */}
+              <Link to={`/message?receiveId=${proposal[1].companyId._id}`}>
                 <Button content="Messages" />
               </Link>
-              <div >
               <StripeCheckout
+                className=''
                 stripeKey='pk_test_51LMaPPSASfMwgZx33njrIb1xC9iXdn5RunLezSNxEXyXPPcaToK1X9DIOobYFdrqrTasN80x2bzYyLQo0Sv3zlF800mlMIBUKG'
                 label='Hire'
                 token={handletoken}
@@ -159,8 +160,7 @@ function ProposalList() {
                 name={proposal[1].companyId.companyName}
                 billingAddress
                 shippingAddress
-              />
-              </div>
+              ><button className="custom-button">Hire</button></StripeCheckout>
             </div>
           </div>
           <ul className="skill-list">

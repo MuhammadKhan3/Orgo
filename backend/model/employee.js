@@ -37,5 +37,6 @@ const employee=new mongoose.Schema({
     },
 })
 
+employee.index({'$**': 'text'});
 const Employee=mongoose.model('employee',employee);
 module.exports=Employee;

@@ -3,13 +3,16 @@
 .main-chat{
     display: flex;
     justify-content: center;
-    position: fixed;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 /* sidebar*/
 
 .sidebar {
-  width: 350px;
+  width: 25%;
   height: 100vh;
   color: #656565;
   border-right: 1px solid lightgray;
@@ -60,7 +63,7 @@
 
 /* Right section */
 .right-section {
-  width: 1015px;
+  width: 75%;
   height: 100vh;
   color: #656565;
   background-color: white;

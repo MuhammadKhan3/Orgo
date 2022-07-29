@@ -7,16 +7,23 @@ const chat=new Schema({
         required:true
     },
     sendId:{
-        type:Schema.Types.ObjectId,ref:'company',
+        type:Schema.Types.ObjectId,ref:'user',
         required:true,
     },
-    msg:{
+    message:{
         type:String,
     },
     file:{
         type:String,
-    }
-})
+    },
+    companyprofile:{
+        type:Schema.Types.ObjectId,ref:'companyprofile',
 
-const Company=mongoose.model('chat',chat);
-module.exports=Company;
+    },
+    employeeprofile:{
+        type:Schema.Types.ObjectId,ref:'employee',
+    }
+},{timestamps:true})
+
+const Chat=mongoose.model('chat',chat);
+module.exports=Chat;

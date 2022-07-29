@@ -47,6 +47,9 @@ const Users = new mongoose.Schema({
     companyId:{
         type:Schema.Types.ObjectId,
         ref:'company'
+    },
+    socketId:{
+        type:String,
     }
   })
   const User=mongoose.model('user',Users);

@@ -88,7 +88,7 @@ function EmployeeBodyRight() {
                 <li style={{display:"flex", flexDirection:"row", justifyContent:"space-around", width:"100%"}}>
                   <p>{i+1}</p>
                   <p>{data.title}</p>
-                  <img src={`http://localhost:8000/${data.file}`} style={{width:'100px'}} />
+                  <img src={`http://localhost:8000/${data.file}`} style={{width:'100px',height:'80px'}} />
                 </li>
               </>
             })

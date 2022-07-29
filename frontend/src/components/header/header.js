@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import {Cookies} from 'react-cookie';
 import { useNavigate } from "react-router-dom";
 const cookies=new Cookies();
+const { io } = require("socket.io-client");
+const socket = io("http://localhost:8000");
 
 const Header = () => {
     const navigate=useNavigate();
@@ -21,6 +23,28 @@ const Header = () => {
       cookies.remove('userType')
       navigate('/login')
     }
+
+    const messagehandler=()=>{
+
+        // const userId=cookies.get('userId');
+        // const userType=cookies.get('userType');
+        // let companyId;
+        // if(userType==='company' || userType==='company'){
+        //   companyId=cookies.get('companyId')
+        // }
+        // const data={
+        //   socketId:socket.id,
+        //   userId:userId,
+        //   userType:userType,
+        //   companyId:companyId,
+        // }
+        // socket.emit("click",data);
+    }
+    const refreshehandler=()=>{
+      setTimeout(()=>{
+        window.location.reload(false);
+      }, 10);
+    }
   return (<>
   <div className="navbar bg-gradient-to-r from-pink-500 to-yellow-500">
   <div className="flex-1 inline-block w-[80px] text-white">
@@ -33,13 +57,18 @@ const Header = () => {
           <li className={`text-[14px]  btn btn-ghost w-[90px] ${acitve==='projects' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('projects')}}>Projects</li>
         </Link>
         {cookies.get('userType')==='employee'  &&
-          <Link to='job-list'>
+          <Link to='job-list' onClick={refreshehandler}>
             <li className={` text-[14px] btn btn-ghost w-[90px] ${acitve==='job' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('job')}}>Job</li>
           </Link>
         }
-        <Link to='/message'>
+        <Link to='/message' onClick={messagehandler}>
           <li className={` text-[14px] btn btn-ghost w-[90px] ${acitve==='message' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('message')}}>Message</li>
         </Link>
+        {cookies.get('userType')==='employee' &&
+        <Link to='/create-job' >
+          <li className={` text-[14px] btn btn-ghost w-[130px] ${acitve==='create' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('create')}}>create Job</li>
+        </Link>
+        }
         {!cookies.get('userId') && !cookies.get('token')  &&
           <Link to='login'>
             <li className='btn btn-ghost text-[18px] w-[90px]' >Login</li>
@@ -47,9 +76,9 @@ const Header = () => {
         }
     </ul>
   </div>  <div className="flex-none gap-[100px] mt-3">
-    <div className="form-control">
+    {/* <div className="form-control">
       <input type="text" placeholder="Search Projects" className="input input-bordered w-[400px]" />
-    </div>
+    </div> */}
     <div className="dropdown dropdown-end">
       <label tabIndex="0" className="btn btn-ghost btn-circle avatar">
         <div className="w-10 rounded-full">
@@ -57,14 +86,18 @@ const Header = () => {
         </div>
       </label>
       <ul tabIndex="0" className="mt-3  shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-60 ">
-      <Link to='/profile'>
-        <li>
+      <Link to='/profile' onClick={refreshehandler}>
+        <li >
           <a className="justify-between">
             Profile
           </a>
         </li>
       </Link>
-        <li className='mt-[-4px]'><a>Settings</a></li>
+      {cookies.get('userType')==='employee' &&
+      <Link to='/create-job'>
+        <li className='mt-[-4px]'><a>create Job</a></li>
+      </Link>
+      }
         <li className='mt-[-4px]' onClick={logouthandler}><a>Logout</a></li>
       </ul>
     </div>

@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import Checkout from "./components/checkout/checkout";
 
 function App() {
+
   return (
     <section className="bg-slate-300 h-auto ">
       <Header />

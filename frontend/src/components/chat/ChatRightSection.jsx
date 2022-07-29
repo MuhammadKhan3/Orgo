@@ -1,24 +1,73 @@
-import React from "react";
+import React,{useEffect} from "react";
 import CallIcon from "@mui/icons-material/Call";
-
+import SendIcon from "@mui/icons-material/Send";
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import Messages from "./Messages";
-import { TextareaAutosize } from "@mui/material";
+import { TextareaAutosize, TextField } from "@mui/material";
 import "../chat/chat.css";
+import {Cookies} from 'react-cookie'
+import {useSelector,useDispatch} from 'react-redux'
+import { chat_action } from "../redux/slice/chatSlice";
+import {useSearchParams} from 'react-router-dom';
 const { io } = require("socket.io-client");
-const socket = io('http://localhost:8000');
+const socket = io("http://localhost:8000");
+
+const cookies=new Cookies();
+
+
+
 
 function ChatRightSection() {
+  const [searchParams]=useSearchParams();
+  const chats=useSelector(state=>state.chatSlice.chats);
+  const flag=useSelector(state=>state.chatSlice.flag);
+
+  const name=useSelector(state=>state.chatSlice.name);
+  const message=useSelector(state=>state.chatSlice.message);
+  const dispatch=useDispatch();
+
   const sendhandler=()=>{
-    // socket.("connect", () => {
-    //   console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-    // });
-    socket.emit('hello','world');
+    const userType=cookies.get('userType');
+    const userId=cookies.get('userId');
+    const companyId=cookies.get('companyId');
+    const receiveId=searchParams.get('receiveId');
+    
+    const data={
+      companyId:companyId,
+      sendId:userId,
+      userType:userType,
+      receiveId:receiveId,
+      message:message,
+    }
+    
+    socket.emit('send-message',data); 
+    dispatch(chat_action.setflag(!flag));
+    dispatch(chat_action.setmessage(''))
   }
+
+
+
+
+  useEffect(()=>{
+    socket.once('receive',({chat})=>{
+      dispatch(chat_action.setchat(chat))
+    })
+    return () => {
+      socket.off("receive");
+    };
+  },[])
+
+  const messagehandler=(e)=>{
+    dispatch(chat_action.setmessage(e.target.value))
+  }
+
+
+
   return (
     <div className="right-section">
       <div className="chat-body-nav">
-        <h1 style={{ fontSize: "1.1em", fontWeight: "500" }}>Hamza</h1>
+        <h1 style={{ fontSize: "1.1em", fontWeight: "500" }}>{cookies.get('chatname')}</h1>
         <div
           style={{
             width: "100px",
@@ -39,23 +88,29 @@ function ChatRightSection() {
           height: "350px",
         }}
       >
-        <Messages />
-        <Messages />
+        {chats.map((chat,i)=>{
+            return (<Messages index={i} key={i} message={chat.message} companyName={chat.employeeprofile ? chat.employeeprofile.companyName  : chat.companyprofile.companyId.companyName } picture={chat.employeeprofile ? chat.employeeprofile.picture  : chat.companyprofile.picture } createdAt={chat.createdAt}/>)
+        })}
       </div>
-      <TextareaAutosize
-          aria-label="Enter Description"
-          placeholder="Write your message here!"
-          style={{
-            width: "1015px",
-            borderTop:"1px solid lightgrey",
-            padding: "10px",
-            fontSize: "0.9em",
-            marginTop: "5px",
-          }}
-          minRows={3}
-        />
+      <TextField
+        // label="Write your message here !"
+        placeholder="Write your message here !"
+        multiline
+        onChange={messagehandler}
+        value={message}
+        rowsMax="3"
+        // <AttachFileIcon style={{marginRight:"10px"}}/>
+        InputProps={{ endAdornment: <><SendIcon style={{color:"green"} } onClick={sendhandler} /></>}}
+        style={{
+          width: "100%",
+          padding: "10px",
+          fontSize: "0.9em",
+          padding:"5px",
+          marginTop: "100px",
+          outline: "none"
+        }}
+      />
     </div>
   );
 }
-
 export default ChatRightSection;

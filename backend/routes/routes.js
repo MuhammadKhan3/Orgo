@@ -12,6 +12,7 @@ const proposalRoutes=require('./proposalroutes');
 const jobRoutes=require('./jobroutes');
 const Company = require('../model/company');
 const googleemployeeId = require('../middleware/googleemployeeId');
+const chatcontroller=require('../controllers/chatcontrollers');
 // router page
 
 router.post('/google-logins',regController.Googlelogin);
@@ -108,6 +109,12 @@ router.post('/check-company',regController.SearchCompany);
 // Checkout
 
 router.post('/checkout',regController.checkout);
+router.post('/userlist',chatcontroller.userlist);
+router.post('/messagelist',chatcontroller.messagelist);
+router.post('/send-message',chatcontroller.sendmessage);
+router.post('/search-list',chatcontroller.search);
+router.post('/set-name',chatcontroller.setname);
+
 // Profile routes
 router.use(profileRoutes);
 router.use(jobRoutes);

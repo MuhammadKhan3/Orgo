@@ -170,6 +170,7 @@ function SearchJob() {
           jobs.map((job, i) => {
             return (
               <div key={i} id={job._id}>
+                <br/>
                 <hr />
                 <div className="job-search-content">
                   <div
@@ -249,8 +250,8 @@ function SearchJob() {
                     </div>
                   )}
                   <br />
-                  <p>Proposals : {job.proposal}</p>
-                  <Link to={`/submit-proposal/${job._id}`}>
+                  <p style={{width:'120px',display:'inline'}}>Proposals : {job.proposal}</p>
+                  <Link to={`/submit-proposal/${job._id}`} style={{marginLeft:'500px'}}>
                      <Button content="Bidding" />
                   </Link>
                 </div>

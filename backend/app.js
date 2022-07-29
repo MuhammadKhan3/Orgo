@@ -1,3 +1,4 @@
+const mongoose=require('mongoose')
 const express = require('express')
 const cors=require('cors')
 const app = express()
@@ -19,7 +20,12 @@ const Chat=require('./model/chat');
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const httpServer = createServer(app);
-module.exports= new Server(httpServer, { /* options */ });
+const io= new Server(httpServer, { cors: {
+  origin: "*",
+  methods: ["GET", "POST"]
+}});
+
+const socket=require('./controllers/chat')(io);
 // close socket
 
 const port = 8000;
@@ -37,9 +43,13 @@ app.use(express.static(path.join(__dirname, 'images','portfolio')));
 app.use(express.static(path.join(__dirname, 'images','job')));
 
 
-app.use('/',routes)
 
 
+
+
+
+
+app.use('/',routes);
 app.use((err, req, res, next) => {
     res.json({msg:err.data,flag:false})
 })
