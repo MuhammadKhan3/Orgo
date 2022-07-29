@@ -57,7 +57,7 @@ exports.updateJob=(req,res,next)=>{
 
     const {jobId}=req.params;
     const {heading,description,category,skills,scope,budget,deletefile,files=[]}=req.body;
-    console.log(files)
+    console.log('category',category)
     let file=req.files
 
 // Add file

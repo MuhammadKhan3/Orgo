@@ -15,7 +15,7 @@ router.post('/company-information/:companyId',[
 
 ],authenticate,Profile.companytitle);
 router.post('/company-skill/:companyId',[
-    
+    body('')
 ],Profile.companyskills);
 
 router.post('/company-language/:companyId',authenticate,Profile.companylanguages);

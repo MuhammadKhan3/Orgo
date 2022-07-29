@@ -29,7 +29,7 @@ function ChatSideBar() {
     const company=cookies.get('companyId');
     const token=cookies.get('token');
     let sendId,companyId;
-    
+
     if(userType==='freelancer' || userType==='company'){
       companyId=company;
     }else{
@@ -78,6 +78,7 @@ useEffect(()=>{
 },[flag])
 
 
+
   const searchhandler=(e)=>{
     const userType=cookies.get('userType');
     const user=cookies.get('userId');
@@ -97,14 +98,12 @@ useEffect(()=>{
       companyId,
       userType,
       key,
-      headers:{authorization:'Bearer'+ token}
+      headers:{authorization:'Bearer '+ token}
     }).then((response)=>{
       console.log(response.data)
       dispatch(chat_action.setuserlist(response.data.userlist))
       dispatch(chat_action.setuser(response.data.user))
-
     })
-
   }
 
 
@@ -123,9 +122,10 @@ useEffect(()=>{
         <MoreHorizIcon style={{ cursor: "pointer" }} />
       </div>
       {/* <hr /> */}
-      {userlist &&
+      {userlist.length>0 &&
        userlist.map((user,i)=>{
-        return (<Link to={`/message?receiveId=${users[i]._id}`}>
+         {console.log(userlist)}
+         return (<Link to={`/message?receiveId=${users[i]._id}`}>
                   <div className="side-bar-body" key={i} onClick={()=>containhandler(users[i]._id,userType==='employee' ? user.companyId.companyName :user.companyName)} >
                   <div className="single-user">
                     <img className="chat-avatar" src={user.picture.length>0 ? `http://localhost:8000/${user.picture}` :avatar} alt="" />

@@ -38,8 +38,8 @@ function LanguagePop({ handleClose }) {
   const savehandler=()=>{
     const token=cookies.get('token');
     const companyId=cookies.get('companyId');
-    if(language.length===level.length){
-
+    console.log(language);console.log(level)
+    if(language.length>0 && level.length>0){
       axios.post(`http://localhost:8000/company-language/${companyId}`,{
         language,
         level,
@@ -47,6 +47,8 @@ function LanguagePop({ handleClose }) {
           authorization:'Bearer '+token
         }
       })
+    }else{
+      console.log('length not equal')
     }
   }
   return (

@@ -13,6 +13,7 @@ const jobRoutes=require('./jobroutes');
 const Company = require('../model/company');
 const googleemployeeId = require('../middleware/googleemployeeId');
 const chatcontroller=require('../controllers/chatcontrollers');
+const authenticate = require('../middleware/authenticate');
 // router page
 
 router.post('/google-logins',regController.Googlelogin);
@@ -108,12 +109,17 @@ router.get('/get-company',regController.getCompany);
 router.post('/check-company',regController.SearchCompany);
 // Checkout
 
+
 router.post('/checkout',regController.checkout);
+// Chat controller
 router.post('/userlist',chatcontroller.userlist);
 router.post('/messagelist',chatcontroller.messagelist);
 router.post('/send-message',chatcontroller.sendmessage);
-router.post('/search-list',chatcontroller.search);
+router.post('/search-list',[
+    body('key').isLength({min:1, max:400}).withMessage('kindly search the fileds')
+],authenticate,chatcontroller.search);
 router.post('/set-name',chatcontroller.setname);
+// Chat controller
 
 // Profile routes
 router.use(profileRoutes);

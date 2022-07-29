@@ -30,6 +30,7 @@ function EmployeeBodyLeft() {
   })
 
 function EmployeeBodyLeft() {
+
   const [pop, setPop] = useState({
     videoPop: false,
     hoursPop: false,
@@ -90,13 +91,12 @@ function EmployeeBodyLeft() {
         <li>{hourworking}</li>}
         <li>
           <h4>Languages</h4>
-
           <AddCircleOutlineIcon onClick={handleLanguagePop} style={{cursor:"pointer"}} />
           <CreateTwoToneIcon onClick={handleEditLanguagePop}  style={{cursor:"pointer"}}/>
 
         </li>
-        {languages.map((language,i)=>{
-            return( <li style={{fontWeight: 'normal'}} key={i}>{language.language} {language.level}</li>)
+          {languages.map((language,i)=>{
+              return( <li style={{fontWeight: 'normal'}} key={i}>{language.languages}   {language.level}</li>)
 
           })}
 

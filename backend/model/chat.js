@@ -18,7 +18,6 @@ const chat=new Schema({
     },
     companyprofile:{
         type:Schema.Types.ObjectId,ref:'companyprofile',
-
     },
     employeeprofile:{
         type:Schema.Types.ObjectId,ref:'employee',

@@ -128,6 +128,7 @@ exports.companyskills=(req,res,next)=>{
 
 // Start Languages
 exports.companylanguages=(req,res,next)=>{
+    console.log('language')
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -135,19 +136,15 @@ exports.companylanguages=(req,res,next)=>{
         err.data=errors.array();
         throw err;
     }
-
     const companyId=req.params.companyId;
     const {language,level}=req.body
-    console.log('lang')
-    var languages=language.map((lang,i)=>{
-        return {language:lang,level:level[i]}
-    })
+    console.log(language,level)
+    var languages={languages:language,level:level};
 
     CompanyProfile.findOne({companyId:mongoose.Types.ObjectId(companyId)})
     .then((companyprofile)=>{
-        languages=companyprofile.languages.concat(languages)
         if(companyprofile){
-            companyprofile.languages=languages;
+            companyprofile.languages.push(languages);
             companyprofile.save();
             res.json({msg:'Languages Succefully Upadte',flag:true})
         }  else{

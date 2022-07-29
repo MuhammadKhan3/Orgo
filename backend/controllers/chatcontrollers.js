@@ -91,50 +91,47 @@ exports.userlist=(req,res,next)=>{
 exports.search=async(req,res,next)=>{
     const {userId,userType,key}=req.body;
     
+    let user=[];
+
     if(userType==='company' || userType==='freelancer'){
      const {companyId}=req.body;
      User.findOne({companyId:companyId,userType:'company'})
      .then((user)=>{
         Chat.find({receiveId:user._id})
-         .populate({
-            path:'companyprofile',
-            match:{
-                companyName:key
-            }
-         })
+        .distinct('sendId')
         .then((chat)=>{
-            res.json(chat)
-            // res.json({userlist:profile,user:user,msg:'succefully fetched'})
+            User.find({_id:chat})
+            .then((user)=>{
+                const userId=user.map((u)=>{
+                    return u._id;
+                })
+                Employee.find({userId:userId,companyName:{$regex: '.*' + key + '.*' }})
+                .then((profile)=>{
+                    res.json({userlist:profile,user:user,msg:'succefully fetched'})
+                })
+            })
         })
      })
     }else{
-        // Chat.aggregate([
-        //     {$lookup:{
-        //         from:'employee',
-        //         localField:'employeeprofile',
-        //         foreignField: '_id',
-        //         as:'users',
-        //     }},
-        //     {$match:{sendId:mongoose.Types.ObjectId(userId)}}
-        // ])
-        // .then((response)=>{
-        //     console.log(response)
-        // })
-        // message:{ $regex: '.*' + key + '.*' }
-        const chat=await Chat.find({sendId:userId})
-        .populate({
-            populate:'employeeprofile',
-            model:'employee',
-            match:{
-                    companyName:{ $regex: '.*' + key + '.*' }
-            }
+        Chat.find({sendId:userId})
+        .distinct('receiveId')
+        .then((chat)=>{
+            return User.find({_id:chat})
         })
-        // .distict('')
-        .exec()
-        // (chat)=>{
-            //  }
-                res.json(chat)
-        // console.log(result)
+        .then((user)=>{
+                const companyId=user.map((u)=>{
+                    return u.companyId
+                })
+                return {companyId,user}
+        }).then(({companyId,user})=>{
+                   CompanyProfile.find({companyId:companyId,companyName:{$regex: '.*' + key + '.*' }})
+                    .populate('companyId')
+                    .then((profile)=>{
+                        res.json({userlist:profile,user:user,msg:'succefully fetched'})
+                    })
+            
+        })
+
     }
 }
 

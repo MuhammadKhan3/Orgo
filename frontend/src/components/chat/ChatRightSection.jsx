@@ -88,7 +88,7 @@ function ChatRightSection() {
           height: "350px",
         }}
       >
-        {chats.map((chat,i)=>{
+        {searchParams.get('receiveId') && chats.map((chat,i)=>{
             return (<Messages index={i} key={i} message={chat.message} companyName={chat.employeeprofile ? chat.employeeprofile.companyName  : chat.companyprofile.companyId.companyName } picture={chat.employeeprofile ? chat.employeeprofile.picture  : chat.companyprofile.picture } createdAt={chat.createdAt}/>)
         })}
       </div>

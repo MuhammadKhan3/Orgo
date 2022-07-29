@@ -151,6 +151,7 @@ const Signup = () => {
     console.log('continuehandler')
     console.log(formik.values.email)
     if(accessToken && formik.values.email==='' && authtype==='facebook'){
+      console.log('one')
       if(usergroup==='company'){
         dispatch(FacebookThunk(accessToken,userID,usergroup,formik.values.companyName,coordinates,'',navigate));
       }else if(usergroup==='freelancer'){
@@ -159,7 +160,9 @@ const Signup = () => {
         dispatch(FacebookThunk(accessToken,userID,usergroup,company,coordinates,'',navigate));      
        }
       setModal(false);
-    }else if(formik.values.email.length>0){
+    }else if(formik.values.email.length>0 && authtype==='facebook'){
+      console.log('two')
+
       setcontinuebtn(true);
       setpopup(false);
       setModal(false)
@@ -171,6 +174,8 @@ const Signup = () => {
         dispatch(FacebookThunk(accessToken,userID,usergroup,company,coordinates,formik.values.email,navigate));      
       }
     }else  if(authtype==='google'){
+      console.log('three')
+      
       setpopup(false);
       setModal(false)
       if(usergroup==='company'){
@@ -312,7 +317,7 @@ if(changestatus==='one'){
               </p>
               <br/>
               <div className=" w-[200px] h-[40px] block" style={{marginLeft:'340px'}}>
-                  {errors.length>0 && errors.map((value,i)=>{
+                  {errors>0 && errors.map((value,i)=>{
                     return(<p key={i} className="text-red-500    w-[200px]">{value.msg}</p>);
                   })}
               </div>

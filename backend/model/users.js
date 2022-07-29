@@ -50,6 +50,7 @@ const Users = new mongoose.Schema({
     },
     socketId:{
         type:String,
+        default:''
     }
   })
   const User=mongoose.model('user',Users);

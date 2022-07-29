@@ -103,6 +103,8 @@ function EditJobCompo() {
     deletefile.forEach((deletef)=>{
       formdata.append('deletefile[]',deletef)
     })
+    formdata.append('category',category);
+
     
 
     axios({
@@ -121,6 +123,8 @@ function EditJobCompo() {
       console.log(response)
     })
   }
+
+
   return (
     <div className="create-main-head">
       <br />

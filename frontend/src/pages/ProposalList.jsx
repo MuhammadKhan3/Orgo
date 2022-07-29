@@ -147,8 +147,8 @@ function ProposalList() {
               </p>
             </div>
             <div style={{ marginLeft: "50px"}}>
-            {/* ${proposal[0].companyId} */}
-              <Link to={`/message?receiveId=${proposal[1].companyId._id}`}>
+            {console.log(proposal)}
+              <Link to={`/message?receiveId=${proposal[0].userId._id}`}>
                 <Button content="Messages" />
               </Link>
               <StripeCheckout

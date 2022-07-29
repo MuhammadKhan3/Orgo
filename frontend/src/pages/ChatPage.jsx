@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react'
-import {useDispatch} from 'react-redux';
+import {useDispatch,useSelector} from 'react-redux';
 import axios from 'axios';
 import Chat from '../components/chat/Chat';
 import {Cookies} from 'react-cookie';
@@ -11,6 +11,7 @@ const socket = io("http://localhost:8000");
 
 
 function ChatPage() {
+  const flag=useSelector(state=>state.chatSlice.flag);
   const [searchParams]=useSearchParams();
   const userType=cookies.get('userType');
   const dispatch=useDispatch();
@@ -73,7 +74,7 @@ function ChatPage() {
         cookies.set('chatname',response.data.companyId.companyName)
       }
     })
-  },[])
+  },[flag])
   // /set-name
   
   

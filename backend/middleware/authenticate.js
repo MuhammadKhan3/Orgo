@@ -5,8 +5,8 @@ const mongoose=require('mongoose')
 const User= require('../model/users');
 
 module.exports=(req,res,next)=>{
+    console.log('auth')
     const authheader=req.body.headers.authorization;
-
     if(!authheader){
         const err=new Error('Not Authenticated');
         throw err;
@@ -21,6 +21,7 @@ module.exports=(req,res,next)=>{
     }
  
     const {userId}=decodetoken;
+    console.log(userId)
     User.findOne({_id:mongoose.Types.ObjectId(userId)})
     .then((user)=>{
         console.log(user)

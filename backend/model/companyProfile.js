@@ -24,7 +24,10 @@ const companyProfile= new mongoose.Schema({
         default:''
     },
     languages:{
-        type:Array,
+        type:[{
+            languages:String,
+            level:String,
+        }],
         default:[]
     },
     hourworking:{
@@ -60,6 +63,12 @@ const companyProfile= new mongoose.Schema({
                 default:''
             },
     },
+    companyName:{
+        type:String,
+        default:'',
+        lowercase:true,
+    },
+
     // reviews:{
     //     type:[{
     //         value:Schema.Types.Decimal128,

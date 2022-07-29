@@ -81,6 +81,7 @@ exports.googleSignup=async (req,res,next)=>{
                                         companyId:company._id
                                     }).then((user)=>{
                                         CompanyProfile.create({
+                                           companyName:companyName,
                                             companyId:company._id,
                                             userId:user._id
                                         })
@@ -175,7 +176,6 @@ exports.googleSignup=async (req,res,next)=>{
         else {
 
                         if(email){
-                                console.log('user.',user)
                                 if(!user){
                                     console.log('not user')
                                     console.log(usergroup)
@@ -193,7 +193,7 @@ exports.googleSignup=async (req,res,next)=>{
                                             country:req.country,
                                             timezone:req.timezone,
                                         }).then((employee)=>{
-                                            const token=jwt.sign({name:user.firstname,email:user.email,useruserId:user._id},'orgoisthefreelancingcompany',{
+                                            const token=jwt.sign({name:user.firstname,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                                                 expiresIn:'1h'
                                             })
                                             res.json({userId:user._id,token:token,flag:true,employeeId:employee._id,userType:usergroup,authenticate:user.verified})
@@ -346,209 +346,208 @@ exports.facebooklogin=(req,res,next)=>{
 // !remaining
 // facebook login
 exports.facebookSignup=(req,res,next)=>{
-    const {token,clientId,usergroup,company}=req.body;
-    console.log(req.body);
+    console.log('faceebook')
+//     const {token,clientId,usergroup,company}=req.body;
+//     console.log(req.body);
 
-    var email='';
-    if(req.body.email!==""){
-        email=req.body.email
-    }
+//     var email='';
+//     if(req.body.email!==""){
+//         email=req.body.email
+//     }
 
-if(usergroup==='company'){
-    let url=`https://graph.facebook.com/${clientId}?fields=id,name,email,picture&access_token=${token}`
-    fetch(url,{
-        method:'GET'
-    })
-    .then(data=>{
-        return data.json();
-    })
-    .then(data=>{
-        let {name,picture:{data:{
-            url:image
-        }}}=data;
-        console.log('email',data.email)
-        if(data.email){
-            email=data.email;
-        }
-        console.log('email1',email);
-        Users.findOne({$or:[{facebook:clientId},{email:email}]})
-        .then(user=>{
-            if(user){
-                console.log('already exist')
-                if(user.facebook===clientId){
-                    const token=jwt.sign({name:name,email:email,id:clientId},'orgoisthefreelancingcompany',{
-                        expiresIn:'1h'
-                    })
-                    res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
-                 }else if(user.facebook===''){
-                    console.log('not exist')
-                    user.facebook=clientId;
-                    user.save();
-                    res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
-                }
-            }else{
-                Company.create({
-                    country:req.country,
-                    timezone:req.timezone,
-                    companyName:company
-                }).then((company)=>{
-                    Users.create({
-                        firstname:name,
-                        picture:image,
-                        email:email,
-                        companyId:company._id,
-                        facebook:clientId,
-                        userType:usergroup,
-                        verified:email ? true: false,
-                    }).then(user=>{
-                        CompanyProfile.create({
-                            companyId:company._id,
-                            userId:user._id,
-                        })
-                        if(user){
-                            const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'orgoisthefreelancingcompany',{
-                                expiresIn:'1h'
-                            })
-                            res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
-                        }
-                    });
-                })
-            }
-        })
-    })
-    .catch((err)=>{
-        throw new Error(err);
-    })
-}else if(usergroup==='freelancer'){
-    let url=`https://graph.facebook.com/${clientId}?fields=id,name,email,picture&access_token=${token}`
-    fetch(url,{
-        method:'GET'
-    })
-    .then(data=>{
-        return data.json();
-    })
-    .then(data=>{
-        let {name,picture:{data:{
-            url:image
-        }}}=data;
+// if(usergroup==='company'){
+//     let url=`https://graph.facebook.com/${clientId}?fields=id,name,email,picture&access_token=${token}`
+//     fetch(url,{
+//         method:'GET'
+//     })
+//     .then(data=>{
+//         return data.json();
+//     })
+//     .then(data=>{
+//         let {name,picture:{data:{url:image }}}=data;
+//         console.log(data)
+//         console.log('email',data.email)
+//         if(data.email){
+//             email=data.email;
+//         }
+//         console.log('email1',email);
+//         Users.findOne({$or:[{facebook:clientId},{email:email}]})
+//         .then(user=>{
+//             if(user){
+//                 console.log('already exist')
+//                 if(user.facebook===clientId){
+//                     const token=jwt.sign({name:name,email:email,id:clientId},'orgoisthefreelancingcompany',{
+//                         expiresIn:'1h'
+//                     })
+//                     res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
+//                  }else if(user.facebook===''){
+//                     console.log('not exist')
+//                     user.facebook=clientId;
+//                     user.save();
+//                     res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
+//                 }
+//             }else{
+//                 Company.create({
+//                     country:req.country,
+//                     timezone:req.timezone,
+//                     companyName:company
+//                 }).then((company)=>{
+//                     Users.create({
+//                         firstname:name,
+//                         picture:image,
+//                         email:email,
+//                         companyId:company._id,
+//                         facebook:clientId,
+//                         userType:usergroup,
+//                         verified:email ? true: false,
+//                     }).then(user=>{
+//                         CompanyProfile.create({
+//                             companyName:company,
+//                             companyId:company._id,
+//                             userId:user._id,
+//                         })
+//                         if(user){
+//                             const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'orgoisthefreelancingcompany',{
+//                                 expiresIn:'1h'
+//                             })
+//                             res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
+//                         }
+//                     });
+//                 })
+//             }
+//         })
+//     })
+//     .catch((err)=>{
+//         throw new Error(err);
+//     })
+// }else if(usergroup==='freelancer'){
+//     let url=`https://graph.facebook.com/${clientId}?fields=id,name,email,picture&access_token=${token}`
+//     fetch(url,{
+//         method:'GET'
+//     })
+//     .then(data=>{
+//         return data.json();
+//     })
+//     .then(data=>{
+//         let {name,picture:{data:{
+//             url:image
+//         }}}=data;
 
 
-        if(data.email){
-            email=data.email;
-        }
+//         if(data.email){
+//             email=data.email;
+//         }
 
-        Users.findOne({$or:[{facebook:clientId},{email:email}]})
-        .then(user=>{
-            if(user){
-                console.log('already exist');
+//         Users.findOne({$or:[{facebook:clientId},{email:email}]})
+//         .then(user=>{
+//             if(user){
+//                 console.log('already exist');
 
-                if(user.facebook===clientId || user){
-                    const token=jwt.sign({name:name,email:email,id:clientId},'orgoisthefreelancingcompany',{
-                        expiresIn:'1h'
-                    })
-                    res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
-                 }else if(user.facebook==='' || user){
-                    console.log('not exist')
-                    user.facebook=clientId;
-                    user.save();
-                    res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
-                }
-            }else{
-                Company.findOne({companyName:company})
-                .then((company)=>{
-                    Users.create({
-                        firstname:name,
-                        picture:image,
-                        email:email,
-                        companyId:company._id,
-                        facebook:clientId,
-                        userType:usergroup,
-                        verified:email ? true: false,
-                    }).then(user=>{
+//                 if(user.facebook===clientId || user){
+//                     const token=jwt.sign({name:name,email:email,id:clientId},'orgoisthefreelancingcompany',{
+//                         expiresIn:'1h'
+//                     })
+//                     res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
+//                  }else if(user.facebook==='' || user){
+//                     console.log('not exist')
+//                     user.facebook=clientId;
+//                     user.save();
+//                     res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
+//                 }
+//             }else{
+//                 Company.findOne({companyName:company})
+//                 .then((company)=>{
+//                     Users.create({
+//                         firstname:name,
+//                         picture:image,
+//                         email:email,
+//                         companyId:company._id,
+//                         facebook:clientId,
+//                         userType:usergroup,
+//                         verified:email ? true: false,
+//                     }).then(user=>{
 
-                        if(user){
-                            const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'orgoisthefreelancingcompany',{
-                                expiresIn:'1h'
-                            })
-                            res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
-                        }
-                    });
-                })
+//                         if(user){
+//                             const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'orgoisthefreelancingcompany',{
+//                                 expiresIn:'1h'
+//                             })
+//                             res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
+//                         }
+//                     });
+//                 })
                 
         
-            }
-        })
-    })
-    .catch((err)=>{
-        throw new Error(err);
-    })
-}
-else {
-    let url=`https://graph.facebook.com/${clientId}?fields=id,name,email,picture&access_token=${token}`
-    fetch(url,{
-        method:'GET'
-    })
-    .then(data=>{
-        return data.json();
-    })
-    .then(data=>{
-        let {name,picture:{data:{
-            url:image
-        }}}=data;
+//             }
+//         })
+//     })
+//     .catch((err)=>{
+//         throw new Error(err);
+//     })
+// }
+// else {
+//     let url=`https://graph.facebook.com/${clientId}?fields=id,name,email,picture&access_token=${token}`
+//     fetch(url,{
+//         method:'GET'
+//     })
+//     .then(data=>{
+//         return data.json();
+//     })
+//     .then(data=>{
+//         let {name,picture:{data:{
+//             url:image
+//         }}}=data;
 
-        
-        if(data.email){
-            email=data.email;
-        }
+//         if(data.email){
+//             email=data.email;
+//         }
 
-        Users.findOne({$or:[{facebook:clientId},{email:email}]})
-        .then(user=>{
-            if(user){
-                console.log('already exist');
+//         Users.findOne({$or:[{facebook:clientId},{email:email}]})
+//         .then(user=>{
+//             if(user){
 
-                if(user.facebook===clientId || user){
-                    const token=jwt.sign({name:name,email:email,id:clientId},'orgoisthefreelancingcompany',{
-                        expiresIn:'1h'
-                    })
-                    res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId})
-                 }else if(user.facebook==='' || user){
-                    console.log('not exist')
-                    user.facebook=clientId;
-                    user.save();
-                    res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
-                }
-            }else{
-                    Users.create({
-                        firstname:name,
-                        picture:image,
-                        email:email,
-                        companyId:company._id,
-                        facebook:clientId,
-                        userType:usergroup,
-                        verified:email ? true: false,
-                    }).then(user=>{
-                        Employee.create(
-                          {  userId:user._id}
-                        ).then((employee)=>{
+//                 if(user.facebook===clientId || user){
+//                     const token=jwt.sign({name:name,email:email,id:clientId},'orgoisthefreelancingcompany',{
+//                         expiresIn:'1h'
+//                     })
+//                     res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId})
+//                  }else if(user.facebook==='' || user){
+//                     console.log('not exist')
+//                     user.facebook=clientId;
+//                     user.save();
+//                     res.json({userId:user._id,token:token,flag:true,userType:user.userType,companyId:user.companyId,authenticate:true})
+//                 }
+//             }else{
+//                     Users.create({
+//                         firstname:name,
+//                         picture:image,
+//                         email:email,
+//                         companyId:company._id,
+//                         facebook:clientId,
+//                         userType:usergroup,
+//                         verified:email ? true: false,
+//                     }).then(user=>{
+//                         Employee.create(
+//                           {  userId:user._id}
+//                         ).then((employee)=>{
                             
-                            if(user){
-                                const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'orgoisthefreelancingcompany',{
-                                    expiresIn:'1h'
-                                })
-                                res.json({userId:user._id,token:token,flag:true,userType:user.userType,employeeId:employee._id,authenticate:true})
-                            }
-                        })
-                    });
+//                             if(user){
+//                                 const token=jwt.sign({name:user.name,email:user.email,id:user.facebook},'orgoisthefreelancingcompany',{
+//                                     expiresIn:'1h'
+//                                 })
+//                                 res.json({userId:user._id,token:token,flag:true,userType:user.userType,employeeId:employee._id,authenticate:true})
+//                             }
+//                         })
+//                     });
 
                 
         
-            }
-        })
-    })
-    .catch((err)=>{
-        throw new Error(err);
-    })
-}
+//             }
+//         })
+//     })
+//     .catch((err)=>{
+//         throw new Error(err);
+//     })
+// }
 
 
 
@@ -607,6 +606,7 @@ if(type==='company'){
             User.save()
              .then(user=>{
                 CompanyProfile.create({
+                    companyName:companyName,
                     companyId:company._id,
                     userId:user._id  
                   });
