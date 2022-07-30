@@ -89,7 +89,7 @@ function SearchJob() {
       .post("http://localhost:8000/bestmatch-jobs", {
         userId,
         headers: {
-          token: "Bearer " + token,
+          authorization: "Bearer "+token,
         },
       })
       .then((response) => {

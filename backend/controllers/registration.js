@@ -14,6 +14,7 @@ const Company = require('../model/company');
 const CompanyProfile = require('../model/companyProfile');
 const mongoose=require('mongoose')
 const Employee = require('../model/employee');
+const Proposals = require('../model/proposal');
 
 // Stripe
 const stripe=require('stripe')('sk_test_51LMaPPSASfMwgZx39yrUzyKqhmnng5XPuiSZug0cEH0cPxHMQIxbuo26845Ba18aOpKStOGUPrFuNHcmWqgGFLMq00AljYn8eH')
@@ -558,6 +559,9 @@ exports.facebookSignup=(req,res,next)=>{
 // Timezone and gecoding
 exports.geocoding= async (req,res,next)=>{
     const {coordinates}=req.body
+    if(coordinates.lat==0 && coordinates.long==0){
+        res.json({msg:'Geocoding value does not collect'});
+    }
     console.log('coordinates',coordinates);
     const response = await geocoder.reverse(coordinates);
     req.country=response[0].country;
@@ -785,17 +789,22 @@ exports.checkout=async (req,res,next)=>{
     console.log('payment')
     console.log(req.body)
     
-    const {employeeId,companyId,companyprofile,amount}=req.body;
+    const {employeeId,companyId,companyprofile,amount,jobId,proposalId}=req.body;
     console.log(employeeId,companyId,companyprofile,amount)
 
     const {tokens,addresses}=req.body;
-    console.log(tokens,addresses)
+    Proposals.updateOne({_id:mongoose.Types.ObjectId(proposalId)},{$set:{hire:true}})
+    .then((proposal)=>{
+        console.log(proposal);
+    })
     Hire.create({
         employeeId:employeeId,
             companyId:companyId,
+            jobId:jobId,
             companyprofile:companyprofile,
             amount:amount,
             token:tokens,
+            proposalId:proposalId,
             addresses:addresses,
         }).then((hire)=>{
 

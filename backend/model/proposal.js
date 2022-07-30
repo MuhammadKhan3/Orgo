@@ -9,6 +9,10 @@ const proposals=new Schema({
         type:Number,
         required:true,
     },
+    hire:{
+        type:Boolean,
+        default:false,
+    },
     coverletter:{
         type:String,
     },

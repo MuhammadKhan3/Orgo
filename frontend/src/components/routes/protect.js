@@ -7,14 +7,12 @@ const Protect = (props) => {
   const userId=cookies.get('userId')
   const token=cookies.get('token')
 
-  console.log(userId)
   const navigate=useNavigate();
     useEffect(() => {
       if(!userId || !token){
         navigate('/login')      
       }
     },[])
-    console.log(Commponent)    
   return (<>
     {token && userId && <Commponent/>}
     </>

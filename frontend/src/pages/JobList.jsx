@@ -52,7 +52,7 @@ function JobList() {
         </div>
         <div className="job-search-nav-items">
           <button id={"1"} onClick={mostrecenthandler} className={active === "1" ? "active" : undefined}>Jobs</button>
-          <button id={"2"} onClick={bestmatchhandler} className={active === "2" ? "active" : undefined}>Hire</button>
+          {/* <button id={"2"} onClick={bestmatchhandler} className={active === "2" ? "active" : undefined}>Hire</button> */}
         </div>
         <hr />
         {jobs.map((job)=>{

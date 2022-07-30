@@ -12,12 +12,14 @@ import {useDispatch,useSelector} from 'react-redux'
 import Job from "../components/redux/thunk/job";
 import { job_action } from "../components/redux/slice/jobSlice";
 import {Cookies} from 'react-cookie'
+import MsgPopup from "../components/popups/msgpopup";
 const skills = ["React", "Node", "MongoDB"];
 
 const cookies=new Cookies();
 
 function SubmitProposal() {
     let navigate = useNavigate();
+    const [popupflag,setflag]=useState({flag:true,msg:''});
     const {jobId}=useParams();
     const category=useSelector(state=>state.jobSlice.category);
     const heading=useSelector(state=>state.jobSlice.heading);
@@ -73,13 +75,21 @@ function SubmitProposal() {
             token:'Bearer '+token
           }
         }).then((response)=>{
-          navigate(-1);
-          console.log(response)
+          if(response.data.flag){
+            navigate(-1);
+          }else{
+            setflag({flag:response.data.flag,msg:response.data.msg})
+            console.log(response)
+          }
       })
      } 
     }
     
   return (
+  <>
+  {!popupflag.flag &&
+   <MsgPopup msg={popupflag.msg} title={'Bidding'} setflag={setflag}/>
+  }
     <div className="main-submit-proposal">
       <div className="sub-submit-proposal-1" style={{ marginTop: "20px" }}>
         <h1 style={{ fontSize: "1.3em", fontWeight: "700" }}>Job details</h1>
@@ -220,7 +230,7 @@ function SubmitProposal() {
         <Button content="Cancel" />
       </div>
     </div>
-  );
+    </>);
 }
 
 export default SubmitProposal;

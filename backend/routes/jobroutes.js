@@ -28,7 +28,7 @@ router.post('/create-job/:employeeId',authform,EmployeeValidation,uploadJob.arra
     // body('heading').exists().isLength({ min: 2,max:300 }).withMessage('heading length greater than 2 and less than 300'),
     // body('description').isLength({min:2,max:2000}),
     // body('category').exists().isLength({min:2}),
-    // // body('employeeId').exists().withMessage('EmployeeId is required'),
+    // body('employeeId').exists().withMessage('EmployeeId is required'),
     // body('*.min').exists().isNumeric(),
     // body('*.max').exists().isNumeric(),
 ]
@@ -70,13 +70,15 @@ router.post('/search-jobs',
     body('userId','Required userId value').not().isEmpty(),
     body('search','Required search value').not().isEmpty(),
 ],Jobcontroller.searchlist,Jobcontroller.searchJob);
-router.post('/bestmatch-jobs',Jobcontroller.bestmatchJob);
+
+router.post('/bestmatch-jobs',authenticate,Jobcontroller.bestmatchJob);
+
 router.post('/search-list',Jobcontroller.searchlist);
 
 
 
-router.post('/fav-job/:jobId',Jobcontroller.FavJob);
-router.post('/fav-jobs',Jobcontroller.getfavJob);
+router.post('/fav-job/:jobId',authenticate,Jobcontroller.FavJob);
+router.post('/fav-jobs',authenticate,Jobcontroller.getfavJob);
 router.post('/get-employeeJob',Jobcontroller.getemployeejob);
 
 

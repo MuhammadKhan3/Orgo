@@ -221,6 +221,7 @@ exports.getfavJob=(req,res,next)=>{
 
 
 exports.bestmatchJob=(req,res,next)=>{
+    console.log('best-match')
     const {userId}=req.body;
     Searches.find({userId:userId})
     .select('-userId')

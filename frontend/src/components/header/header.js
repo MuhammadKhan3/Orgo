@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import {Cookies} from 'react-cookie';
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ const socket = io("http://localhost:8000");
 
 const Header = () => {
     const navigate=useNavigate();
-    const [acitve,setactivebtn]=useState('');
+    const [active,setactivebtn]=useState(cookies.get('active_state'));
     
     const logouthandler=()=>{
       if(cookies.get('userType')==='freelancer' || cookies.get('userType')==='freelancer'){
@@ -51,22 +51,22 @@ const Header = () => {
     <h2 className=" text-[45px] text-white w-[60px] float-left ">Orgo</h2>
     <ul className='flex flex-row   mt-[-15px] !ml-[190px] space-x-2  '>
         <Link to='/'>
-          <li className={` text-[14px] btn btn-ghost w-[90px]  ${acitve==='dashboard' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('dashboard')}}>Dashboard</li>
+          <li className={` text-[14px] btn btn-ghost w-[90px]  ${active==='dashboard' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('dashboard')}}>Dashboard</li>
         </Link>
-        <Link to='/project'>
-          <li className={`text-[14px]  btn btn-ghost w-[90px] ${acitve==='projects' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('projects')}}>Projects</li>
+        <Link to='/project' onClick={refreshehandler}>
+          <li className={`text-[14px]  btn btn-ghost w-[90px] ${active==='project' ? 'btn-active text-white' :''}`} onClick={()=>{cookies.set('active_state','project')}}>Projects</li>
         </Link>
         {cookies.get('userType')==='employee'  &&
           <Link to='job-list' onClick={refreshehandler}>
-            <li className={` text-[14px] btn btn-ghost w-[90px] ${acitve==='job' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('job')}}>Job</li>
+            <li className={` text-[14px] btn btn-ghost w-[90px] ${active==='job-list' ? 'btn-active text-white' :''}`} onClick={()=>{cookies.set('active_state','job-list')}}>Job</li>
           </Link>
         }
-        <Link to='/message' onClick={messagehandler}>
-          <li className={` text-[14px] btn btn-ghost w-[90px] ${acitve==='message' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('message')}}>Message</li>
+        <Link to='/message' onClick={refreshehandler}>
+          <li className={` text-[14px] btn btn-ghost w-[90px] ${active==='message' ? 'btn-active text-white' :''}`} onClick={()=>{cookies.set('active_state','message')}}>Message</li>
         </Link>
         {cookies.get('userType')==='employee' &&
-        <Link to='/create-job' >
-          <li className={` text-[14px] btn btn-ghost w-[130px] ${acitve==='create' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('create')}}>create Job</li>
+        <Link to='/create-job' onClick={refreshehandler} >
+          <li className={` text-[14px] btn btn-ghost w-[130px] ${active==='create-job' ? 'btn-active text-white' :''}`} onClick={()=>{cookies.set('active_state','create-job')}}>create Job</li>
         </Link>
         }
         {!cookies.get('userId') && !cookies.get('token')  &&

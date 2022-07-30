@@ -8,22 +8,24 @@ exports=module.exports=function(io){
 // socket.........
 io.on("connection", (socket) => {
     // Users.updateOne({companyId:companyId})
-    socket.on("click",({sendId,userType,companyId})=>{
-       
+    socket.on("click",({userId,userType,companyId})=>{
+      console.log(userType)
+      console.log(userId)
+      console.log(socket.id)
+
+
 
       if(userType==='company' || userType==='freelancer'){
-        User.findOne({companyId:mongoose.Types.ObjectId(companyId),userType:'company'})
+        User.updateOne({companyId:mongoose.Types.ObjectId(companyId),userType:'company'},{$set:{socketId:socket.id}})
         .then((user)=>{
           console.log('null..',user)
-            user.socketId=socket.id;
-            user.save();
+            // user.socketId=socket.id;
+            // user.save();
         })
       }else if(userType==='employee'){
-        User.findOne({userId:mongoose.Types.ObjectId(sendId),userType:'employee'})
+        User.updateOne({_id:mongoose.Types.ObjectId(userId),userType:'employee'},{$set:{socketId:socket.id}})
         .then((user)=>{
-            user.socketId=socket.id;
-            user.save();
-
+          console.log('null..',user)
         })
       }
     });
@@ -96,7 +98,7 @@ io.on("connection", (socket) => {
               })
              }
             }else{
-              res.json('receice id not exist')
+              socket.emit('receive','receice id not exist')
             }
           
           

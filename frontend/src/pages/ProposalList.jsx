@@ -8,7 +8,6 @@ import axios from 'axios';
 import StripeCheckout from 'react-stripe-checkout'
 import {Link, useParams} from 'react-router-dom'
 import { job_action } from "../components/redux/slice/jobSlice";
-
 const cookies=new Cookies();
 
 const skills = [
@@ -20,12 +19,13 @@ const skills = [
   "React",
 ];
 function ProposalList() {
+  const {jobId}=useParams();
   const dispatch=useDispatch();
   const proposal=useSelector(state=>state.jobSlice.proposals);
-  const {jobId}=useParams();
   const uploadedImage = React.useRef(null);
   const imageUploader = React.useRef(null);
   const [employeeId,setemployeeId]=useState('');
+  const [proposalId,setproposalId]=useState('');
   const [companyId,setcompanyId]=useState('');
   const [companyprofile,setcompanyprofile]=useState('');
   const [amount,setamount]=useState('');
@@ -59,31 +59,36 @@ function ProposalList() {
   };
 
 
-  const payment=(companyId,companyprofile,amount)=>{
+  const payment=(companyId,companyprofile,amount,proposalId)=>{
     const employeeId=cookies.get('employeeId');
     // console.log(employeeId,companyId,companyprofile,amount)
     setemployeeId(employeeId)
     setcompanyId(companyId)
     setcompanyprofile(companyprofile)
     setamount(amount)
+    setproposalId(proposalId);
   }
 
-  const handletoken=(tokens,addresses)=>{ 
-    const token=cookies.get('token')
+  const handletoken=(tokens,addresses)=>{
+
+    const token=cookies.get('token');
     axios.post('http://localhost:8000/checkout',{
       employeeId,
+      jobId,
+      proposalId,
       companyId,
       companyprofile,
       amount,
       tokens,
       addresses,
       headers:{
-        token:'Bearer '+token
+        authorization:'Bearer '+token
       }
     })
     .then((response)=>{
       console.log(response);
     })    
+    window.location.reload(false);
   }
   return (
     <div className="main-proposal-list-container">
@@ -110,8 +115,7 @@ function ProposalList() {
     {proposal.length>0 &&
       proposal.map((proposal,i)=>{
         return (<>
-        {console.log(proposal)}
-        <div key={proposal[0]._id} onMouseEnter={()=>payment(proposal[1].companyId._id,proposal[1]._id,proposal[0].rate)}>
+        <div key={proposal[0]._id} onMouseEnter={()=>payment(proposal[1].companyId._id,proposal[1]._id,proposal[0].rate,proposal[0]._id)}>
         <hr />
         <div className="proposal-list-user-info">
           <div className="user-info-container-1">
@@ -135,14 +139,14 @@ function ProposalList() {
               </div>
             </div>
             <div className="user-name-rates">
-              <h2 style={{color:"green", fontSize:"1.2em", fontWeight:"500"}}>{proposal[1].companyId.companyName}</h2>
-              <p style={{color:"#656565"}}>{proposal[1].title}</p>
+              <h2 style={{color:"green", fontSize:"1.2em", fontWeight:"500"}}>{proposal[1].companyId.companyName}      {proposal[0].hire && <span style={{backgroundColor:'#6CC417',color:'white',borderRadius:'10px',padding:'5px',fontSize:'16px' }}> hired</span>}</h2>
+              <p style={{color:"#656565"}}>{proposal[1].title} </p>
               <p>{proposal[1].companyId.country}</p>
               <div className="rates">
-                <p> ${proposal[0].rate}.00 rate</p>
-                <p>${proposal[1].companyId.earn} earned</p>
+                <p> ${proposal[0].rate}.00 <span style={{fontSize:'12px',fontWeight:'bold'}}>rate</span></p>
+                <p style={{marginLeft:'70px'}}>${proposal[1].companyId.earn}  <span style={{fontSize:'12px',fontWeight:'bold',}}>earned</span></p>
               </div>
-              <p style={{ marginTop: "10px" }}>
+              <p style={{ marginTop: "10px",display:'inline' }}>
                 {proposal[0].coverletter}
               </p>
             </div>
@@ -151,6 +155,8 @@ function ProposalList() {
               <Link to={`/message?receiveId=${proposal[0].userId._id}`}>
                 <Button content="Messages" />
               </Link>
+
+              {!proposal[0].hire &&
               <StripeCheckout
                 className=''
                 stripeKey='pk_test_51LMaPPSASfMwgZx33njrIb1xC9iXdn5RunLezSNxEXyXPPcaToK1X9DIOobYFdrqrTasN80x2bzYyLQo0Sv3zlF800mlMIBUKG'
@@ -161,6 +167,7 @@ function ProposalList() {
                 billingAddress
                 shippingAddress
               ><button className="custom-button">Hire</button></StripeCheckout>
+              }
             </div>
           </div>
           <ul className="skill-list">

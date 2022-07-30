@@ -50,7 +50,7 @@ const Job=new mongoose.Schema({
     employeeId:{type:Schema.Types.ObjectId,ref:'employee'},
     createdAt:{
         type:Date,
-        default:utcDate,
+        default:Date.now(),
     },
     // {
     //     // type:Date,

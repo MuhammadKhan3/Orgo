@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
-    chats:[],userlist:[],user:[],name:'',message:'',flag:''
+    chats:[],userlist:[],user:[],name:'',message:'',flag:false
 }
 // slices
 //User slice we manage the registration process varaible
