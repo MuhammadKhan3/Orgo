@@ -85,7 +85,8 @@ function ChatRightSection() {
         className="message-box"
         style={{
           borderTop: "1px solid lightgrey",
-          height: "350px",
+          height: "440px",
+          overflowY:"scroll",
         }}
       >
         {searchParams.get('receiveId') && chats.map((chat,i)=>{
@@ -93,20 +94,19 @@ function ChatRightSection() {
         })}
       </div>
       <TextField
-        // label="Write your message here !"
         placeholder="Write your message here !"
         multiline
         onChange={messagehandler}
         value={message}
         rowsMax="3"
         // <AttachFileIcon style={{marginRight:"10px"}}/>
-        InputProps={{ endAdornment: <><SendIcon style={{color:"green"} } onClick={sendhandler} /></>}}
+        InputProps={{ endAdornment: <><SendIcon style={{color:"green", cursor:"pointer"}} onClick={sendhandler} /></>}}
         style={{
           width: "100%",
           padding: "10px",
           fontSize: "0.9em",
+          marginTop:"5px",
           padding:"5px",
-          marginTop: "100px",
           outline: "none"
         }}
       />

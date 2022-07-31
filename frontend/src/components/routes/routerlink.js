@@ -49,7 +49,7 @@ function RouterLink() {
          <Route path="/project" element={<Protect Component={Search} />} />
       
       {/* <Route path="/submit-proposal" element={<SubmitProposal/>} /> */}
-      {/* <Route path="/message/:receiveId" element={<ChatPage/>} /> */}
+      {/* <Route path="/message" element={<ChatPage/>} /> */}
       <Route path="/" element={<Home />} />
 
 
