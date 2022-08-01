@@ -13,7 +13,7 @@ const FetchJob = () => {
             userId,
             headers: { authorization: `Bearer ${token}` }
         });
-        console.log(response.data);
+
         dispatch(job_action.setjobs(response.data.jobs))
         dispatch(job_action.setsearches(response.data.searches))
 

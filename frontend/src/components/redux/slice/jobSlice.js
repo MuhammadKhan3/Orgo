@@ -56,6 +56,7 @@ export const jobSlice = createSlice({
       state.proposalfile=action.payload;
     },
     setcreatedat:(state,action)=>{
+      console.log(action.payload)
       state.createdat=action.payload;
     },
     setrate:(state,action)=>{

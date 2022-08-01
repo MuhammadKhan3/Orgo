@@ -48,10 +48,6 @@ const Job=new mongoose.Schema({
     },
     userId:{type:Schema.Types.ObjectId,ref:'user'},
     employeeId:{type:Schema.Types.ObjectId,ref:'employee'},
-    createdAt:{
-        type:Date,
-        default:Date.now(),
-    },
     // {
     //     // type:Date,
     //     date:{
@@ -63,7 +59,7 @@ const Job=new mongoose.Schema({
     //         default:new Date().getTimezoneOffset()
     //     },
     // }
-})
+},{timestamps:true})
 
 Job.index({'$**': 'text'});
 const Jobs=mongoose.model('job',Job);

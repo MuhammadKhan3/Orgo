@@ -560,7 +560,7 @@ exports.facebookSignup=(req,res,next)=>{
 exports.geocoding= async (req,res,next)=>{
     const {coordinates}=req.body
     if(coordinates.lat==0 && coordinates.long==0){
-        res.json({msg:'Geocoding value does not collect'});
+        return       res.json({msg:'Geocoding value does not collect'});
     }
     console.log('coordinates',coordinates);
     const response = await geocoder.reverse(coordinates);

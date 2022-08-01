@@ -4,7 +4,7 @@ import { TextareaAutosize } from "@mui/material";
 import Button from '../components/button/Button'
 import { useState,useEffect } from "react";
 import DragDropFile from "../components/dragFileUploader/DragDropFile";
-import { format} from 'date-fns'
+import {parseISO, format,parse} from 'date-fns'
 import {Link, useParams} from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
@@ -33,12 +33,8 @@ function SubmitProposal() {
 
 
 // date
-    const createdat=useSelector(state=>state.jobSlice.createdat);
-    const year=new Date(createdat).getFullYear();
-    const month=new Date(createdat).getMonth();
-    const day=new Date(createdat).getDay();
-    console.log(year,month,day)
-    const date=new Date(`${year},${month},${day}`);
+    let createdAt=useSelector(state=>state.jobSlice.createdat);
+
 // close date
     const dispatch=useDispatch();
     
@@ -119,7 +115,7 @@ function SubmitProposal() {
           {category}
           </p>
           <p style={{ margin: "4px 0 0 30px", fontSize: "0.9em" }}>
-            Posted {createdat && format(date, 'MMMM dd,yyyy')}
+            Posted {createdAt && format(parseISO(createdAt), 'MMMM dd,yyyy')}
           </p>
         </div>
         {/* <div style={{ marginTop: "15px" }}>

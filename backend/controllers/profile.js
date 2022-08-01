@@ -228,6 +228,7 @@ exports.companyeducation=(req,res,next)=>{
 
 // Rating
 exports.freeReviews=(req,res,next)=>{
+    
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')

@@ -116,7 +116,6 @@ function SearchJob() {
   const funk=()=>{
 
   }
-
   return (
     <div className="search-container">
       <div className="search-bar-container">
@@ -125,7 +124,7 @@ function SearchJob() {
           type="text"
           onKeyDown={Searchhandler}
           placeholder="Search for job"
-        />
+          />
       </div>
       <p style={{ color: "green" }}>
         Recent Search :{" "}
@@ -147,14 +146,14 @@ function SearchJob() {
             id={"1"}
             onClick={mostrecenthandler}
             className={active === "1" ? "active" : undefined}
-          >
+            >
             Recent Job
           </button>
           <button
             id={"2"}
             onClick={bestmatchhandler}
             className={active === "2" ? "active" : undefined}
-          >
+            >
             Best Matches
           </button>
           <button
@@ -179,7 +178,7 @@ function SearchJob() {
                       flexDirection: "row",
                       justifyContent: "space-between",
                     }}
-                  >
+                    >
                     <h2
                       style={{
                         fontSize: "1.1em",
@@ -200,8 +199,8 @@ function SearchJob() {
                           color: "green",
                         }}
                       />
-                    ) : (
-                      <FavoriteBorderIcon
+                      ) : (
+                        <FavoriteBorderIcon
                         onClick={() => {
                           handleFavourite(job._id, job.employeeId);
                         }}
@@ -211,11 +210,14 @@ function SearchJob() {
                           cursor: "pointer",
                           color: "green",
                         }}
-                      />
-                    )}
+                        />
+                        )}
                   </div>
                   <p>
-                    {formatDistance(new Date(job.createdAt), new Date(), {
+                    {console.log(new Date(job.createdAt).toLocaleString())}
+                   {/* {console.log(new Date(new Date(job.createdAt).valueOf() + new Date(job.createdAt).getTimezoneOffset() * 60 * 1000))} */}
+                   {/* new Date(new Date(job.createdAt).valueOf() + new Date(job.createdAt).getTimezoneOffset() * 60 * 1000) */}
+                    {formatDistance(new Date(),new Date(job.createdAt), {
                       addSuffix: true,
                     })}
                   </p>
