@@ -18,7 +18,11 @@ import JobList from "../../pages/JobList";
 import ProposalList from '../../pages/ProposalList';
 import SubmitProposal from "../../pages/SubmitProposal";
 import ChatPage from "../../pages/ChatPage";
+<<<<<<< HEAD
 import Freelancer from "../freelancer/freelancer";
+=======
+import Employee from "../../pages/Employee";
+>>>>>>> 088d17f6caeee961d01c390bbf12f374040cfd40
 
 const cookies = new Cookies();
 
@@ -53,7 +57,14 @@ function RouterLink() {
          )}
          <Route path="/message" element={<Protect Component={ChatPage}/>} />
          <Route path="/project" element={<Protect Component={Search} />} />
+<<<<<<< HEAD
          </>}
+=======
+         <Route path="/employee" element={<Employee/>} />
+      
+      {/* <Route path="/submit-proposal" element={<SubmitProposal/>} /> */}
+      {/* <Route path="/message" element={<ChatPage/>} /> */}
+>>>>>>> 088d17f6caeee961d01c390bbf12f374040cfd40
       <Route path="/" element={<Home />} />
 
 
