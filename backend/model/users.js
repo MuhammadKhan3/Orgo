@@ -51,6 +51,10 @@ const Users = new mongoose.Schema({
     socketId:{
         type:String,
         default:''
+    },
+    authorize:{
+        type:Boolean,
+        default:false,
     }
   })
   const User=mongoose.model('user',Users);

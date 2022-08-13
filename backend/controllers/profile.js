@@ -469,3 +469,46 @@ exports.companycontact=(req,res,next)=>{
     })
 }
 // Close Company Contact]
+
+
+
+
+// Freelancerlist
+exports.freelancerlist=(req,res,next)=>{
+    console.log(req.params)
+    const {companyId}=req.params;
+    User.find({companyId:mongoose.Types.ObjectId(companyId),userType:'freelancer',authorize:false})
+    .then((freelancers)=>{
+        res.status(200).json({freelancers:freelancers})
+    })
+}
+
+exports.approveFreelancer=(req,res,next)=>{
+    console.log(req.params)
+    const {companyId}=req.params;
+    User.find({companyId:mongoose.Types.ObjectId(companyId),userType:'freelancer',authorize:true})
+    .then((freelancers)=>{
+        res.status(200).json({freelancers:freelancers})
+    })
+}
+exports.approve=(req,res,next)=>{
+    const {freelancerId}=req.body;
+    User.updateOne({_id:mongoose.Types.ObjectId(freelancerId)},{$set:{authorize:true}})
+    .then((response)=>{
+        if(response.acknowledged){
+            res.json({msg:'Succefully Update',flag:true});
+        }
+    })
+}
+
+exports.reject=(req,res,next)=>{
+    const {freelancerId}=req.body;
+    User.updateOne({_id:mongoose.Types.ObjectId(freelancerId)},{$set:{companyId:null}})
+    .then((response)=>{
+        console.log(response)
+        if(response.acknowledged){
+            
+            res.json({msg:'Succefully Update',flag:true});
+        }
+    })
+}

@@ -11,7 +11,7 @@ const Header = () => {
     const [active,setactivebtn]=useState(cookies.get('active_state'));
     
     const logouthandler=()=>{
-      if(cookies.get('userType')==='freelancer' || cookies.get('userType')==='freelancer'){
+      if(cookies.get('userType')==='freelancer' || cookies.get('userType')==='company'){
          cookies.remove('companyId')
       }else{
         cookies.remove('employeeId')
@@ -21,6 +21,8 @@ const Header = () => {
       cookies.remove('token')
       cookies.remove('authenticate')
       cookies.remove('userType')
+      cookies.remove('authorize');
+      cookies.remove('active_state');
       navigate('/login')
     }
 

@@ -48,17 +48,6 @@ const Job=new mongoose.Schema({
     },
     userId:{type:Schema.Types.ObjectId,ref:'user'},
     employeeId:{type:Schema.Types.ObjectId,ref:'employee'},
-    // {
-    //     // type:Date,
-    //     date:{
-    //     type:Date,
-    //     default:new Date()
-    //     },
-    //     offset:{
-    //         type:Date,
-    //         default:new Date().getTimezoneOffset()
-    //     },
-    // }
 },{timestamps:true})
 
 Job.index({'$**': 'text'});

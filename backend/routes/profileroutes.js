@@ -49,6 +49,14 @@ router.post('/company-contacts/:employeeId',authenticate,[
     body('ownerName','ownername greater than 3 and less than 200').isLength({min:3,max:200})
 ],Profile.companycontact);
 
+router.post('/get-freelancer/:companyId',Profile.freelancerlist);
+router.post('/approve-freelancer/:companyId',Profile.approveFreelancer);
+router.post('/approve',Profile.approve);
+router.post('/reject',Profile.reject);
+
+
+
+
 // Close Client Contacts
 // Close Client Profile..........
 module.exports=router;

@@ -24,6 +24,8 @@ const GoogleLoginThunk=(token,navigate)=>{
                 cookies.set('companyId',response.data.companyId,{expires:hour});
                 cookies.set('userType',response.data.userType,{expires:hour});
                 cookies.set('authenticate',response.data.authenticate,{expires:hour});
+                cookies.set('authorize',response.data.authorize,{expires:hour});
+                
                 navigate('/');
               }else if(response.data.userType==='employee'){
                 cookies.set('token',response.data.token,{expires:hour});
@@ -31,6 +33,7 @@ const GoogleLoginThunk=(token,navigate)=>{
                 cookies.set('employeeId',response.data.employeeId,{expires:hour});
                 cookies.set('userType',response.data.userType,{expires:hour});
                 cookies.set('authenticate',response.data.authenticate,{expires:hour});
+                cookies.set('authorize',response.data.authorize,{expires:hour});
 
                 navigate('/');
               }else if(response.data.msg){

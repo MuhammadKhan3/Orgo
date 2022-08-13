@@ -19,7 +19,8 @@ const LoginThunk = (obj,navigate) => {
             cookies.set('userId',response.data.userId,{expires:hour});    
             cookies.set('companyId',response.data.companyId,{expires:hour});
             cookies.set('userType',response.data.userType,{expires:hour});    
-            cookies.set('authenticate',response.data.authenticate,{expires:hour});    
+            cookies.set('authenticate',response.data.authenticate,{expires:hour});
+            cookies.set('authorize',response.data.authorize,{expires:hour});    
             dispatch(user_action.setchangestatus(response.data.status));
             navigate('/')
 
@@ -32,7 +33,8 @@ const LoginThunk = (obj,navigate) => {
               cookies.set('userId',response.data.userId,{expires:hour});    
               cookies.set('userType',response.data.userType,{expires:hour});
               cookies.set('employeeId',response.data.employeeId,{expires:hour});    
-              cookies.set('authenticate',response.data.authenticate,{expires:hour});    
+              cookies.set('authenticate',response.data.authenticate,{expires:hour});
+              cookies.set('authorize',response.data.authorize,{expires:hour});    
               dispatch(user_action.setchangestatus(response.data.status));
               navigate('/')
           }else{

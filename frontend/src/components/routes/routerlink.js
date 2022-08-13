@@ -18,18 +18,21 @@ import JobList from "../../pages/JobList";
 import ProposalList from '../../pages/ProposalList';
 import SubmitProposal from "../../pages/SubmitProposal";
 import ChatPage from "../../pages/ChatPage";
+import Freelancer from "../freelancer/freelancer";
 
 const cookies = new Cookies();
 
 function RouterLink() {
   const userType = cookies.get("userType");
-  console.log(userType)
+  const authorize = cookies.get("authorize");
+  console.log(typeof authorize)
   //This is Route where we include the Component and navigate the component
   return (
     <Routes>
       <Route path="/login" element={<Navigate Component={Login} />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgot-password" element={<Forgot />} />
+      {authorize==="true" && <>
       {userType === "employee"  ? (
         <>
         <Route path="/profile" element={<Protect Component={ClientCompany} />}/>
@@ -40,16 +43,17 @@ function RouterLink() {
         <Route path="/proposal-list" element={<ProposalList/>} />
 
        </>) : (
-        <>
+         <>
+          {userType==='company' &&
+           <Route path="/freelancer-list" element={<Freelancer/>} />
+          }
          <Route path="/profile" element={<Protect Component={FreelancerCompany} />}/>
          <Route extact path="/submit-proposal/:jobId" element={<SubmitProposal/>} />
          </>
          )}
          <Route path="/message" element={<Protect Component={ChatPage}/>} />
          <Route path="/project" element={<Protect Component={Search} />} />
-      
-      {/* <Route path="/submit-proposal" element={<SubmitProposal/>} /> */}
-      {/* <Route path="/message" element={<ChatPage/>} /> */}
+         </>}
       <Route path="/" element={<Home />} />
 
 

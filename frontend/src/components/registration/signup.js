@@ -133,18 +133,24 @@ const Signup = () => {
     }
    }
    useEffect(()=>{
+    console.log('geo')
     // Latitude & Longitude
     const geolocation=()=>{
+      console.log('geo-fun')
       navigator.geolocation.getCurrentPosition((position)=>{
-        const geo={lat:position.coords.latitude,lon:position.coords.longitude};
-        dispatch(user_action.setcoordinates(geo))
-      })
+        console.log('geo-fun-in')
+  
+          console.log(position)
+          const geo={lat:position.coords.latitude,lon:position.coords.longitude};
+          dispatch(user_action.setcoordinates(geo))
+        },()=>{},{timeout:10000})
     }
+
     geolocation();
-    const timer=setTimeout(geolocation,4000)
-    return ()=>{
-      clearTimeout(timer)
-    }
+    // const timer=setTimeout(geolocation,1000)
+    // return ()=>{
+    //   clearTimeout(timer)
+    // }
 // Close Latitude & Longitude
    },[])
    const continuebtnhandler=()=>{

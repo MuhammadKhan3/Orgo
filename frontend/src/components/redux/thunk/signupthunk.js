@@ -23,6 +23,8 @@ const signupThunk = (obj,navigate) => {
             cookies.set('userId',response.data.userId,{expires:hour});    
             cookies.set('companyId',response.data.companyId,{expires:hour});
             cookies.set('userType',response.data.userType,{expires:hour});    
+            cookies.set('authorize',response.data.authorize,{expires:hour});    
+
 
             dispatch(user_action.setchangestatus(response.data.status));
           }else{
@@ -32,11 +34,11 @@ const signupThunk = (obj,navigate) => {
               cookies.set('userId',response.data.userId,{expires:hour});    
               cookies.set('userType',response.data.userType,{expires:hour});
               cookies.set('employeeId',response.data.employeeId,{expires:hour});    
-                    dispatch(user_action.setchangestatus(response.data.status));
+              cookies.set('authorize',response.data.authorize,{expires:hour});    
+              dispatch(user_action.setchangestatus(response.data.status));
 
           }
         }
-    
       }
     signup();
   }

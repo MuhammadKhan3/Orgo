@@ -39,3 +39,22 @@
     margin-left: 160px;
     margin-bottom: 20px;
 }
+
+
+.custom-button {
+    padding: 8px;
+    margin-left: 10px;
+    border-radius: 30px;
+    width: 120px;
+    background-color: white;
+    color: #3c8224;
+    border: 1px solid #9a9a9a;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+
+  .custom-button:hover {
+    background-color: #3c8224;
+    color: white;
+    transition: ease-out 0.4s;
+  }

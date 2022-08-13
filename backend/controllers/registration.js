@@ -77,6 +77,7 @@ exports.googleSignup=async (req,res,next)=>{
                                         picture:picture,
                                         verified:email_verified,
                                         userType:usergroup,
+                                        authorize:true,
                                         // save the clients id in google database
                                         google:token,
                                         companyId:company._id
@@ -89,7 +90,7 @@ exports.googleSignup=async (req,res,next)=>{
                                         const token=jwt.sign({name:user.firstname,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                                             expiresIn:'1h'
                                         })
-                                        res.json({userId:user._id,token:token,flag:true,companyId:company._id,userType:usergroup,authenticate:user.verified})
+                                        res.json({userId:user._id,token:token,flag:true,companyId:company._id,userType:usergroup,authenticate:user.verified,authorize:user.authorize})
                                     });        
                                 }).catch((error)=>{
                                         const err=new Error('Google Login Error');
@@ -102,12 +103,12 @@ exports.googleSignup=async (req,res,next)=>{
                                         expiresIn:'1h'
                                     })
                                     if(user.google.length>0){
-                                        res.json({userId:user._id,token:token,flag:true,companyId:user.companyId,userType:user.userType,authenticate:user.verified})
+                                        res.json({userId:user._id,token:token,flag:true,companyId:user.companyId,userType:user.userType,authenticate:user.verified,authorize:user.authorize})
                                     }else if(user.google==='')
                                     {
                                         user.google=token;
                                         user.save();
-                                        res.json({userId:user._id,token:token,flag:true,companyId:user.companyId,userType:user.userType,authenticate:user.verified})
+                                        res.json({userId:user._id,token:token,flag:true,companyId:user.companyId,userType:user.userType,authenticate:user.verified,authorize:user.authorize});
                                     }
                                   }else{
                                     res.json({msg:'Your account not the company please try other'})
@@ -143,7 +144,7 @@ exports.googleSignup=async (req,res,next)=>{
                                         const token=jwt.sign({name:user.firstname,email:user.email,useruserId:user._id},'orgoisthefreelancingcompany',{
                                             expiresIn:'1h'
                                         })
-                                        res.json({userId:user._id,token:token,flag:true,companyId:req.companyId,userType:usergroup,authenticate:user.verified})
+                                        res.json({userId:user._id,token:token,flag:true,companyId:req.companyId,userType:usergroup,authenticate:user.verified,authorize:user.authorize})
                                         // const decode=jwt.verify(token,'thisissecretkeyyouwantthechange');
                                     });        
                                 }else{
@@ -154,12 +155,12 @@ exports.googleSignup=async (req,res,next)=>{
                                         expiresIn:'1h'
                                     })
                                     if(user.google.length>0){
-                                        res.json({userId:user._id,companyId:user.companyId,token:token,flag:true,userType:user.userType,authenticate:user.verified})
+                                        res.json({userId:user._id,companyId:user.companyId,token:token,flag:true,userType:user.userType,authenticate:user.verified,authorize:user.authorize});
                                     }else if(user.google==='')
                                     {
                                         user.google=token;
                                         user.save();
-                                        res.json({userId:user._id,token:token,flag:true,companyId:user.companyId,userType:user.userType,authenticate:user.verified})
+                                        res.json({userId:user._id,token:token,flag:true,companyId:user.companyId,userType:user.userType,authenticate:user.verified,authorize:user.authorize});
                                     }
                                   }else{
                                     res.json({msg:'Your account not the freelancer please try other'})
@@ -186,6 +187,7 @@ exports.googleSignup=async (req,res,next)=>{
                                         picture:picture,
                                         verified:email_verified,
                                         userType:usergroup,
+                                        authorize:true,
                                         // save the clients id in google database
                                         google:token,
                                     }).then((user)=>{
@@ -197,7 +199,7 @@ exports.googleSignup=async (req,res,next)=>{
                                             const token=jwt.sign({name:user.firstname,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                                                 expiresIn:'1h'
                                             })
-                                            res.json({userId:user._id,token:token,flag:true,employeeId:employee._id,userType:usergroup,authenticate:user.verified})
+                                            res.json({userId:user._id,token:token,flag:true,employeeId:employee._id,userType:usergroup,authenticate:user.verified,authorize:user.authorize});
                                         })
                                         // const decode=jwt.verify(token,'thisissecretkeyyouwantthechange');
                                     });        
@@ -207,19 +209,17 @@ exports.googleSignup=async (req,res,next)=>{
                                     Employee.findOne({userId:mongoose.Types.ObjectId(user._id)})
                                         .then((employee)=>{
                                             req.employeeId=employee._id;
-                                            console.log(req.employeeId)
                                         
                                         if(user.google.length>0){
                                             const token=jwt.sign({name:user.firstname,email:user.email,userId:user._id},'orgoisthefreelancingcompany',{
                                                 expiresIn:'1h'
                                             })
-                                            console.log("employee id",req.employeeId)
-                                            res.json({userId:user._id,token:token,employeeId:employee._id,flag:true,userType:user.userType,authenticate:user.verified})
+                                            res.json({userId:user._id,token:token,employeeId:employee._id,flag:true,userType:user.userType,authenticate:user.verified,authorize:user.authorize})
                                         }else if(user.google==='')
                                         {
                                             user.google=token;
                                             user.save();
-                                            res.json({userId:user._id,token:token,employeeId:employee._id,flag:true,userType:user.userType,authenticate:user.verified})
+                                            res.json({userId:user._id,token:token,employeeId:employee._id,flag:true,userType:user.userType,authenticate:user.verified,authorize:user.authorize});
                                         }
                                     })
                                  }else{
@@ -254,11 +254,11 @@ exports.Googlelogin=(req,res,next)=>{
                 expiresIn:'1h'
             })
             if(user.userType==='freelancer' || user.userType==='company'){
-                res.json({token:token,flag:true,userType:user.userType,userId:user._id,companyId:user.companyId,authenticate:user.verified});
+                res.json({token:token,flag:true,userType:user.userType,userId:user._id,companyId:user.companyId,authenticate:user.verified,authorize:user.authorize});
             }else if(user.userType==='employee'){
                 Employee.findOne({userId:user._id})
                 .then((employee)=>{
-                    res.json({token:token,flag:true,userType:user.userType,userId:user._id,employeeId:employee._id,authenticate:user.verified});
+                    res.json({token:token,flag:true,userType:user.userType,userId:user._id,employeeId:employee._id,authenticate:user.verified,authorize:user.authorize});
                 })
             }
         }else{
@@ -559,7 +559,7 @@ exports.facebookSignup=(req,res,next)=>{
 // Timezone and gecoding
 exports.geocoding= async (req,res,next)=>{
     const {coordinates}=req.body
-    if(coordinates.lat==0 && coordinates.long==0){
+    if(coordinates.lat==0 && coordinates.lon==0){
         return       res.json({msg:'Geocoding value does not collect'});
     }
     console.log('coordinates',coordinates);
@@ -604,6 +604,7 @@ if(type==='company'){
                 password:hash,
                 verificationCode:req.verification,
                 userType:type,
+                authorize:true,
                 companyId:company._id
             });
         // insert the user information
@@ -620,7 +621,7 @@ if(type==='company'){
                         expiresIn:'1h'
                     })
                     //Send the response in json format in frontend side;
-                    res.json({token:token,flag:true,status:'two',userId:user._id,companyId:company._id,userType:user.userType});
+                    res.json({token:token,flag:true,status:'two',userId:user._id,companyId:company._id,userType:user.userType,authorize:user.authorize});
                 }
             })
             .catch((error)=>{
@@ -654,6 +655,7 @@ else if(type==='employee'){
                     lastname:lastname,
                     email:email,
                     password:hash,
+                    authorize:true,
                     verificationCode:req.verification,
                     userType:type,
                 });
@@ -671,7 +673,7 @@ else if(type==='employee'){
                                 expiresIn:'1h'
                             })
                             //Send the response in json format in frontend side;
-                            res.json({token:token,flag:true,status:'two',userId:user._id,userType:user.userType,employeeId:employee._id});
+                            res.json({token:token,flag:true,status:'two',userId:user._id,userType:user.userType,employeeId:employee._id,authorize:user.authorize});
                         }
 
                     });
@@ -713,7 +715,7 @@ else if(type==='employee'){
                                 expiresIn:'1h'
                             })
                             //Send the response in json format in frontend side;
-                            res.json({token:token,flag:true,status:'two',userId:user._id,userType:user.userType,companyId:req.companyId});
+                            res.json({token:token,flag:true,status:'two',userId:user._id,userType:user.userType,companyId:req.companyId,authorize:user.authorize});
                         }
                 })
                 .catch((error)=>{
@@ -761,11 +763,11 @@ exports.login=(req,res,next)=>{
                 expiresIn:'1h'
             })
               if(user.userType==='freelancer' || user.userType==='company'){
-                res.json({userId:user._id,token:token,flag:true,authenticate:user.verified,companyId:user.companyId,userType:user.userType})
+                res.json({userId:user._id,token:token,flag:true,authenticate:user.verified,companyId:user.companyId,userType:user.userType,authorize:user.authorize})
               }else if(user.userType==='employee'){
                 Employee.findOne({userId:mongoose.Types.ObjectId(user._id)})
                 .then((employee)=>{
-                    res.json({userId:user._id,token:token,flag:true,authenticate:user.verified,employeeId:employee._id,userType:user.userType,authenticate:user.verified})
+                    res.json({userId:user._id,token:token,flag:true,authenticate:user.verified,employeeId:employee._id,userType:user.userType,authenticate:user.verified,authorize:user.authorize})
                 })
               }
           }else{
