@@ -7,7 +7,7 @@ const bcrypt=require('bcryptjs');
 // where we store the value
 
 exports.sendemail=async (req,res,next)=>{
-    
+
     const {email,firstname,lastname}=req.body;
     crypto.randomInt(0, 1000000, (err, generate) => {
         const transporter=nodemailer.createTransport({
@@ -72,7 +72,6 @@ exports.findEmail=(req,res,next)=>{
                         pass:'aiacatlkgusedzep'
                         }
                 })              
-
                 let mailoptions={
                         from:'muhammadkh3278@gmail.com',
                         to:email,
@@ -104,7 +103,7 @@ exports.findEmail=(req,res,next)=>{
 }
 // close find email handler
 
-// Verified the code handler
+// Verified forgot the code handler
 exports.verified=(req,res,next)=>{
     const {code,email}=req.body;
     Users.findOne(
@@ -122,7 +121,7 @@ exports.verified=(req,res,next)=>{
         throw new Error(err);
     })
 }
-// close the verified handler
+// close the forgot verified handler
 
 // verify the code signup time
 exports.verifyAccount=(req,res,next)=>{
@@ -136,7 +135,6 @@ exports.verifyAccount=(req,res,next)=>{
         }}
     )
     .then(user=>{
-        console.log(user);
         if(user){
             user.verified=true;
             user.save();

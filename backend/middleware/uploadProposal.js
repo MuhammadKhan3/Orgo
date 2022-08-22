@@ -10,5 +10,4 @@ const storage = multer.diskStorage({
   })
 
   const uploadProposal = multer({ storage: storage })
-
   module.exports=uploadProposal;

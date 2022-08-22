@@ -37,14 +37,15 @@ const  Freelancer=()=>{
    if(active==='new'){ 
     return (
     <>
-    <div  className="h-[673px] bg-gray-200" >
-    <div className="overflow-x-auto w-[700px]  ml-[400px] bg-white">
+    <div  className="h-[673px] w-auto ml-[20px]" >
+    <h1 className="text-[20px] text-lightgray font-bold ">Freelancer</h1>
+    <div className="overflow-x-auto    bg-white">
     <div className="flex flex-row ml-[30px] space-x-5 mt-[30px]">
     {/*  */}
       <h3 className={`${active==='new' &&' border-b-2 border-green-500'} cursor`} onClick={()=>{setactive('new')}}>New</h3>    
       <h3 className={`${active==='approve' &&' border-b-2 border-green-500'} `}  onClick={()=>{setactive('approve')}}>Approve</h3>
     </div>
-    <table className="table  mt-[30px] w-[700px] ">
+    <table className="table  mt-[30px] w-full ">
       <thead>
         <tr >
           <th className="!text-[13px]">Srn</th>
@@ -72,15 +73,15 @@ const  Freelancer=()=>{
   else if(active==='approve')  { 
   return (
     <>
-    <div  className="h-[673px] bg-gray-200">
-
-    <div className="overflow-x-auto w-[700px]  ml-[400px] bg-white">
+    <div  className="h-[673px] ml-[20px]">
+    <h1 className="text-[20px] text-lightgray font-bold ">Freelancer</h1>
+    <div className="overflow-x-auto    bg-white">
     <div className="flex flex-row ml-[30px] space-x-5 mt-[30px]">
     {/*  */}
       <h3 className={`${active==='new' &&' border-b-2 border-green-500'} cursor`} onClick={()=>{setactive('new')}}>New</h3>    
       <h3 className={`${active==='approve' &&' border-b-2 border-green-500'} `}  onClick={()=>{setactive('approve')}}>Approve</h3>
     </div>
-    <table className="table  mt-[30px] w-[700px] ">
+    <table className="table  mt-[30px] w-full ">
       <thead>
         <tr >
           <th className="!text-[13px]">Srn</th>

@@ -7,7 +7,6 @@ const users=[];
 exports=module.exports=function(io){
 // socket.........
 io.on("connection", (socket) => {
-    // Users.updateOne({companyId:companyId})
     socket.on("click",({userId,userType,companyId})=>{
       console.log(userType)
       console.log(userId)

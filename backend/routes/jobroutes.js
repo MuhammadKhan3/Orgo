@@ -25,33 +25,53 @@ const EmployeeValidation=[param('employeeId').custom(employeeId=>{
 
 router.post('/create-job/:employeeId',authform,EmployeeValidation,uploadJob.array('files'),
 [
-    // body('heading').exists().isLength({ min: 2,max:300 }).withMessage('heading length greater than 2 and less than 300'),
-    // body('description').isLength({min:2,max:2000}),
-    // body('category').exists().isLength({min:2}),
-    // body('employeeId').exists().withMessage('EmployeeId is required'),
-    // body('*.min').exists().isNumeric(),
-    // body('*.max').exists().isNumeric(),
+    body('heading').exists().isLength({ min: 2,max:300 }).withMessage('heading length greater than 2 and less than 300'),
+    body('description').isLength({min:2,max:2000}),
+    body('category').not().isEmpty().withMessage('Category is required'),
+    param('employeeId').exists().withMessage('EmployeeId is required'),
+    // body('skill').notEmpty().isArray({min:1,max:10}).withMessage('skill length greater than 1 and less than 10'),
+    body('budget.min').not().isEmpty().isNumeric({min:0,max:6}),
+    body('budget.max').notEmpty().
+    isNumeric({min:0,max:6})
+    .custom((max,{req})=>{
+        const {body:{budget:{min}}}=req;
+
+        if(parseFloat(max)>=parseFloat(min)){
+            console.log('true')
+            return true
+        }else{
+            console.log('reject')
+            return Promise.reject('maximum value is less than minimum value');
+        }
+    }),
+
 ]
 ,Jobcontroller.createJob);
 
 
 router.post('/edit-job/:jobId',uploadJob.array('file'),[
-    // body('heading').isLength({ min: 5,max:20 }),
-    // body('description').isLength({min:5,max:500}),
-    // param('jobId').custom(jobId => {
-    //     return Jobs.findOne({_id:mongoose.Types.ObjectId(jobId)})
-    //     .then(job => {
-    //       if (job) {
-    //         return true;
-    //       }else{
-    //         Promise.reject('E-mail already in use');
-    //       }
-    //     });
+    body('heading').exists().isLength({ min: 2,max:300 }).withMessage('heading length greater than 2 and less than 300'),
+    body('description').isLength({min:2,max:2000}),
+    body('category').not().isEmpty().withMessage('Category is required'),
+    // body('files').custom(()=>{
     // }),
-    // body('category').exists().isLength({min:2}),
-    // body('skill').notEmpty(),
-    // body('*.min').exists().isNumeric(),
-    // body('*.max').exists().isNumeric(),
+    param('employeeId').exists().withMessage('EmployeeId is required'),
+    body('skill').notEmpty().isArray({min:1,max:10}).withMessage('skill length greater than 1 and less than 10'),
+    body('budget.min').not().isEmpty().isNumeric({min:0,max:6}),
+    body('budget.max').notEmpty().
+    isNumeric({min:0,max:6})
+    .custom((max,{req})=>{
+        const {body:{budget:{min}}}=req;
+
+        if(parseFloat(max)>=parseFloat(min)){
+            console.log('true')
+            return true
+        }else{
+            console.log('reject')
+            return Promise.reject('maximum value is less than minimum value');
+        }
+    }),
+
 ],Jobcontroller.updateJob);
 
 

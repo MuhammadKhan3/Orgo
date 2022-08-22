@@ -6,6 +6,7 @@ import TitlePop from "../popups/TitlePop";
 import HourlyRatePop from "../popups/HourlyRatePop";
 import PortfolioPop from "../popups/PortfolioPop";
 import {useDispatch,useSelector} from 'react-redux'
+import Freelancer from "../freelancer/freelancer";
 
 function EmployeeBodyRight() {
   const rate=useSelector(state=>state.companySlice.rate);
@@ -105,6 +106,7 @@ function EmployeeBodyRight() {
         </div>
         <hr />
       </div>
+        <Freelancer/>
       {pop.titlePop ? <TitlePop handleClose={handleTitlePop}/>:null}
       {pop.ratePop ? <HourlyRatePop handleClose={handleRatePop}/>:null}
       {pop.portfolioPop ? <PortfolioPop handleClose={handlePortfolioPop}/>:null}

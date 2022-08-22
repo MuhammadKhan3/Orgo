@@ -91,11 +91,15 @@ function CreateJobCompo() {
         token:"Bearer "+token
       }
     }).then((response)=>{
-      navigate('/job-list')
-      console.log(response);
+      if(response.data.msg){
+        console.log(response);
+      }else {
+        navigate('/job-list')     
+        cookies.set('active_state','job-list');
+        window.location.reload(false);
+      }
     })
   }
-
   return (
     <div className="create-main-head">
       <br />

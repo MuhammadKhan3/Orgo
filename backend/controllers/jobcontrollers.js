@@ -4,12 +4,14 @@ const fs = require('fs');
 const favJob = require("../model/favJobs");
 const {validationResult}=require('express-validator');
 const Searches = require("../model/search");
+const { logger } = require("../logs/log");
 
 
 
 
 exports.createJob=(req,res,next)=>{
     console.log('create-job')
+    // logger.log('error','issue in log')
 
     const errors=validationResult(req);
     if(!errors.isEmpty()){
@@ -24,45 +26,43 @@ exports.createJob=(req,res,next)=>{
         return value;
     });
     
-    const {heading,description,category,skill,scope,budget}=req.body;
-    
+    const {heading,description,category,skill,scope,budget}=req.body;    
     console.log(heading,description,category,skill,scope,budget,file)
-  
-    Jobs.create({
-        heading:heading,
-        description:description,
-        category:category,
-        file:file,
-        skills:skill,
-        scope:scope,
-        budget:budget,
-        employeeId:employeeId,
-    }).then(job=>{
-        console.log(job)
-        if(job){
-            res.json({msg:'Created Succefully Job',flag:true,jobId:job._id})
-        }
 
-    }).catch((error)=>{
+    try {
+        Jobs.create({
+            heading:heading,
+            description:description,
+            category:category,
+            file:file,
+            skills:skill,
+            scope:scope,
+            budget:budget,
+            employeeId:employeeId,
+        }).then(job=>{
+            if(job){
+                res.json({msg:'Created Succefully Job',flag:true,jobId:job._id})
+            }
+        })        
+    } catch (error) {
+        logger.log('error','issue in log')
         const err=new Error('Create job Issue')
         err.data=error;
-        throw err;
-    })
+        throw err;        
+    }
 }
 
 
 
 exports.updateJob=(req,res,next)=>{
-    console.log('update job')
 
     const {jobId}=req.params;
     const {heading,description,category,skills,scope,budget,deletefile,files=[]}=req.body;
-    console.log('category',category)
+
     let file=req.files
 
 // Add file
         if(file){
-            console.log('file')
             file.map((value)=>{
                files.push(value)
             })
@@ -73,7 +73,6 @@ exports.updateJob=(req,res,next)=>{
         {
 
             deletefile.forEach((value)=>{
-
                 fs.unlink(`images/job/${value}`, (err => {
                     if (err) console.log(err);
                     else {
@@ -124,6 +123,7 @@ exports.getJob=(req,res,next)=>{
             model:'user'
         }
     })
+
     .then((job)=>{
         if(job){
             res.json({job:job,flag:true,msg:'Succefully Fetch Jobs'});
@@ -144,13 +144,10 @@ exports.getJobs=(req,res,next)=>{
     // .populate('employeeId')
     .sort('-createdAt')
     .then(jobs=>{
-        console.log(jobs)
         if(jobs){
             res.json({jobs:jobs,searches:req.searches,flag:true,msg:'Succefully Fetch Jobs'});
         }
     })
-
-
 }
 
 exports.searchlist=(req,res,next)=>{
@@ -164,7 +161,6 @@ exports.searchlist=(req,res,next)=>{
 
 
 exports.FavJob=(req,res,next)=>{
-    console.log('favourit.')
     const {userId}=req.body;
     const {jobId}=req.params;
     console.log(jobId,userId)
@@ -243,8 +239,9 @@ exports.bestmatchJob=(req,res,next)=>{
         })
     })
 }
+
 exports.searchJob=(req,res,next)=>{
-    
+
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')
@@ -255,16 +252,13 @@ exports.searchJob=(req,res,next)=>{
 
     const {search}=req.body;
     const {userId}=req.body;
-    console.log(search,userId)
+
     Jobs.find({$text:{$search:search},status:"active"})
     .then((jobs)=>{
-        console.log('job',jobs)
         if(jobs){
-            console.log(jobs)
+
             Searches.find({userId:mongoose.Types.ObjectId(userId)}, function(err, count) {
-            console.log("count",count.length)
                 if(count.length<5){
-                    console.log('1')
                     Searches.create({
                         userId:userId,
                         search:search
@@ -290,8 +284,7 @@ exports.searchJob=(req,res,next)=>{
 }
 
 
-exports.getemployeejob=(req,res,next)=>{
-    
+exports.getemployeejob=(req,res,next)=>{   
     const {employeeId}=req.body;
     Jobs.find({employeeId:employeeId})
     .sort('-createdAt')

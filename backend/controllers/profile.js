@@ -38,7 +38,6 @@ exports.companypicture=(req,res,next)=>{
     console.log(req.body)
     let {companyId}=req.params;
     const file=req.file;
-    console.log(file)
     CompanyProfile.updateOne({companyId:mongoose.Types.ObjectId(companyId)},{$set:{picture:file.filename}})
     .then((update)=>{
         if(update){
@@ -384,7 +383,7 @@ exports.updatename=(req,res,next)=>{
 }
 
 exports.emppicture=(req,res,next)=>{
-    console.log('fle')
+
     const errors=validationResult(req);
     if(!errors.isEmpty()){
         const err=new Error('Information Profile')

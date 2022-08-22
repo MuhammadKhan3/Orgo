@@ -16,9 +16,14 @@ const Company=require('./model/company');
 const Hire=require('./model/hire');
 const Chat=require('./model/chat');
 
+// logging
+var winston = require('winston'),
+expressWinston = require('express-winston');
+
 // socket
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+const {logger} = require('./logs/log');
 const httpServer = createServer(app);
 const io= new Server(httpServer, { cors: {
   origin: "*",
@@ -46,11 +51,14 @@ app.use(express.static(path.join(__dirname, 'images','job')));
 
 
 
-
+// debug logger
+// close debug logger
 
 
 app.use('/',routes);
+
 app.use((err, req, res, next) => {
+    logger.log('error',err);
     res.json({msg:err.data,flag:false})
 })
 

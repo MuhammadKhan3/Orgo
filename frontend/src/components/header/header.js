@@ -1,5 +1,7 @@
 import React, { useState,useEffect } from 'react'
+import { useSelector,useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { job_action } from '../redux/slice/jobSlice';
 import {Cookies} from 'react-cookie';
 import { useNavigate } from "react-router-dom";
 const cookies=new Cookies();
@@ -8,8 +10,12 @@ const socket = io("http://localhost:8000");
 
 const Header = () => {
     const navigate=useNavigate();
-    const [active,setactivebtn]=useState(cookies.get('active_state'));
-    
+    const dispatch=useDispatch();
+    const active=useSelector(state=>state.jobSlice.activeState);
+    useEffect(()=>{
+      dispatch(job_action.setactiveState(cookies.get('active_state')))
+    },[])
+
     const logouthandler=()=>{
       if(cookies.get('userType')==='freelancer' || cookies.get('userType')==='company'){
          cookies.remove('companyId')
@@ -53,7 +59,7 @@ const Header = () => {
     <h2 className=" text-[45px] text-white w-[60px] float-left ">Orgo</h2>
     <ul className='flex flex-row   mt-[-15px] !ml-[190px] space-x-2  '>
         <Link to='/'>
-          <li className={` text-[14px] btn btn-ghost w-[90px]  ${active==='dashboard' ? 'btn-active text-white' :''}`} onClick={()=>{setactivebtn('dashboard')}}>Dashboard</li>
+          <li className={` text-[14px] btn btn-ghost w-[90px]  ${active==='dashboard' ? 'btn-active text-white' :''}`} onClick={()=>{cookies.set('dashboard')}}>Dashboard</li>
         </Link>
         <Link to='/project' onClick={refreshehandler}>
           <li className={`text-[14px]  btn btn-ghost w-[90px] ${active==='project' ? 'btn-active text-white' :''}`} onClick={()=>{cookies.set('active_state','project')}}>Projects</li>

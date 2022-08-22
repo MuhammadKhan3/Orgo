@@ -44,7 +44,7 @@ function HourlyRatePop({ handleClose }) {
             contracts.
           </p>
           <p style={{ margin: "10px 0 10px 0" }}>
-            The Upwork Service Fee is 20% when you begin a contract with a new
+            The Orgo Service Fee is 20% when you begin a contract with a new
             client. Once you bill over $500.00 with your client, the fee will be
             10%.
           </p>
