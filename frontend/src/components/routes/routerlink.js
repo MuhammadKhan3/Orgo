@@ -20,6 +20,7 @@ import SubmitProposal from "../../pages/SubmitProposal";
 import ChatPage from "../../pages/ChatPage";
 import Freelancer from "../freelancer/freelancer";
 import Employee from "../../pages/Employee";
+import Publicprofile from "../../pages/publicProfile";
 
 
 const cookies = new Cookies();
@@ -46,9 +47,9 @@ function RouterLink() {
 
        </>) : (
          <>
-          {userType==='company' &&
+          {/* {userType==='company' &&
            <Route path="/freelancer-list" element={<Freelancer/>} />
-          }
+          } */}
          <Route path="/profile" element={<Protect Component={FreelancerCompany} />}/>
          <Route extact path="/submit-proposal/:jobId" element={<SubmitProposal/>} />
          </>
@@ -59,11 +60,10 @@ function RouterLink() {
          </>}
 
          <Route path="/employee" element={<Employee/>} />
-      
+         <Route path="/company/profile" element={<Publicprofile/>}/>
       {/* <Route path="/submit-proposal" element={<SubmitProposal/>} /> */}
       {/* <Route path="/message" element={<ChatPage/>} /> */}
       <Route path="/" element={<Home />} />
-
 
     </Routes>
   );

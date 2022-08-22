@@ -5,6 +5,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import {Cookies} from 'react-cookie'
 import {useSelector} from 'react-redux'
 import axios from 'axios'
+import { Link } from "react-router-dom";
 const cookies=new Cookies();
 
 function EmployeeHeader() {
@@ -83,8 +84,9 @@ function EmployeeHeader() {
         </div>
       </div>
       <div className="head-container2">
-        <button className="view">See Public View</button>
-        <button className="profile-setting">Profile setting</button>
+        <Link to='/company/profile'>
+         <button className="view">See Public View</button>
+        </Link>
       </div>
     </div>
   );

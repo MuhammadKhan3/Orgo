@@ -8,6 +8,8 @@ import axios from 'axios';
 import StripeCheckout from 'react-stripe-checkout'
 import {Link, useParams} from 'react-router-dom'
 import { job_action } from "../components/redux/slice/jobSlice";
+import {useNavigate} from "react-router-dom"
+
 const cookies=new Cookies();
 
 const skills = [
@@ -29,6 +31,7 @@ function ProposalList() {
   const [companyId,setcompanyId]=useState('');
   const [companyprofile,setcompanyprofile]=useState('');
   const [amount,setamount]=useState('');
+  const navigate=useNavigate();
   useEffect(()=>{
     const fetchproposal=()=>{
       const token=cookies.get('token');
@@ -106,10 +109,10 @@ function ProposalList() {
               color: "#656565",
               fontWeight: "400",
               borderBottom: "2px solid green",
-              width: "80px",
+              width: "130px",
             }}
           >
-            Recent Job
+            Recent Proposals
           </li>
         </ul>
     {proposal.length>0 &&
@@ -127,14 +130,17 @@ function ProposalList() {
                 onChange={handleImageUpload}
                 ref={imageUploader}
               />
+              {console.log(proposal)}              
               <div
                 className="image-avatar"
-                onClick={() => imageUploader.current.click()}
+                style={{cursor:'pointer'}}
+                onClick={() => {cookies.set('companyId',proposal[0].companyId);navigate('/company/profile');}}
+                // imageUploader.current.click()
               >
                 <img
                   className="user-avatar-image"
                   src={proposal[1].picture ? `http://localhost:8000/${proposal[1].picture}` :avatar}
-                  ref={uploadedImage}
+                  // ref={uploadedImage}
                 />
               </div>
             </div>
@@ -151,11 +157,9 @@ function ProposalList() {
               </p>
             </div>
             <div style={{ marginLeft: "50px"}}>
-            {console.log(proposal)}
               <Link to={`/message?receiveId=${proposal[0].userId._id}`}>
                 <Button content="Messages" />
               </Link>
-
               {!proposal[0].hire &&
               <StripeCheckout
                 className=''

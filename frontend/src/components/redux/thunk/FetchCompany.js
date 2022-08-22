@@ -8,13 +8,14 @@ const FetchCompany = () => {
     const token = cookies.get("token");
     const companyId = cookies.get("companyId");
     const FetchProfile = async () => {
+      console.log(companyId);
       const response = await axios.post(
         `http://localhost:8000/company-profile/${companyId}`,
         {
           headers: { authorization: `Bearer ${token}` },
         }
       );
-      console.log(response);
+
       dispatch(
         company_action.setcompanyname(response.data.companyId.companyName)
       );
