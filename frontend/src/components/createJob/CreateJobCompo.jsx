@@ -93,9 +93,13 @@ function CreateJobCompo() {
     }).then((response)=>{
       if(response.data.msg){
         console.log(response);
+        navigate('/job-list');    
+        cookies.set('active_state','job-list')
+        window.location.reload(false);
       }else {
         navigate('/job-list')     
         cookies.set('active_state','job-list');
+        cookies.set('active_state','job-list')
         window.location.reload(false);
       }
     })

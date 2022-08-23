@@ -25,8 +25,6 @@ const LoginThunk = (obj,navigate) => {
             navigate('/')
 
           }else if(response.data.userType==='employee'){
-            console.log('2')
-
               let hour = new Date();
               hour.setTime(hour.getTime() + (60*60*1000));
               cookies.set('token',response.data.token,{expires:hour});
@@ -36,7 +34,7 @@ const LoginThunk = (obj,navigate) => {
               cookies.set('authenticate',response.data.authenticate,{expires:hour});
               cookies.set('authorize',response.data.authorize,{expires:hour});    
               dispatch(user_action.setchangestatus(response.data.status));
-              navigate('/')
+              navigate('/profile')
           }else{
             dispatch(user_action.setflag(response.data.flag));
             dispatch(user_action.setdata(response.data.data));

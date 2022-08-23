@@ -459,31 +459,32 @@ if(changestatus==='one'){
           {/* close the signup section */}
           {/* animation Content  */}
           <div className="bg-gradient-to-r from-pink-500 to-yellow-500 rounded-r-lg  md:w-[30rem] sm:w-[400px]   hidden lg:block medium:block p-5">
-            <div className="mt-[220px]">
-              <Fade right>
-                <h1 className="text-white text-[30px] text-bold ml-36">
-                  <Typewriter
-                    className
-                    onInit={(typewriter) => {
-                      typewriter
-                        .typeString("Welcome Back")
-                        .pauseFor(2000)
-                        .deleteAll()
-                        .typeString("Thank you visit website")
-                        .start();
-                    }}
-                  />
-                </h1>
-              </Fade>
-              <Fade left>
-                <p className="text-white text-justify w-96 ml-16 medium:w-[260px]">
-                  A good example of a paragraph contains a topic sentence, details
-                  and a conclusion. 'There are many different kinds of animals
-                  that live in China. Tigers and leopards are animals that live in
-                  China's forests in the north
-                </p>
-              </Fade>
+          <div className="mt-[40px]">
+            <h1 className="text-white ml-[18px] text-[19px] text-justify">Orgo is the  Freelancer Platform where register client and company </h1>
+            <Fade right>
+              <div class="flex flex-col w-full border-opacity-50 ">
+                <div class="grid h-20 card bg-base-300 rounded-box place-items-center m-4 ">
+                 <h1>Developement & IT</h1>
+                </div>
+                <div class="grid h-20 card bg-base-300 rounded-box place-items-center m-4">Design & Creative</div>
+              </div>
+            </Fade>
+            <Fade left>
+            <div class="flex flex-col w-full border-opacity-50 ">
+              <div class="grid h-20 card bg-base-300 rounded-box place-items-center m-4">Sales & Marketing</div>
+              <div class="grid h-20 card bg-base-300 rounded-box place-items-center m-4">Finance & Accounting</div>
             </div>
+            </Fade>
+            <Fade right>
+              <div class="flex flex-col w-full border-opacity-50 ">
+                <div class="grid h-20 card bg-base-300 rounded-box place-items-center m-4">
+                 <h1>Finance & Accounting</h1>
+                </div>
+                <div class="grid h-20 card bg-base-300 rounded-box place-items-center m-4">Legal</div>
+              </div>
+            </Fade>
+          </div>
+ 
           </div>
           
         </div>
@@ -518,32 +519,26 @@ return ( <>
               </button>
           </form>
           </div>
+          
           <div className="bg-gradient-to-r from-pink-500 to-yellow-500 rounded-r-lg  w-[30rem]">
-          <div className="mt-[220px]">
+            <div className="mt-[40px]">
+            <h1 className="text-white ml-[18px] text-[19px] text-justify">Orgo is the  Freelancer Platform where register client and company </h1>
               <Fade right>
-              <h1 className="text-white text-[30px] text-bold ml-36">
-                  <Typewriter
-                  className
-                  onInit={(typewriter) => {
-                      typewriter
-                      .typeString("Forgot")
-                      .pauseFor(2000)
-                      .deleteAll()
-                      .typeString("Password Thank you")
-                      .start();
-                  }}
-                  />
-              </h1>
+                <div class="flex flex-col w-full border-opacity-50 ">
+                  <div class="grid h-20 card bg-base-300 rounded-box place-items-center m-4">
+                  <h1>Developement & IT</h1>
+                  </div>
+                  <div class="grid h-20 card bg-base-300 rounded-box place-items-center m-4">Design & Creative</div>
+                </div>
               </Fade>
               <Fade left>
-              <p className="text-white text-justify w-96 ml-16">
-                  A good example of a paragraph contains a topic sentence, details
-                  and a conclusion. 'There are many different kinds of animals
-                  that live in China. Tigers and leopards are animals that live in
-                  China's forests in the north
-              </p>
+              <div class="flex flex-col w-full border-opacity-50 ">
+                <div class="grid h-20 card bg-base-300 rounded-box place-items-center m-4">Sales & Marketing</div>
+                <div class="grid h-20 card bg-base-300 rounded-box place-items-center m-4">Finance & Accounting</div>
+              </div>
               </Fade>
-          </div>
+            </div>
+
           </div>
           {/* close animation Content  */}
 

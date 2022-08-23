@@ -44,7 +44,7 @@ function EducationPop({ handleClose }) {
     })
   }
   return (
-    <div className="main-box">
+    <div style={{zIndex:'999'}} className="main-box">
       <div className="popup-box-education">
         <div>
           <h3 className="pop-video-heading">Add Education</h3>

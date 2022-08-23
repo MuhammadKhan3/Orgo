@@ -34,11 +34,11 @@ const  Freelancer=()=>{
       })
    }
 
-   if(active==='new' && (userType=='company' || userType=='freelancer')){ 
+   if(active==='new' && userType=='company' ){ 
     return (
     <>
-    <div  className="h-[673px] w-auto ml-[20px]" >
-    <h1 className="text-[20px] text-lightgray font-bold ">Freelancer</h1>
+    <div  className="h-[673px] w-auto ml-[20px] -z-[999]" >
+    <h1 className="text-[20px] text-lightgray font-bold ">Organization</h1>
     <div className="overflow-x-auto    bg-white">
     <div className="flex flex-row ml-[30px] space-x-5 mt-[30px]">
     {/*  */}
@@ -62,7 +62,7 @@ const  Freelancer=()=>{
           <th>{i+1}</th>
           <td>{freelancer.firstname}{freelancer.lastname && freelancer.lastname}</td>
           <td>{freelancer.userType}</td>
-          <td><button className="btn bg-white text-red-400  !border-red-400 hover:text-white hover:bg-red-400" onClick={()=>{rejecthandler(freelancer._id)}}>reject</button> <button className="btn bg-white text-green-500  !border-green-500 hover:text-white hover:bg-green-500 ml-[5px]" onClick={()=>{approvehandler(freelancer._id)}}>Approve</button></td>
+          <td><button className="btn bg-white text-red-400  !border-red-400 hover:text-white hover:bg-red-400" onClick={()=>{rejecthandler(freelancer._id)}}>reject</button> <button className="btn bg-white text-green-500  !border-green-500 hover:text-white hover:bg-green-500 ml-[5px]" onClick={()=>{approvehandler(freelancer._id)}}>Members</button></td>
         </tr>
         )
         })}
@@ -72,18 +72,18 @@ const  Freelancer=()=>{
   </div>
   </>)
   }
-  else if(active==='approve')  { 
+  else if(active==='approve' || (active==='new' && userType==='freelancer'))  { 
   return (
     <>
     <div  className="h-[673px] ml-[20px]">
-    <h1 className="text-[20px] text-lightgray font-bold ">Freelancer</h1>
+    <h1 className="text-[20px] text-lightgray font-bold ">Organization</h1>
     <div className="overflow-x-auto    bg-white">
     <div className="flex flex-row ml-[30px] space-x-5 mt-[30px]">
     {/*  */}
-      {(userType==='freelancer' || userType==='company') &&
+      {( userType==='company') &&
       <h3 className={`${active==='new' &&' border-b-2 border-green-500'} cursor`} onClick={()=>{setactive('new')}}>New</h3>
       }
-      <h3 className={`${active==='approve' &&' border-b-2 border-green-500'} `}  onClick={()=>{setactive('approve')}}>Approve</h3>
+      <h3 className={`${active==='approve' &&' border-b-2 border-green-500'} `}  onClick={()=>{setactive('approve')}}>Members</h3>
     </div>
     <table className="table  mt-[30px] w-full ">
       <thead>

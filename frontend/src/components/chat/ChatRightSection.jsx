@@ -64,7 +64,8 @@ function ChatRightSection() {
 
 
 
-  return (
+  return (<>
+  {/* {message.length>0 && */}
     <div className="right-section">
       <div className="chat-body-nav">
         <h1 style={{ fontSize: "1.1em", fontWeight: "500" }}>{cookies.get('chatname')}</h1>
@@ -93,6 +94,7 @@ function ChatRightSection() {
             return (<Messages index={i} key={i} message={chat.message} companyName={chat.employeeprofile ? chat.employeeprofile.companyName  : chat.companyprofile.companyId.companyName } picture={chat.employeeprofile ? chat.employeeprofile.picture  : chat.companyprofile.picture } createdAt={chat.createdAt}/>)
         })}
       </div>
+      {/* {message.length>0 && */}
       <TextField
         placeholder="Write your message here !"
         multiline
@@ -110,7 +112,10 @@ function ChatRightSection() {
           outline: "none"
         }}
       />
+      {/* } */}
     </div>
+    {/* } */}
+    </>
   );
 }
 export default ChatRightSection;

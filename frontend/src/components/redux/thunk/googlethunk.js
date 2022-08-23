@@ -26,7 +26,7 @@ const Googlethunk = (token,clientId,usergroup,companyName,coordinates,navigate) 
                 cookies.set('userType',response.data.userType,{expires:hour});
                 cookies.set('authenticate',response.data.authenticate,{expires:hour});
                 cookies.set('authorize',response.data.authorize,{expires:hour});
-                navigate('/');
+                navigate('/profile');
               }else if(response.data.userType==='employee'){
                 cookies.set('token',response.data.token,{expires:hour});
                 cookies.set('userId',response.data.userId,{expires:hour});
@@ -34,8 +34,7 @@ const Googlethunk = (token,clientId,usergroup,companyName,coordinates,navigate) 
                 cookies.set('userType',response.data.userType,{expires:hour});
                 cookies.set('authenticate',response.data.authenticate,{expires:hour});
                 cookies.set('authorize',response.data.authorize,{expires:hour});
-
-                navigate('/');
+                navigate('/profile');
               }else if(response.data.msg){
                  console.log(response.data.msg)
                  dispatch(user_action.seterrors(response.data.msg));

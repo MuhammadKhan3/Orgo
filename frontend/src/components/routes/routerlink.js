@@ -55,7 +55,7 @@ function RouterLink() {
          </>
          )}
          <Route path="/message" element={<Protect Component={ChatPage}/>} />
-         <Route path="/project" element={<Protect Component={Search} />} />
+         <Route path="/" element={<Protect Component={Search} />} />
 
          </>}
 
@@ -63,7 +63,7 @@ function RouterLink() {
          <Route path="/company/profile" element={<Publicprofile/>}/>
       {/* <Route path="/submit-proposal" element={<SubmitProposal/>} /> */}
       {/* <Route path="/message" element={<ChatPage/>} /> */}
-      <Route path="/" element={<Home />} />
+      {/* <Route path="/" element={<Home />} /> */}
 
     </Routes>
   );
