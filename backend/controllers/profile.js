@@ -15,7 +15,6 @@ exports.companyprofile=(req,res,next)=>{
         err.data=errors.array();
         throw err;
     }
-
     let companyId=req.params.companyId;
     CompanyProfile.findOne({companyId:mongoose.Types.ObjectId(companyId)})
     .populate('companyId')
@@ -511,3 +510,4 @@ exports.reject=(req,res,next)=>{
         }
     })
 }
+
